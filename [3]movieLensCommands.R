@@ -1,0 +1,10 @@
+library(dslabs)
+data(movielens)
+
+class(movielens)
+str(movielens)
+length(movielens)
+length(movielens$title)
+class(movielens$title)
+class(movielens$genres)
+nlevels(movielens$genres)
