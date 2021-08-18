@@ -1,0 +1,314 @@
+---
+title: "[R] The Notebook"
+author: "*Veneta Baeva*"  
+output: github_document
+---
+![](/Users/venetabaeva/git/repository4/Picture1.jpg)
+---
+
+## I.
+
+1.[file] read
+
+```{r}
+dfAlc <- read.csv(
+                      file = ("/Users/venetabaeva/git/repository4/gapminder.csv"),
+                      header = TRUE,
+                      sep = ";",
+                      dec = ".")
+
+```
+
+###### ^1^ click: [Alcohol Consumption](https://www.kaggle.com/sansuthi/alcohol-consumption)
+
+1.[file] view 
+
+```{r}
+View(dfAlc)
+```
+
+1.[file] check structure
+
+```{r}
+str(dfAlc)
+```
+
+1.[table] create frequency table for factor
+
+```{r}
+tableAlcCountry <- c(dfAlc$abbrv)
+table(tableAlcCountry)
+```
+
+1.[vector] create 
+```{r}
+country<- c("Afghanistan","Albania","Algeria","Andorra","Angola", "Antigua and Barbuda")
+abbrv <- c("AF", "AL", "DZ", "AD", "AO", "AG")
+aconsum <- c(0, 7, 1, 10, 6, 8)
+```
+
+1.[vector] sort elements' values in increasing order 
+
+```{r}
+x <- c(60,50 ,40, 30, 20)
+sort(x) 
+```
+
+1. [vector] return/keep index of the elements' values in increasing order
+
+```{r}
+index <- order(x)
+index
+```
+
+1.[vector] sort vector's elements in order, through indexing
+
+```{r}
+x[index]
+```
+
+1.[vector] check order 
+
+```{r}
+order(x)
+```
+
+1.[vector] rank; returns the order of each element in an ascending list
+
+```{r}
+rank(x)
+```
+
+1.{vector} associate 
+
+```{r}
+abbrvCountry <- c("AF"="Afghanistan", "AL" = "Albania", "DZ" ="Algeria", "AD" = "Andorra", "AO" = "Angola", "AG"= "Antigua and Barbuda")
+```
+
+1.[vector] assign name
+
+```{r}
+names(abbrvCountry)<-abbrv 
+```
+
+1.[vector] access vector's element's value descreately, through indexing 
+
+```{r}
+abbrvCountry[2]
+```
+
+1.[vector] access vector's elements' values descreately, through indexing
+
+```{r}
+abbrvCountry[c(1,3)]
+```
+
+1.[vector] access vector's elements' values interval-ly, through indexing 
+
+```{r}
+abbrvCountry[1:2]
+```
+
+1.[vector] access vector's elements' values interval-ly, through naming the element  
+
+```{r}
+abbrvCountry["AF"]
+abbrvCountry[c("AL","DZ")]
+```
+
+1.[dataFrame] create data frame
+
+```{r}
+dfAbbrvAconsum <- data.frame(country = abbrv, alchoholconsumption = aconsum)
+```
+
+1.[file] check class
+
+```{r}
+class(dfAlc)
+class(dfAlc$aconsum)
+```
+
+1.[element] change type of element 
+
+```{r}
+class(1)
+class(1L)
+```
+
+1.[sequence] show
+
+```{r}
+seq(1,10)
+1:10
+```
+
+1.[sequence] generate increasing sequence of numbers with pretermed length
+
+```{r}
+seq(1, 10, length.out = 100)
+```
+
+
+1.[sequence] check length
+
+```{r}
+length(seq(1,10))
+```
+
+
+1.[dataFrame] check levels of a factor
+
+```{r}
+levels(dfAlc$aconsum)
+```
+
+1.[dataFrame] check number of levels of a factor
+
+```{r}
+nlevels(dfAlc$aconsum)
+```
+
+1.[file] check headers
+
+```{r}
+head(dfAlc)
+```
+1.[file] check headers' names
+
+```{r}
+names(dfAlc)
+```
+
+1.[column] access
+
+```{r}
+dfAlc["aconsum"]
+```
+
+1.[vector]sort in increasing order 
+
+```{r}
+sort(dfAlc$aconsum)
+```
+
+
+1.[column] access through vector
+```{r}
+dfAlc[["aconsum"]]
+```
+
+
+1.[column] access through vector
+```{r}
+dfAlc$aconsum
+```
+
+1.[object] define
+
+```{r}
+aconsum <- dfAlc$aconsum
+urbanrt <-dfAlc$urbanrt
+employrt <- dfAlc$employrt
+```
+
+1.[object] define lenght
+
+```{r}
+length(aconsum)
+```
+
+1.[object] check identical
+
+```{r}
+identical(urbanrt,employrt)
+```
+
+1.[vector] return index of the elements' values in increasing order 
+1.1.[vector] sort vector's elements in order, through indexing
+
+```{r}
+iOrdDfAconsum<-order(dfAlc$aconsum)
+dfAlc$abbrv[iOrdDfAconsum]
+```
+
+1.[vector] find max value between elements, through indexing
+1.1[object] return index
+1.1.1[vector] show value of element, through indexing the object 
+
+```{r}
+iMax<-which.max(dfAlc$aconsum)
+iMax
+dfAlc$abbrv[iMax]
+```
+
+1.[vector] find max value between elements, through indexing
+1.1[object] return index
+1.1.1[vector] show value of element, through indexing the object 
+
+```{r}
+iMin<-which.max(dfAlc$aconsum)
+iMin
+dfAlc$abbrv[iMin]
+```
+
+> library load 
+
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+library(dplyr)
+library(dslabs)
+library(tidyverse)
+```
+
+2.[vector] define
+2.2.[vector] rank elements' values, through indexing 
+2.2.2.[object]keep index of the elements' values in increasing order 
+2.2.2.2.[dataFrame] create
+
+```{r}
+abbCountry <- dfAlc$abbrv 
+suicidesPer100 <- dfAlc$suicideper100
+urbanRT <- dfAlc$urbanrt
+ranksAConsumption <- rank(dfAlc$aconsum,na.last = NA)
+i <- order(dfAlc$aconsum)
+df<- data.frame(country = abbCountry[i], suicide = suicidesPer100[i], rank = ranksAConsumption[i],urbanrate = urbanRT[i])
+df %>%
+  ggplot(aes(urbanrate, suicide, label=country,color=rank)) +
+  geom_label()
+
+```
+
+
+2.
+
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+dfAlc %>%
+  ggplot(aes(urbanrt, employrt, label=abbrv, color=aconsum)) +
+  geom_label()
+```
+
+
+
+## II.
+
+## III.
+
+## Libraries
+
+```{r message=FALSE, warning=FALSE, paged.print=FALSE}
+library(dplyr)
+```
+```{r}
+library(dslabs)
+```
+```{r message=FALSE, warning=FALSE, paged.print=FALSE}
+library(tidyverse)
+```
+
+
+## References
+## Contact 
+
+![](/Users/venetabaeva/git/repository4/OrgVenetaBaeva-images/0001.jpg)
+![](/Users/venetabaeva/git/repository4/OrgVenetaBaeva-images/0002.jpg)
+![](/Users/venetabaeva/git/repository4/OrgVenetaBaeva-images/0003.jpg) 
