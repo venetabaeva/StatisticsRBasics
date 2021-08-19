@@ -1,214 +1,214 @@
-country;abbrv;aconsum;incomeper1;suicideper100;employrt;urbanrt
-Afghanistan;AF;0;;7;56;24
-Albania;Al;7;1915;8;51;47
-Algeria;DZ;1;2232;5;51;65
-Andorra;AD;10;21943;5;;89
-Angola;AO;6;1381;15;76;57
-Antigua and Barbuda;AG;8;11894;2;;30
-Argentina;AR;9;10749;8;58;92
-Armenia;AM;14;1327;4;40;64
-Aruba;AW;;;;;47
-Australia;AU;10;25250;8;62;89
-Austria;AT;12;26693;13;57;67
-Azerbaijan;AZ;13;2345;1;61;52
-Bahamas;BS;9;19631;3;67;84
-Bahrain;BH;4;12505;4;60;89
-Bangladesh;BU;0;558;15;68;27
-Barbados;BB;6;9244;3;67;40
-Belarus;BY;19;2738;27;53;73
-Belgium;BE;10;24496;16;49;97
-Belize;BZ;6;3546;9;57;52
-Benin;BJ;2;377;6;72;41
-Bermuda;BM;;62682;;;100
-Bhutan;BT;1;1324;16;58;34
-Bolivia;BO;6;1233;2;70;66
-Bosnia and Herzegovina;BA;10;2183;12;41;47
-Botswana;BW;7;4189;11;46;60
-Brazil;BR;10;4699;5;65;86
-Brunei;BN;2;17092;1;64;75
-Bulgaria;BG;11;2550;9;47;71
-Burkina Faso;BF;7;276;8;81;20
-Burundi;BI;10;115;15;83;10
-Cambodia;KH;5;558;5;79;22
-Cameroon;CM;8;714;7;59;57
-Canada;CA;10;25575;10;64;80
-Cape Verde;CV;5;1960;6;56;60
-Cayman Islands;KY;;;;;100
-Central African Rep,;CF;3;240;14;71;39
-Chad;TD;4;276;8;69;27
-Chile;CL;9;6334;10;51;88
-China;CH;6;2425;17;73;43
-Colombia;CO;7;3233;5;63;75
-Comoros;KM;0;336;5;68;28
-Congo, Dem, Rep,;CD;3;104;15;66;34
-Congo, Rep,;CG;4;1253;10;64;61
-Cook Islands;CK;3;;4;;
-Costa Rica;CR;6;5189;7;59;63
-Cote d'Ivoire;CI;6;591;20;60;49
-Croatia;HR;15;6338;15;47;57
-Cuba;CU;5;4495;11;56;76
-Cyprus;CY;9;15314;2;59;70
-Czech Rep,;CZ;16;7381;12;56;74
-Denmark;DK;12;30532;9;63;87
-Djibouti;DJ;2;895;5;;87
-Dominica;DM;9;6148;6;;74
-Dominican Rep,;DO;6;4049;7;53;69
-Ecuador;EC;9;1728;9;60;66
-Egypt;EG;0;1976;2;42;43
-El Salvador;SV;4;2557;7;58;61
-Equatorial Guinea;GQ;6;8655;10;62;39
-Eritrea;ER;2;132;9;65;21
-Estonia;EE;17;6239;17;57;69
-Ethiopia;ET;4;221;10;81;17
-Faeroe Islands;FO;;;;;41
-Fiji;FJ;3;2231;4;56;52
-Finland;FI;13;27111;16;57;63
-France;FR;12;22878;14;51;77
-French Polynesia;FX;;;;;52
-Gabon;GA;9;4181;8;59;85
-Gambia;GM;4;355;6;72;56
-Georgia;GE;7;1259;2;56;53
-Germany;DE;12;25306;9;54;74
-Ghana;GH;3;359;6;65;50
-Gibraltar;GI;;;;;
-Greece;GR;11;13578;3;50;61
-Greenland;GL;;20752;;;84
-Grenada;GD;11;5330;4;;31
-Guadeloupe;GP;;;;43;
-Guam;GT;;;;;93
-Guatemala;GT;7;1861;2;63;49
-Guinea;GN;1;412;7;82;34
-Guinea-Bissau;GW;4;161;8;66;30
-Guyana;GY;9;1201;36;59;28
-Haiti;HT;6;371;2;56;47
-Honduras;HN;4;1392;7;56;48
-Hong Kong, China;HK;;35536;;59;100
-Hungary;HU;16;5634;20;47;68
-Iceland;IS;7;33945;11;74;92
-India;IN;3;787;19;55;30
-Indonesia;ID;1;1144;11;62;51
-Iran;IR;1;2162;6;48;68
-Iraq;IQ;0;736;17;37;67
-Ireland;IE;15;27595;10;60;61
-Israel;IL;3;22276;6;51;92
-Italy;IT;10;18982;5;46;68
-Jamaica;JM;5;3665;4;58;53
-Japan;JP;8;39309;19;57;66
-Jordan;JO;1;2534;0;39;78
-Kazakhstan;KZ;11;2482;25;64;58
-Kenya;KE;4;469;11;73;22
-Kiribati;KI;3;760;;;44
-Korea, Dem, Rep,;KP;;;5;65;63
-Korea, Rep,;KR;19;16372;22;59;81
-Kuwait;KW;0;;1;66;98
-Kyrgyzstan;KG;5;373;10;59;36
-Laos;LA;7;555;26;78;31
-Latvia;LV;13;5011;20;57;68
-Lebanon;LB;2;6747;6;46;87
-Lesotho;LS;6;496;8;56;25
-Liberia;LR;5;155;7;66;60
-Libya;LY;0;7885;5;49;78
-Liechtenstein;LI;;81647;;;14
-Lithuania;LT;16;5332;33;53;67
-Luxembourg;LU;13;52302;12;54;82
-Macao, China;MO;;33923;;64;100
-Macedonia, FYR;MK;9;2221;8;35;67
-Madagascar;MG;1;243;6;83;30
-Malawi;MW;1;184;10;72;19
-Malaysia;MY;1;5185;8;61;70
-Maldives;MV;;4039;22;57;38
-Mali;ML;1;270;8;46;32
-Malta;MT;4;11067;5;47;94
-Marshall Islands;MH;;2437;7;;71
-Martinique;MQ;;;;43;
-Mauritania;MR;0;609;7;47;41
-Mauritius;MU;4;5182;8;55;42
-Mexico;MX;9;6105;4;58;77
-Micronesia, Fed, Sts,;FM;5;2146;5;;23
-Moldova;MD;23;596;16;44;42
-Monaco;MC;;105147;11;;100
-Mongolia;MN;3;773;13;52;57
-Montenegro;ME;;2222;;;60
-Morocco;MA;1;1844;2;46;56
-Mozambique;MZ;2;390;11;77;37
-Myanmar;MM;1;;10;75;33
-Namibia;NA;12;2667;8;42;37
-Nauru;NR;5;;4;;
-Nepal;NP;2;268;12;62;17
-Netherlands;AN;10;26552;8;61;82
-Netherlands Antilles;NL;;;;54;93
-New Caledonia;NC;;;;;65
-New Zealand;NZ;10;14778;12;65;87
-Nicaragua;NI;5;948;12;59;57
-Niger;NE;0;180;9;60;17
-Nigeria;NG;13;545;8;51;48
-Niue;NU;9;;4;;
-Norway;NO;8;39972;11;65;77
-Oman;OM;1;11192;4;51;72
-Pakistan;PK;0;669;13;51;36
-Palau;PW;10;6244;6;;80
-Panama;PA;7;5901;6;60;73
-Papua New Guinea;PG;4;744;12;70;13
-Paraguay;PY;8;1621;4;73;60
-Peru;PE;7;3180;2;68;71
-Philippines;PH;6;1383;2;61;65
-Poland;PL;14;6576;14;49;61
-Portugal;PT;14;11745;8;58;59
-Puerto Rico;PR;;15822;;42;98
-Qatar;QA;1;33932;3;76;96
-Reunion;RE;;;;44;
-Romania;RO;16;2637;10;50;54
-Russia;RU;16;2923;28;59;73
-Rwanda;RW;10;338;13;80;18
-Saint Kitts and Nevis;KN;11;9176;;;32
-Saint Lucia;LC;12;5249;8;;28
-Saint Vincent and the Grenadines;VC;5;4885;10;;47
-Samoa;AS;5;1784;6;;23
-San Marino;SM;;31993;6;;94
-Sao Tome and Principe;ST;8;;10;;61
-Saudi Arabia;SA;0;9425;6;51;82
-Senegal;SN;1;562;7;66;42
-Serbia;RS;12;1195;14;;52
-Serbia and Montenegro;ME;;;14;49;
-Seychelles;SC;12;8614;10;;54
-Sierra Leone;SL;9;268;12;64;38
-Singapore;SG;2;32536;9;62;100
-Slovak Republic;SK;13;8446;11;53;57
-Slovenia;SI;15;12729;19;56;49
-Solomon Islands;SB;1;1144;4;65;18
-Somalia;SO;1;;30;66;37
-South Africa;ZA;10;3746;16;41;61
-Spain;ES;12;15462;6;53;77
-Sri Lanka;LK;1;1296;28;55;15
-Sudan;SD;3;524;10;47;43
-Suriname;SR;7;2668;21;45;75
-Swaziland;SZ;5;1810;13;51;25
-Sweden;SE;10;32292;11;61;85
-Switzerland;CH;11;37663;13;64;73
-Syria;SY;1;1526;1;45;54
-Taiwan;TW;;;;55;
-Tajikistan;TJ;3;279;3;55;26
-Tanzania;TZ;8;456;12;78;26
-Thailand;TH;7;2713;10;72;33
-Timor-Leste;TP;1;370;10;67;27
-Togo;TG;2;285;6;64;42
-Tonga;TO;4;2025;5;;25
-Trinidad and Tobago;TT;6;10481;15;62;13
-Tunisia;TN;1;3165;3;42;67
-Turkey;TR;3;5349;4;43;69
-Turkmenistan;TM;5;2062;12;59;49
-Tuvalu;TV;2;1715;8;;
-Uganda;UG;16;377;12;83;13
-Ukraine;UA;17;1037;19;54;68
-United Arab Emirates;AE;1;21087;1;75;78
-United Kingdom;GB;13;28033;6;59;90
-United States;US;10;37491;10;62;82
-Uruguay;UY;9;9106;15;58;92
-Uzbekistan;UZ;4;953;5;58;37
-Vanuatu;VU;1;1544;5;;25
-Venezuela;VE;8;5528;4;60;93
-Vietnam;VN;4;723;12;71;28
-West Bank and Gaza;EH;;;;32;72
-Yemen, Rep,;YE;0;610;6;39;31
-Zambia;ZM;4;432;12;61;35
-Zimbabwe;ZW;5;321;14;67;37
+country;abbrv;aconsum;incomeper1;suicideper100;employrt;urbanrt;region
+Afghanistan;AF;0;;7;56;24;EMEA
+Albania;Al;7;1915;8;51;47;EMEA
+Algeria;DZ;1;2232;5;51;65;EMEA
+Andorra;AD;10;21943;5;;89;EMEA
+Angola;AO;6;1381;15;76;57;EMEA
+Antigua and Barbuda;AG;8;11894;2;;30;LATAM
+Argentina;AR;9;10749;8;58;92;LATAM
+Armenia;AM;14;1327;4;40;64;EMEA
+Aruba;AW;;;;;47;LATAM
+Australia;AU;10;25250;8;62;89;APAC
+Austria;AT;12;26693;13;57;67;EMEA
+Azerbaijan;AZ;13;2345;1;61;52;EMEA
+Bahamas;BS;9;19631;3;67;84;LATAM
+Bahrain;BH;4;12505;4;60;89;EMEA
+Bangladesh;BU;0;558;15;68;27;APAC
+Barbados;BB;6;9244;3;67;40;LATAM
+Belarus;BY;19;2738;27;53;73;EMEA
+Belgium;BE;10;24496;16;49;97;EMEA
+Belize;BZ;6;3546;9;57;52;LATAM
+Benin;BJ;2;377;6;72;41;EMEA
+Bermuda;BM;;62682;;;100;LATAM
+Bhutan;BT;1;1324;16;58;34;APAC
+Bolivia;BO;6;1233;2;70;66;LATAM
+Bosnia and Herzegovina;BA;10;2183;12;41;47;EMEA
+Botswana;BW;7;4189;11;46;60;EMEA
+Brazil;BR;10;4699;5;65;86;LATAM
+Brunei;BN;2;17092;1;64;75;APAC
+Bulgaria;BG;11;2550;9;47;71;EMEA
+Burkina Faso;BF;7;276;8;81;20;EMEA
+Burundi;BI;10;115;15;83;10;EMEA
+Cambodia;KH;5;558;5;79;22;APAC
+Cameroon;CM;8;714;7;59;57;EMEA
+Canada;CA;10;25575;10;64;80;
+Cape Verde;CV;5;1960;6;56;60;
+Cayman Islands;KY;;;;;100;LATAM
+Central African Rep,;CF;3;240;14;71;39;EMEA
+Chad;TD;4;276;8;69;27;EMEA
+Chile;CL;9;6334;10;51;88;LATAM
+China;CH;6;2425;17;73;43;APAC
+Colombia;CO;7;3233;5;63;75;LATAM
+Comoros;KM;0;336;5;68;28;EMEA
+Congo, Dem, Rep,;CD;3;104;15;66;34;EMEA
+Congo, Rep,;CG;4;1253;10;64;61;EMEA
+Cook Islands;CK;3;;4;;;EMEA
+Costa Rica;CR;6;5189;7;59;63;LATAM
+Cote d'Ivoire;CI;6;591;20;60;49;EMEA
+Croatia;HR;15;6338;15;47;57;EMEA
+Cuba;CU;5;4495;11;56;76;LATAM
+Cyprus;CY;9;15314;2;59;70;EMEA
+Czech Rep,;CZ;16;7381;12;56;74;EMEA
+Denmark;DK;12;30532;9;63;87;EMEA
+Djibouti;DJ;2;895;5;;87;EMEA
+Dominica;DM;9;6148;6;;74;LATAM
+Dominican Rep,;DO;6;4049;7;53;69;LATAM
+Ecuador;EC;9;1728;9;60;66;LATAM
+Egypt;EG;0;1976;2;42;43;EMEA
+El Salvador;SV;4;2557;7;58;61;LATAM
+Equatorial Guinea;GQ;6;8655;10;62;39;EMEA
+Eritrea;ER;2;132;9;65;21;EMEA
+Estonia;EE;17;6239;17;57;69;EMEA
+Ethiopia;ET;4;221;10;81;17;EMEA
+Faeroe Islands;FO;;;;;41;
+Fiji;FJ;3;2231;4;56;52;APAC
+Finland;FI;13;27111;16;57;63;EMEA
+France;FR;12;22878;14;51;77;EMEA
+French Polynesia;FX;;;;;52;EMEA
+Gabon;GA;9;4181;8;59;85;EMEA
+Gambia;GM;4;355;6;72;56;EMEA
+Georgia;GE;7;1259;2;56;53;EMEA
+Germany;DE;12;25306;9;54;74;EMEA
+Ghana;GH;3;359;6;65;50;EMEA
+Gibraltar;GI;;;;;;EMEA
+Greece;GR;11;13578;3;50;61;EMEA
+Greenland;GL;;20752;;;84;EMEA
+Grenada;GD;11;5330;4;;31;EMEA
+Guadeloupe;GP;;;;43;;EMEA
+Guam;GT;;;;;93;APAC
+Guatemala;GT;7;1861;2;63;49;LATAM
+Guinea;GN;1;412;7;82;34;EMEA
+Guinea-Bissau;GW;4;161;8;66;30;EMEA
+Guyana;GY;9;1201;36;59;28;LATAM
+Haiti;HT;6;371;2;56;47;LATAM
+Honduras;HN;4;1392;7;56;48;LATAM
+Hong Kong, China;HK;;35536;;59;100;APAC
+Hungary;HU;16;5634;20;47;68;EMEA
+Iceland;IS;7;33945;11;74;92;EMEA
+India;IN;3;787;19;55;30;APAC
+Indonesia;ID;1;1144;11;62;51;APAC
+Iran;IR;1;2162;6;48;68;EMEA
+Iraq;IQ;0;736;17;37;67;EMEA
+Ireland;IE;15;27595;10;60;61;EMEA
+Israel;IL;3;22276;6;51;92;EMEA
+Italy;IT;10;18982;5;46;68;EMEA
+Jamaica;JM;5;3665;4;58;53;LATAM
+Japan;JP;8;39309;19;57;66;APAC
+Jordan;JO;1;2534;0;39;78;EMEA
+Kazakhstan;KZ;11;2482;25;64;58;EMEA
+Kenya;KE;4;469;11;73;22;EMEA
+Kiribati;KI;3;760;;;44;APAC
+Korea, Dem, Rep,;KP;;;5;65;63;APAC
+Korea, Rep,;KR;19;16372;22;59;81;APAC
+Kuwait;KW;0;;1;66;98;EMEA
+Kyrgyzstan;KG;5;373;10;59;36;EMEA
+Laos;LA;7;555;26;78;31;APAC
+Latvia;LV;13;5011;20;57;68;EMEA
+Lebanon;LB;2;6747;6;46;87;EMEA
+Lesotho;LS;6;496;8;56;25;EMEA
+Liberia;LR;5;155;7;66;60;EMEA
+Libya;LY;0;7885;5;49;78;EMEA
+Liechtenstein;LI;;81647;;;14;EMEA
+Lithuania;LT;16;5332;33;53;67;EMEA
+Luxembourg;LU;13;52302;12;54;82;EMEA
+Macao, China;MO;;33923;;64;100;APAC
+Macedonia, FYR;MK;9;2221;8;35;67;EMEA
+Madagascar;MG;1;243;6;83;30;EMEA
+Malawi;MW;1;184;10;72;19;EMEA
+Malaysia;MY;1;5185;8;61;70;APAC
+Maldives;MV;;4039;22;57;38;APAC
+Mali;ML;1;270;8;46;32;EMEA
+Malta;MT;4;11067;5;47;94;EMEA
+Marshall Islands;MH;;2437;7;;71;APAC
+Martinique;MQ;;;;43;;EMEA
+Mauritania;MR;0;609;7;47;41;EMEA
+Mauritius;MU;4;5182;8;55;42;EMEA
+Mexico;MX;9;6105;4;58;77;LATAM
+Micronesia, Fed, Sts,;FM;5;2146;5;;23;APAC
+Moldova;MD;23;596;16;44;42;EMEA
+Monaco;MC;;105147;11;;100;EMEA
+Mongolia;MN;3;773;13;52;57;APAC
+Montenegro;ME;;2222;;;60;EMEA
+Morocco;MA;1;1844;2;46;56;EMEA
+Mozambique;MZ;2;390;11;77;37;EMEA
+Myanmar;MM;1;;10;75;33;APAC
+Namibia;NA;12;2667;8;42;37;EMEA
+Nauru;NR;5;;4;;;APAC
+Nepal;NP;2;268;12;62;17;APAC
+Netherlands;AN;10;26552;8;61;82;EMEA
+Netherlands Antilles;NL;;;;54;93;EMEA
+New Caledonia;NC;;;;;65;EMEA
+New Zealand;NZ;10;14778;12;65;87;APAC
+Nicaragua;NI;5;948;12;59;57;LATAM
+Niger;NE;0;180;9;60;17;EMEA
+Nigeria;NG;13;545;8;51;48;EMEA
+Niue;NU;9;;4;;;APAC
+Norway;NO;8;39972;11;65;77;EMEA
+Oman;OM;1;11192;4;51;72;EMEA
+Pakistan;PK;0;669;13;51;36;APAC
+Palau;PW;10;6244;6;;80;APAC
+Panama;PA;7;5901;6;60;73;LATAM
+Papua New Guinea;PG;4;744;12;70;13;APAC
+Paraguay;PY;8;1621;4;73;60;LATAM
+Peru;PE;7;3180;2;68;71;LATAM
+Philippines;PH;6;1383;2;61;65;APAC
+Poland;PL;14;6576;14;49;61;EMEA
+Portugal;PT;14;11745;8;58;59;EMEA
+Puerto Rico;PR;;15822;;42;98;LATAM
+Qatar;QA;1;33932;3;76;96;EMEA
+Reunion;RE;;;;44;;EMEA
+Romania;RO;16;2637;10;50;54;EMEA
+Russia;RU;16;2923;28;59;73;EMEA
+Rwanda;RW;10;338;13;80;18;EMEA
+Saint Kitts and Nevis;KN;11;9176;;;32;LATAM
+Saint Lucia;LC;12;5249;8;;28;LATAM
+Saint Vincent and the Grenadines;VC;5;4885;10;;47;LATAM
+Samoa;AS;5;1784;6;;23;APAC
+San Marino;SM;;31993;6;;94;EMEA
+Sao Tome and Principe;ST;8;;10;;61;EMEA
+Saudi Arabia;SA;0;9425;6;51;82;EMEA
+Senegal;SN;1;562;7;66;42;EMEA
+Serbia;RS;12;1195;14;;52;EMEA
+Serbia and Montenegro;ME;;;14;49;;EMEA
+Seychelles;SC;12;8614;10;;54;EMEA
+Sierra Leone;SL;9;268;12;64;38;EMEA
+Singapore;SG;2;32536;9;62;100;APAC
+Slovak Republic;SK;13;8446;11;53;57;EMEA
+Slovenia;SI;15;12729;19;56;49;EMEA
+Solomon Islands;SB;1;1144;4;65;18;APAC
+Somalia;SO;1;;30;66;37;EMEA
+South Africa;ZA;10;3746;16;41;61;EMEA
+Spain;ES;12;15462;6;53;77;EMEA
+Sri Lanka;LK;1;1296;28;55;15;APAC
+Sudan;SD;3;524;10;47;43;EMEA
+Suriname;SR;7;2668;21;45;75;LATAM
+Swaziland;SZ;5;1810;13;51;25;EMEA
+Sweden;SE;10;32292;11;61;85;EMEA
+Switzerland;CH;11;37663;13;64;73;EMEA
+Syria;SY;1;1526;1;45;54;EMEA
+Taiwan;TW;;;;55;;APAC
+Tajikistan;TJ;3;279;3;55;26;EMEA
+Tanzania;TZ;8;456;12;78;26;EMEA
+Thailand;TH;7;2713;10;72;33;APAC
+Timor-Leste;TP;1;370;10;67;27;APAC
+Togo;TG;2;285;6;64;42;EMEA
+Tonga;TO;4;2025;5;;25;APAC
+Trinidad and Tobago;TT;6;10481;15;62;13;LATAM
+Tunisia;TN;1;3165;3;42;67;EMEA
+Turkey;TR;3;5349;4;43;69;EMEA
+Turkmenistan;TM;5;2062;12;59;49;EMEA
+Tuvalu;TV;2;1715;8;;;APAC
+Uganda;UG;16;377;12;83;13;EMEA
+Ukraine;UA;17;1037;19;54;68;EMEA
+United Arab Emirates;AE;1;21087;1;75;78;EMEA
+United Kingdom;GB;13;28033;6;59;90;EMEA
+United States;US;10;37491;10;62;82;
+Uruguay;UY;9;9106;15;58;92;LATAM
+Uzbekistan;UZ;4;953;5;58;37;EMEA
+Vanuatu;VU;1;1544;5;;25;APAC
+Venezuela;VE;8;5528;4;60;93;LATAM
+Vietnam;VN;4;723;12;71;28;APAC
+West Bank and Gaza;EH;;;;32;72;EMEA
+Yemen, Rep,;YE;0;610;6;39;31;EMEA
+Zambia;ZM;4;432;12;61;35;EMEA
+Zimbabwe;ZW;5;321;14;67;37;EMEA

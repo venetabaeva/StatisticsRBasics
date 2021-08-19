@@ -6,7 +6,37 @@ output: github_document
 ![](/Users/venetabaeva/git/repository4/Picture1.jpg)
 ---
 
+## Libraries
+
+> library load 
+
+```{r message=FALSE, warning=FALSE, paged.print=FALSE}
+library(dplyr)
+```
+```{r}
+library(dslabs)
+```
+```{r message=FALSE, warning=FALSE, paged.print=FALSE}
+library(tidyverse)
+```
+
 ## I.
+
+1.[dataFrame] create
+
+```{r}
+dfTest <- data.frame(names=c("A","B","C","D"),
+                     num1 = c(1,2,3,4),
+                     num2 = c(10,20,30,40),
+                     stringsAsFactors = FALSE)
+dfTest
+```
+
+1.[data] read
+
+```{r}
+data(heights)
+```
 
 1.[file] read
 
@@ -41,16 +71,49 @@ table(tableAlcCountry)
 ```
 
 1.[vector] create 
+
 ```{r}
 country<- c("Afghanistan","Albania","Algeria","Andorra","Angola", "Antigua and Barbuda")
+country
 abbrv <- c("AF", "AL", "DZ", "AD", "AO", "AG")
+abbrv
 aconsum <- c(0, 7, 1, 10, 6, 8)
+aconsum
+x <- c(60,50 ,40, 30, 20)
+x
 ```
+
+1.[vector] change elements' type 
+
+```{r}
+y<- as.character(x) 
+y
+as.numeric(y)
+x<-y
+```
+
+1.[vector]check default type 
+
+```{r}
+x<-c(1,"test",3)
+x
+class(x)
+```
+
+1.[vector]check default type 
+
+```{r}
+x<-c("1","test","3")
+x
+class(x)
+as.numeric(x)
+```
+
+###### ^1^ Note: coercion problem -> NAs introduced by coercion 
 
 1.[vector] sort elements' values in increasing order 
 
 ```{r}
-x <- c(60,50 ,40, 30, 20)
 sort(x) 
 ```
 
@@ -83,12 +146,15 @@ rank(x)
 
 ```{r}
 abbrvCountry <- c("AF"="Afghanistan", "AL" = "Albania", "DZ" ="Algeria", "AD" = "Andorra", "AO" = "Angola", "AG"= "Antigua and Barbuda")
+abbrvCountry
 ```
 
 1.[vector] assign name
 
 ```{r}
 names(abbrvCountry)<-abbrv 
+abbrv
+abbrvCountry
 ```
 
 1.[vector] access vector's element's value descreately, through indexing 
@@ -212,6 +278,20 @@ urbanrt <-dfAlc$urbanrt
 employrt <- dfAlc$employrt
 ```
 
+1.[vector] count NAs
+
+```{r}
+naS <- is.na(aconsum)
+sum(naS)
+```
+
+1.[vector] expell NAs
+
+```{r}
+mean(aconsum[!naS])
+```
+
+
 1.[object] define lenght
 
 ```{r}
@@ -225,6 +305,7 @@ identical(urbanrt,employrt)
 ```
 
 1.[vector] return index of the elements' values in increasing order 
+
 1.1.[vector] sort vector's elements in order, through indexing
 
 ```{r}
@@ -233,82 +314,253 @@ dfAlc$abbrv[iOrdDfAconsum]
 ```
 
 1.[vector] find max value between elements, through indexing
+
 1.1[object] return index
+
 1.1.1[vector] show value of element, through indexing the object 
 
 ```{r}
 iMax<-which.max(dfAlc$aconsum)
 iMax
 dfAlc$abbrv[iMax]
+dfAlc$abbrv[which.max(dfAlc$aconsum)]
 ```
 
 1.[vector] find max value between elements, through indexing
+
 1.1[object] return index
+
 1.1.1[vector] show value of element, through indexing the object 
 
 ```{r}
 iMin<-which.max(dfAlc$aconsum)
 iMin
 dfAlc$abbrv[iMin]
+dfAlc$abbrv[which.min(dfAlc$aconsum)]
 ```
 
-> library load 
+1.[vector] order
 
-```{r echo=TRUE, message=FALSE, warning=FALSE}
-library(dplyr)
-library(dslabs)
-library(tidyverse)
+```{r}
+dfAlc$abbrv[order(dfAlc$employrt,decreasing=TRUE)]
 ```
 
-2.[vector] define
-2.2.[vector] rank elements' values, through indexing 
-2.2.2.[object]keep index of the elements' values in increasing order 
-2.2.2.2.[dataFrame] create
+1.[vector] check range through indexing
+
+1.1.[vector] count the number of elements in the range
+
+```{r}
+i <- dfAlc$aconsum  < 5
+i
+dfAlc$abbrv[i]
+sum(i,na.rm =TRUE)
+```
+
+1.1.[vector] filter data by sub-setting row
+
+```{r}
+filter(dfAlc, region=="EMEA")
+```
+
+1.[vector] filter
+
+```{r}
+emea<- dfAlc$region == "EMEA" 
+aconsum <- dfAlc$aconsum <= 5 
+i <- aconsum&emea
+dfAlc$abbrv[i]
+```
+
+1.1.[vector] which indexes of elements  has value TRUE 
+
+```{r}
+which(i)
+```
+
+1.1.[vector] which value TRUE or FALSE of element 
+
+```{r}
+i<-which(dfAlc$abbrv == "BG")
+i
+aconsum[i]
+```
+
+1.1.[vector] match values of elements and return TRUE or FALSE 
+
+```{r}
+i <- match(c("BG","IT","ES"),dfAlc$abbrv)
+i
+dfAlc$abbrv[i]
+aconsum[i]
+```
+
+1.1.[vector] check whether values of vector in values of vector and return TRUE or FALSE 
+
+```{r}
+emea<- dfAlc$region == "EMEA" 
+aconsum5 <- dfAlc$aconsum <= 5 
+aconsum10 <- dfAlc$aconsum <= 5 
+aconsum5&emea %in% aconsum10&emea
+```
+
+1.1.[vector] check whether each value of vector in values of the same vector and return TRUE or FALSE 
+
+```{r}
+checkAbbrv<- c("GB","BG","MZ") %in% dfAlc$abbrv
+```
+
+1.1.[vector] check whether each value of vector in values of the same vector, through indexing and return TRUE or FALSE 
+
+```{r}
+checkAbbrv<- c("GB","BG","MZ") %in% dfAlc$abbrv
+i <- which(!checkAbbrv%in%dfAlc$abbrv)
+i
+checkAbbrv[i] 
+```
+
+1.1.[dataFrame] mutate data frame
+
+```{r}
+dfAlc <- mutate(dfAlc,rank=rank(-dfAlc$aconsum))
+str(dfAlc)
+```
+###### ^2^ Note: include a column named rank with the ranks of rate from highest to lowest
+
+1.1.[dataFrame] excluding filter value and create data frame 
+
+```{r}
+dfNoEMEA <- data.frame(filter(dfAlc,region!="EMEA"))
+nrow(dfNoEMEA)
+```
+
+1.1.[dataFrame] including filter value and create data frame 
+
+```{r}
+dfEMEAAPAC <- data.frame(filter(dfAlc,region %in% c("EMEA","APAC")))
+nrow(dfEMEAAPAC)
+```
+
+1.1.[dataFrame] filter and select only
+
+```{r}
+EMEAAPACAconsum10 <- filter(dfAlc,region %in% c("EMEA","APAC") & aconsum < 10)
+select(EMEAAPACAconsum10,country,aconsum,rank)
+```
+
+1.1.[dataFrame] select subsetting and filter 
+
+```{r}
+newTable <- select(dfAlc,country,region,aconsum) 
+filter(newTable,aconsum <= 10)
+str(newTable)
+```
+1.[dataFrame] pipe select and pipe filter
+
+```{r}
+dfAlc %>% select(country,region,aconsum) %>% filter(aconsum <= 10)
+```
+
+1.[dataFrame] filter pipe select
+
+```{r}
+filter(dfAlc, region %in% c("EMEA", "APAC") & aconsum < 10 )%>% select(country, aconsum, rank)
+```
+1.[dataFrame] pipe filter select
+```{r}
+dfAlc %>% mutate(aconsum, rank) %>% filter(region %in% c('EMEA','APAC') & aconsum <10) %>% select(country,aconsum,rank)
+```
+
+1.[dataFrame]
+
+```{r}
+ind <- heights$height > mean(heights$height)#How many individuals in the dataset are above average height?
+sum(ind)
+ind <- heights$height > mean(heights$height) & (heights$sex =="Female")#How many individuals in the dataset are above average height and are female?
+sum(ind)
+mean(heights$sex == "Female")# proportion of individuals in the dataset are female
+minH<- min(heights$height) 
+ind <- match(minH, heights$height)#Use the match() function to determine the index of the first individual with the minimum height.
+heights$sex[ind]#Subset the sex column of the dataset by the index in 4b to determine the individual’s sex.
+maxH <- max(heights$height)#Write code to create a vector x that includes the integers between the minimum and maximum heights (as numbers).
+minH <- min(heights$height)
+intgr <- c(minH:maxH)
+intgr
+sum(!(intgr %in% heights$height))#How many of the integers in x are NOT heights in the dataset?
+heights <- mutate(heights, ht_cm = height*2.54)#create a new column of heights in centimeters named ht_cm
+head(heights)
+heights$ht_cm[18]
+mean(heights$ht_cm) 
+females <- filter(heights, sex == "Female") #females by filtering the heights2 data to contain only female individuals.
+head(females)
+nrow(females)#How many females are in the heights2 dataset?
+mean(females$ht_cm)#What is the mean height of the females in centimeters?
+```
+
+2.[ggplot]
 
 ```{r}
 abbCountry <- dfAlc$abbrv 
 suicidesPer100 <- dfAlc$suicideper100
 urbanRT <- dfAlc$urbanrt
+region <- dfAlc$region
 ranksAConsumption <- rank(dfAlc$aconsum,na.last = NA)
 i <- order(dfAlc$aconsum)
-df<- data.frame(country = abbCountry[i], suicide = suicidesPer100[i], rank = ranksAConsumption[i],urbanrate = urbanRT[i])
+df<- data.frame(country = abbCountry[i], suicide = suicidesPer100[i], rank = ranksAConsumption[i],urbanrate = urbanRT[i],region = region[i])
 df %>%
-  ggplot(aes(urbanrate, suicide, label=country,color=rank)) +
-  geom_label()
+  ggplot(aes(urbanrate, suicide, label=country,color=rank)) + geom_label()
 
 ```
 
-
-2.
+2.[ggplot]
 
 ```{r echo=TRUE, message=FALSE, warning=FALSE}
 dfAlc %>%
-  ggplot(aes(urbanrt, employrt, label=abbrv, color=aconsum)) +
-  geom_label()
+  ggplot(aes(urbanrt, employrt, label=abbrv, color=region)) + geom_label()
 ```
 
+2.[ggplot]
+
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+dfAlc %>%
+  ggplot(aes(urbanrt, employrt, label=abbrv, color=region)) + geom_label()
+```
+
+2.[scatterPlot]
+
+```{r}
+plot(dfAlc$suicideper100,dfAlc$aconsum, xlab = "suicides/100 people", ylab="alcohol consumption")
+plot(dfAlc$employrt,dfAlc$aconsum, xlab = "employee rate", ylab="alcohol consumption")
+plot(dfAlc$urbanrt,dfAlc$aconsum, xlab = "urban rate", ylab="alcohol consumption")
+```
+
+2.[scatterPlot] in logs
+
+```{r}
+log10IncomePer1 <- log10(dfAlc$incomeper1)
+log10Aconsum <- log10(dfAlc$aconsum)
+plot(log10IncomePer1,log10Aconsum)
+```
+
+2.[histogram]
+
+```{r}
+hist(dfAlc$aconsum,xlab = "alcohol consumption") 
+dfAlc$country[which.max(dfAlc$aconsum)]
+```
+
+2.[boxplot]
+
+```{r}
+boxplot(aconsum~region, data = dfAlc,na.action = NULL) 
+boxplot(suicidesPer100~region, data = dfAlc)
+boxplot(employrt~region, data = dfAlc)
+boxplot(urbanrt~region, data = dfAlc)
+```
 
 
 ## II.
 
 ## III.
 
-## Libraries
-
-```{r message=FALSE, warning=FALSE, paged.print=FALSE}
-library(dplyr)
-```
-```{r}
-library(dslabs)
-```
-```{r message=FALSE, warning=FALSE, paged.print=FALSE}
-library(tidyverse)
-```
-
-
 ## References
-## Contact 
 
-![](/Users/venetabaeva/git/repository4/OrgVenetaBaeva-images/0001.jpg)
-![](/Users/venetabaeva/git/repository4/OrgVenetaBaeva-images/0002.jpg)
-![](/Users/venetabaeva/git/repository4/OrgVenetaBaeva-images/0003.jpg) 
