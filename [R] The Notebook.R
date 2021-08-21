@@ -4,6 +4,7 @@
 library(dplyr)
 library(dslabs)
 library(tidyverse)
+library(downloader) 
 
 dfTest <- data.frame(names=c("A","B","C","D"),
                      num1 = c(1,2,3,4),
@@ -11,6 +12,14 @@ dfTest <- data.frame(names=c("A","B","C","D"),
                      stringsAsFactors = FALSE)
 dfTest
 data(heights)
+
+url <- "https://github.com/venetabaeva/edxDataScience/blob/0ff86efb2f68750b0eb45894a7d1de126dca1b52/PonzoEyeTrack.csv"
+filename <- "PonzoEyeTrack.csv" 
+download(url, destfile=filename)
+filename <- "PonzoEyeTrack.csv" 
+dfPonzo<- read.csv(filename, header = TRUE,sep = ";")
+View(dfPonzo)
+
 dfAlc <- read.csv(
                       file = ("/Users/venetabaeva/git/repository4/gapminder.csv"),
                       header = TRUE,
@@ -56,10 +65,18 @@ class(dfAlc$aconsum)
 levels(dfAlc$aconsum)
 nlevels(dfAlc$aconsum)
 head(dfAlc)
-names(dfAlc)
+names(dfAlc) 
+colnames(dfPonzo) 
+colnames(dfPonzo)[colnames(dfPonzo) == 'X.Gaze.x...'] <- 'xGaze'
+colnames(dfPonzo)[colnames(dfPonzo) == 'X.Gaze.y...'] <- 'yGaze'
+colnames(dfPonzo)[colnames(dfPonzo) == 'X..RespondentNr.'] <- 'respondentNr'
+colnames(dfPonzo)[colnames(dfPonzo) == 'X.StimulusNr.'] <- 'stimulusNr'
+colnames(dfPonzo)[colnames(dfPonzo) == 'X.timestamp.ms.'] <- 'timeStampsMs'
 names(abbrvCountry)<-abbrv 
 summary(dfAlc)
 sort(dfAlc$aconsum)
+dfPonzo[12,3]
+dfAlc$country[11]
 -----------------------------------------
 # DFs
   
@@ -74,7 +91,9 @@ mean(dfAlc[,2])
 urbanrt <-dfAlc$urbanrt
 employrt <- dfAlc$employrt
 length(aconsum)
-length(seq(1,10))
+lengthAconsum <- length(dfAlc$aconsum)
+lengthAconsum
+length(seq(1,10)) 
 seq(1, 10, length.out = 100)
 identical(urbanrt,employrt)
 iOrdDfAconsum<-order(dfAlc$aconsum)
@@ -93,6 +112,11 @@ i <- dfAlc$aconsum  < 5
 i
 dfAlc$abbrv[i]
 sum(i,na.rm =TRUE)
+oneStim <- dfPonzo[dfPonzo$stimulusNr == "1",]
+oneStim <- as.data.frame(oneStim) 
+mean(oneStim$xGaze)
+zeroRespondentXGaze <- dfPonzo$xGaze
+mean(zeroRespondentXGaze[1:350])
 emea<- dfAlc$region == "EMEA" 
 aconsum <- dfAlc$aconsum <= 5 
 i <- aconsum&emea
@@ -209,6 +233,21 @@ plot(n,s_n)
 lines(n,n*(n+1)/2)
 
 -----------------------------------------
+#Sampling
+  
+sample(oneStim$xGaze,1)
+------
+set.seed(1) 
+sampleRespondentNrZero<- sample(1:350,1)
+dfPonzo$xGaze[sampleRespondentNrZero]
+------
+controls <- filter(dfPonzo, stimulusNr == c(2,4,14,16,26,28))
+longUp <-filter(dfPonzo, stimulusNr == c(6,8,18,20,30,32))
+longDown<- filter(dfPonzo, stimulusNr == c(10,12,22,24,34,36))
+str(controls)
+------ 
+controls<- select(controls, xGaze) 
+-----------------------------------------
 #DFs visualization 
   
 ------
@@ -239,7 +278,7 @@ plot(log10IncomePer1,log10Aconsum)
 hist(dfAlc$aconsum,xlab = "alcohol consumption") 
 dfAlc$country[which.max(dfAlc$aconsum)]
 ------
-boxplot(aconsum~region, data = dfAlc,na.action = NULL) 
+boxplot(aconsum~region, data=dfAlc,na.action = NULL) 
 boxplot(suicidesPer100~region, data = dfAlc)
 boxplot(employrt~region, data = dfAlc)
 boxplot(urbanrt~region, data = dfAlc)

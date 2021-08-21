@@ -20,6 +20,10 @@ library(dslabs)
 library(tidyverse)
 ```
 
+``` r
+library(downloader) 
+```
+
 ## I.
 
 1.\[dataFrame\] create
@@ -42,6 +46,16 @@ dfTest
 
 ``` r
 data(heights)
+```
+
+1.\[file\] download
+
+``` r
+url <- "https://github.com/venetabaeva/edxDataScience/blob/20e9b47a85739dd62d8bc19f635a3918b22c7dd3/Ponzo.csv"
+filename <- "Ponzo.csv" 
+download(url, destfile=filename)
+filename <- "Ponzo.csv" 
+dfPonzo<- read.csv(filename, header = TRUE,sep = ",")
 ```
 
 1.\[file\] read
@@ -440,6 +454,65 @@ names(dfAlc)
     ## [1] "country"       "abbrv"         "aconsum"       "incomeper1"   
     ## [5] "suicideper100" "employrt"      "urbanrt"       "region"
 
+1.\[file\] exact name
+
+``` r
+colnames(dfPonzo)
+```
+
+    ## [1] "X..DOCTYPE.html."
+
+1.\[file\] rename exact name column
+
+``` r
+colnames(dfPonzo)[colnames(dfPonzo) == 'X.Gaze.x...'] <- 'xGaze%'
+colnames(dfPonzo)[colnames(dfPonzo) == 'X.Gaze.y...'] <- 'yGaze%'
+colnames(dfPonzo)[colnames(dfPonzo) == 'X..RespondentNr.'] <- 'respondentNr'
+colnames(dfPonzo)[colnames(dfPonzo) == 'X.StimulusNr.'] <- 'stimulusNr'
+colnames(dfPonzo)[colnames(dfPonzo) == 'X.timestamp.ms.'] <- 'timeStampsMs'
+```
+
+1.\[row-column\] access value
+
+``` r
+dfPonzo[12,3]
+```
+
+    ## NULL
+
+1.\[column-row\] access value
+
+``` r
+dfAlc$country[11]
+```
+
+    ## [1] "Austria"
+
+1.\[column-column\] filter/ access multiple values
+
+``` r
+oneStim <- dfPonzo[dfPonzo$stimulusNr == "1",]
+oneStim <- as.data.frame(oneStim) 
+mean(oneStim$`X.Gaze%`)
+```
+
+    ## Warning in mean.default(oneStim$`X.Gaze%`): argument is not numeric or logical:
+    ## returning NA
+
+    ## [1] NA
+
+1.\[column-row\] filter/ access range of rows’ values
+
+``` r
+zeroRespondentXGaze <- dfPonzo$`X.Gaze%`
+mean(zeroRespondentXGaze[1:350])
+```
+
+    ## Warning in mean.default(zeroRespondentXGaze[1:350]): argument is not numeric or
+    ## logical: returning NA
+
+    ## [1] NA
+
 1.\[column\] access
 
 ``` r
@@ -733,10 +806,30 @@ mean(aconsum[!naS])
 
     ## [1] 6.679144
 
-1.\[object\] define lenght
+1.\[vector\] point column from data frame to calculate the mean for
+
+``` r
+mean(dfAlc[,2])
+```
+
+    ## Warning in mean.default(dfAlc[, 2]): argument is not numeric or logical:
+    ## returning NA
+
+    ## [1] NA
+
+1.\[object\] define length
 
 ``` r
 length(aconsum)
+```
+
+    ## [1] 213
+
+1.\[vector\] return number of elements
+
+``` r
+lengthAconsum <- length(dfAlc$aconsum)
+lengthAconsum
 ```
 
     ## [1] 213
@@ -2206,6 +2299,42 @@ avg(x)
 
     ## [1] 54.10798
 
+3.\[forloop\]
+
+``` r
+compute_s_n <- function(n){
+    x<- 1:n
+    sum(x) 
+  }
+compute_s_n(3)
+```
+
+    ## [1] 6
+
+``` r
+m <-25 
+s_n <- vector(length = m)#create an empty vector for storing
+for(n in 1:m){
+  s_n[n] <- compute_s_n(n)
+}
+n <- 1:m
+plot(n,s_n)
+lines(n,n*(n+1)/2)
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-85-1.png)<!-- -->
+
+3.\[forloop\]
+
+``` r
+sum <- 0
+for(i in 1:2) 
+  sum <- sum + i^2
+sum
+```
+
+    ## [1] 5
+
 2.\[ggplot\]
 
 ``` r
@@ -2220,7 +2349,7 @@ df %>%
   ggplot(aes(urbanrate, suicide, label=country,color=rank)) + geom_label()
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-75-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-87-1.png)<!-- -->
 
 2.\[ggplot\]
 
@@ -2229,7 +2358,7 @@ dfAlc %>%
   ggplot(aes(urbanrt, employrt, label=abbrv, color=region)) + geom_label()
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-76-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-88-1.png)<!-- -->
 
 2.\[ggplot\]
 
@@ -2238,7 +2367,7 @@ dfAlc %>%
   ggplot(aes(urbanrt, employrt, label=abbrv, color=region)) + geom_label()
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-77-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-89-1.png)<!-- -->
 
 2.\[scatterPlot\]
 
@@ -2246,19 +2375,19 @@ dfAlc %>%
 plot(dfAlc$suicideper100,dfAlc$aconsum, xlab = "suicides/100 people", ylab="alcohol consumption")
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-78-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-90-1.png)<!-- -->
 
 ``` r
 plot(dfAlc$employrt,dfAlc$aconsum, xlab = "employee rate", ylab="alcohol consumption")
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-78-2.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-90-2.png)<!-- -->
 
 ``` r
 plot(dfAlc$urbanrt,dfAlc$aconsum, xlab = "urban rate", ylab="alcohol consumption")
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-78-3.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-90-3.png)<!-- -->
 
 2.\[scatterPlot\] in logs
 
@@ -2268,7 +2397,7 @@ log10Aconsum <- log10(dfAlc$aconsum)
 plot(log10IncomePer1,log10Aconsum)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-79-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-91-1.png)<!-- -->
 
 2.\[histogram\]
 
@@ -2276,7 +2405,7 @@ plot(log10IncomePer1,log10Aconsum)
 hist(dfAlc$aconsum,xlab = "alcohol consumption") 
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-80-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-92-1.png)<!-- -->
 
 ``` r
 dfAlc$country[which.max(dfAlc$aconsum)]
@@ -2290,25 +2419,25 @@ dfAlc$country[which.max(dfAlc$aconsum)]
 boxplot(aconsum~region, data = dfAlc,na.action = NULL) 
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-81-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-93-1.png)<!-- -->
 
 ``` r
 boxplot(suicidesPer100~region, data = dfAlc)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-81-2.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-93-2.png)<!-- -->
 
 ``` r
 boxplot(employrt~region, data = dfAlc)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-81-3.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-93-3.png)<!-- -->
 
 ``` r
 boxplot(urbanrt~region, data = dfAlc)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-81-4.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-93-4.png)<!-- -->
 
 ## II.
 

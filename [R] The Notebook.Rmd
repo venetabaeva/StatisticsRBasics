@@ -19,6 +19,10 @@ library(dslabs)
 ```{r message=FALSE, warning=FALSE, paged.print=FALSE}
 library(tidyverse)
 ```
+```{r}
+library(downloader) 
+```
+
 
 ## I.
 
@@ -36,6 +40,16 @@ dfTest
 
 ```{r}
 data(heights)
+```
+
+1.[file] download
+
+```{r}
+url <- "https://github.com/venetabaeva/edxDataScience/blob/20e9b47a85739dd62d8bc19f635a3918b22c7dd3/Ponzo.csv"
+filename <- "Ponzo.csv" 
+download(url, destfile=filename)
+filename <- "Ponzo.csv" 
+dfPonzo<- read.csv(filename, header = TRUE,sep = ",")
 ```
 
 1.[file] read
@@ -246,6 +260,49 @@ head(dfAlc)
 names(dfAlc)
 ```
 
+1.[file] exact name 
+
+```{r}
+colnames(dfPonzo)
+```
+
+1.[file] rename exact name column
+
+```{r}
+colnames(dfPonzo)[colnames(dfPonzo) == 'X.Gaze.x...'] <- 'xGaze'
+colnames(dfPonzo)[colnames(dfPonzo) == 'X.Gaze.y...'] <- 'yGaze'
+colnames(dfPonzo)[colnames(dfPonzo) == 'X..RespondentNr.'] <- 'respondentNr'
+colnames(dfPonzo)[colnames(dfPonzo) == 'X.StimulusNr.'] <- 'stimulusNr'
+colnames(dfPonzo)[colnames(dfPonzo) == 'X.timestamp.ms.'] <- 'timeStampsMs'
+```
+
+1.[row-column] access value
+
+```{r}
+dfPonzo[12,3]
+```
+
+1.[column-row] access value
+
+```{r}
+dfAlc$country[11]
+```
+
+1.[column-column] filter/ access multiple values 
+
+```{r}
+oneStim <- dfPonzo[dfPonzo$stimulusNr == "1",]
+oneStim <- as.data.frame(oneStim) 
+mean(oneStim$xGaze)
+```
+
+1.[column-row] filter/ access range of rows' values 
+
+```{r}
+zeroRespondentXGaze <- dfPonzo$xGaze
+mean(zeroRespondentXGaze[1:350])
+```
+
 1.[column] access
 
 ```{r}
@@ -260,12 +317,14 @@ sort(dfAlc$aconsum)
 
 
 1.[column] access through vector
+
 ```{r}
 dfAlc[["aconsum"]]
 ```
 
 
 1.[column] access through vector
+
 ```{r}
 dfAlc$aconsum
 ```
@@ -298,10 +357,17 @@ mean(dfAlc[,2])
 ```
 
 
-1.[object] define lenght
+1.[object] define length
 
 ```{r}
 length(aconsum)
+```
+
+1.[vector] return number of elements
+
+```{r}
+lengthAconsum <- length(dfAlc$aconsum)
+lengthAconsum
 ```
 
 1.[object] check identical
@@ -680,6 +746,26 @@ boxplot(urbanrt~region, data = dfAlc)
 
 ## II.
 
+1.[sample] take a random sample of size 
+
+```{r}
+sample(oneStim$xGaze,1)
+```
+
+1.[sample]take a random sample of size 
+
+```{r}
+set.seed(1) 
+sampleRespondentNrZero<- sample(1:350,1)
+dfPonzo$xGaze[sampleRespondentNrZero]
+```
+
+1.[dataFrame] filter
+
+```{r}
+controls <- filter(dfPonzo, stimulusNr == c(2,4,14,16,26,28))
+str(controls)
+```
 
 
 ## III.
