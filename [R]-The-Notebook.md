@@ -20,10 +20,6 @@ library(dslabs)
 library(tidyverse)
 ```
 
-``` r
-library(downloader) 
-```
-
 ## I.
 
 1.\[dataFrame\] create
@@ -48,14 +44,14 @@ dfTest
 data(heights)
 ```
 
-1.\[file\] download
+1.\[file\] read
 
 ``` r
-url <- "https://github.com/venetabaeva/edxDataScience/blob/20e9b47a85739dd62d8bc19f635a3918b22c7dd3/Ponzo.csv"
-filename <- "Ponzo.csv" 
-download(url, destfile=filename)
-filename <- "Ponzo.csv" 
-dfPonzo<- read.csv(filename, header = TRUE,sep = ",")
+dfPonzo <- read.csv(
+  file = ("/Users/venetabaeva/git/repository4/PonzoEyeTrack.csv"),
+  header = TRUE,
+  sep = ";",
+  dec = ".")
 ```
 
 1.\[file\] read
@@ -460,13 +456,14 @@ names(dfAlc)
 colnames(dfPonzo)
 ```
 
-    ## [1] "X..DOCTYPE.html."
+    ## [1] "X..RespondentNr." "X.StimulusNr."    "X.timestamp.ms."  "X.Gaze.x..."     
+    ## [5] "X.Gaze.y..."
 
 1.\[file\] rename exact name column
 
 ``` r
-colnames(dfPonzo)[colnames(dfPonzo) == 'X.Gaze.x...'] <- 'xGaze%'
-colnames(dfPonzo)[colnames(dfPonzo) == 'X.Gaze.y...'] <- 'yGaze%'
+colnames(dfPonzo)[colnames(dfPonzo) == 'X.Gaze.x...'] <- 'xGaze'
+colnames(dfPonzo)[colnames(dfPonzo) == 'X.Gaze.y...'] <- 'yGaze'
 colnames(dfPonzo)[colnames(dfPonzo) == 'X..RespondentNr.'] <- 'respondentNr'
 colnames(dfPonzo)[colnames(dfPonzo) == 'X.StimulusNr.'] <- 'stimulusNr'
 colnames(dfPonzo)[colnames(dfPonzo) == 'X.timestamp.ms.'] <- 'timeStampsMs'
@@ -478,7 +475,7 @@ colnames(dfPonzo)[colnames(dfPonzo) == 'X.timestamp.ms.'] <- 'timeStampsMs'
 dfPonzo[12,3]
 ```
 
-    ## NULL
+    ## [1] 323
 
 1.\[column-row\] access value
 
@@ -491,27 +488,27 @@ dfAlc$country[11]
 1.\[column-column\] filter/ access multiple values
 
 ``` r
-oneStim <- dfPonzo[dfPonzo$stimulusNr == "1",]
-oneStim <- as.data.frame(oneStim) 
-mean(oneStim$`X.Gaze%`)
+stimNREqual <- dfPonzo[dfPonzo$stimulusNr == c(2,4,14,16,26,28),]
 ```
 
-    ## Warning in mean.default(oneStim$`X.Gaze%`): argument is not numeric or logical:
-    ## returning NA
+    ## Warning in dfPonzo$stimulusNr == c(2, 4, 14, 16, 26, 28): longer object length
+    ## is not a multiple of shorter object length
 
-    ## [1] NA
+``` r
+stimNREqual <- as.data.frame(stimNREqual) 
+mean(stimNREqual$xGaze)
+```
+
+    ## [1] 0.484625
 
 1.\[column-row\] filter/ access range of rows’ values
 
 ``` r
-zeroRespondentXGaze <- dfPonzo$`X.Gaze%`
+zeroRespondentXGaze <- dfPonzo$xGaze
 mean(zeroRespondentXGaze[1:350])
 ```
 
-    ## Warning in mean.default(zeroRespondentXGaze[1:350]): argument is not numeric or
-    ## logical: returning NA
-
-    ## [1] NA
+    ## [1] 0.46996
 
 1.\[column\] access
 
@@ -2322,7 +2319,7 @@ plot(n,s_n)
 lines(n,n*(n+1)/2)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-85-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-84-1.png)<!-- -->
 
 3.\[forloop\]
 
@@ -2349,6 +2346,15 @@ df %>%
   ggplot(aes(urbanrate, suicide, label=country,color=rank)) + geom_label()
 ```
 
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-86-1.png)<!-- -->
+
+2.\[ggplot\]
+
+``` r
+dfAlc %>%
+  ggplot(aes(urbanrt, employrt, label=abbrv, color=region)) + geom_label()
+```
+
 ![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-87-1.png)<!-- -->
 
 2.\[ggplot\]
@@ -2360,34 +2366,25 @@ dfAlc %>%
 
 ![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-88-1.png)<!-- -->
 
-2.\[ggplot\]
-
-``` r
-dfAlc %>%
-  ggplot(aes(urbanrt, employrt, label=abbrv, color=region)) + geom_label()
-```
-
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-89-1.png)<!-- -->
-
 2.\[scatterPlot\]
 
 ``` r
 plot(dfAlc$suicideper100,dfAlc$aconsum, xlab = "suicides/100 people", ylab="alcohol consumption")
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-90-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-89-1.png)<!-- -->
 
 ``` r
 plot(dfAlc$employrt,dfAlc$aconsum, xlab = "employee rate", ylab="alcohol consumption")
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-90-2.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-89-2.png)<!-- -->
 
 ``` r
 plot(dfAlc$urbanrt,dfAlc$aconsum, xlab = "urban rate", ylab="alcohol consumption")
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-90-3.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-89-3.png)<!-- -->
 
 2.\[scatterPlot\] in logs
 
@@ -2397,7 +2394,7 @@ log10Aconsum <- log10(dfAlc$aconsum)
 plot(log10IncomePer1,log10Aconsum)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-91-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-90-1.png)<!-- -->
 
 2.\[histogram\]
 
@@ -2405,7 +2402,7 @@ plot(log10IncomePer1,log10Aconsum)
 hist(dfAlc$aconsum,xlab = "alcohol consumption") 
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-92-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-91-1.png)<!-- -->
 
 ``` r
 dfAlc$country[which.max(dfAlc$aconsum)]
@@ -2419,27 +2416,212 @@ dfAlc$country[which.max(dfAlc$aconsum)]
 boxplot(aconsum~region, data = dfAlc,na.action = NULL) 
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-93-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-92-1.png)<!-- -->
 
 ``` r
 boxplot(suicidesPer100~region, data = dfAlc)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-93-2.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-92-2.png)<!-- -->
 
 ``` r
 boxplot(employrt~region, data = dfAlc)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-93-3.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-92-3.png)<!-- -->
 
 ``` r
 boxplot(urbanrt~region, data = dfAlc)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-93-4.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-92-4.png)<!-- -->
 
 ## II.
+
+1.\[sample\] take a random sample of size
+
+``` r
+sample(stimNREqual$xGaze,1)
+```
+
+    ## [1] 0.501
+
+``` r
+sample(stimNREqual$yGaze,1)
+```
+
+    ## [1] 0.39
+
+1.\[sample\]set seed
+
+``` r
+set.seed(1) 
+```
+
+1.\[dataFrame\] filter
+
+``` r
+controls <- filter(dfPonzo, stimulusNr == c(2,4,14,16,26,28))
+```
+
+    ## Warning in stimulusNr == c(2, 4, 14, 16, 26, 28): longer object length is not a
+    ## multiple of shorter object length
+
+``` r
+longUp <-filter(dfPonzo, stimulusNr == c(6,8,18,20,30,32))
+```
+
+    ## Warning in stimulusNr == c(6, 8, 18, 20, 30, 32): longer object length is not a
+    ## multiple of shorter object length
+
+``` r
+longDown<- filter(dfPonzo, stimulusNr == c(10,12,22,24,34,36))
+```
+
+    ## Warning in stimulusNr == c(10, 12, 22, 24, 34, 36): longer object length is not
+    ## a multiple of shorter object length
+
+``` r
+head(controls)
+```
+
+    ##   respondentNr stimulusNr timeStampsMs xGaze yGaze
+    ## 1            0          2           21 0.473 0.352
+    ## 2            0          2          221 0.457 0.302
+    ## 3            0          2          421 0.444 0.278
+    ## 4            0          4           53 0.468 0.300
+    ## 5            0          4          253 0.480 0.302
+    ## 6            0         14           57 0.479 0.383
+
+``` r
+head(longUp)
+```
+
+    ##   respondentNr stimulusNr timeStampsMs xGaze yGaze
+    ## 1            0          6            0 0.467 0.595
+    ## 2            0          6          399 0.460 0.410
+    ## 3            0          8          130 0.471 0.275
+    ## 4            0          8          362 0.482 0.348
+    ## 5            0         18            0 0.485 0.329
+    ## 6            0         18          188 0.481 0.298
+
+``` r
+head(longDown)
+```
+
+    ##   respondentNr stimulusNr timeStampsMs xGaze yGaze
+    ## 1            0         10          128 0.472 0.299
+    ## 2            0         22           87 0.463 0.257
+    ## 3            0         22          386 0.468 0.256
+    ## 4            0         24          118 0.442 0.230
+    ## 5            0         34            7 0.471 0.297
+    ## 6            0         34          240 0.471 0.338
+
+1.\[dataFrame\] select
+
+``` r
+controlsXGaze<- select(controls, xGaze) 
+controlsYGaze<- select(controls, yGaze) 
+```
+
+1.\[dataFrame\] turn into numeric vector
+
+``` r
+unlist(controlsXGaze)
+```
+
+    ##  xGaze1  xGaze2  xGaze3  xGaze4  xGaze5  xGaze6  xGaze7  xGaze8  xGaze9 xGaze10 
+    ##   0.473   0.457   0.444   0.468   0.480   0.479   0.484   0.461   0.465   0.487 
+    ## xGaze11 xGaze12 xGaze13 xGaze14 xGaze15 xGaze16 xGaze17 xGaze18 xGaze19 xGaze20 
+    ##   0.486   0.485   0.521   0.511   0.475   0.472   0.498   0.435   0.417   0.437 
+    ## xGaze21 xGaze22 xGaze23 xGaze24 xGaze25 xGaze26 xGaze27 xGaze28 xGaze29 xGaze30 
+    ##   0.467   0.489   0.494   0.530   0.470   0.446   0.471   0.477   0.574   0.544 
+    ## xGaze31 xGaze32 xGaze33 xGaze34 xGaze35 xGaze36 xGaze37 xGaze38 xGaze39 xGaze40 
+    ##   0.609   0.628   0.575   0.534   0.508   0.505   0.488   0.486   0.491   0.492 
+    ## xGaze41 xGaze42 xGaze43 xGaze44 xGaze45 xGaze46 xGaze47 xGaze48 xGaze49 xGaze50 
+    ##   0.481   0.523   0.508   0.497   0.491   0.501   0.445   0.436   0.426   0.424 
+    ## xGaze51 xGaze52 xGaze53 xGaze54 xGaze55 xGaze56 
+    ##   0.443   0.458   0.457   0.455   0.443   0.438
+
+``` r
+unlist(controlsYGaze)
+```
+
+    ##  yGaze1  yGaze2  yGaze3  yGaze4  yGaze5  yGaze6  yGaze7  yGaze8  yGaze9 yGaze10 
+    ##   0.352   0.302   0.278   0.300   0.302   0.383   0.390   0.224   0.239   0.410 
+    ## yGaze11 yGaze12 yGaze13 yGaze14 yGaze15 yGaze16 yGaze17 yGaze18 yGaze19 yGaze20 
+    ##   0.394   0.330   0.390   0.395   0.384   0.428   0.430   0.499   0.566   0.540 
+    ## yGaze21 yGaze22 yGaze23 yGaze24 yGaze25 yGaze26 yGaze27 yGaze28 yGaze29 yGaze30 
+    ##   0.395   0.383   0.343   0.333   0.248   0.338   0.401   0.458   0.398   0.281 
+    ## yGaze31 yGaze32 yGaze33 yGaze34 yGaze35 yGaze36 yGaze37 yGaze38 yGaze39 yGaze40 
+    ##   0.439   0.421   0.315   0.283   0.298   0.237   0.358   0.441   0.269   0.369 
+    ## yGaze41 yGaze42 yGaze43 yGaze44 yGaze45 yGaze46 yGaze47 yGaze48 yGaze49 yGaze50 
+    ##   0.421   0.516   0.523   0.466   0.520   0.520   0.420   0.455   0.499   0.501 
+    ## yGaze51 yGaze52 yGaze53 yGaze54 yGaze55 yGaze56 
+    ##   0.607   0.566   0.685   0.641   0.547   0.548
+
+1.\[dataFrame\] pipe
+
+``` r
+controlsXGaze<- filter(dfPonzo, stimulusNr == c(2,4,14,16,26,28)) %>% select(xGaze) %>% unlist
+```
+
+    ## Warning in stimulusNr == c(2, 4, 14, 16, 26, 28): longer object length is not a
+    ## multiple of shorter object length
+
+``` r
+controlsXGaze<- filter(dfPonzo, stimulusNr == c(2,4,14,16,26,28)) %>% select(yGaze) %>% unlist
+```
+
+    ## Warning in stimulusNr == c(2, 4, 14, 16, 26, 28): longer object length is not a
+    ## multiple of shorter object length
+
+1.\[dataFrame\] mean piped
+
+``` r
+mean(controlsXGaze)
+```
+
+    ## [1] 0.4103393
+
+``` r
+mean(controlsYGaze)
+```
+
+    ## Warning in mean.default(controlsYGaze): argument is not numeric or logical:
+    ## returning NA
+
+    ## [1] NA
+
+1.\[dataFrame\]
+
+``` r
+controlsXGaze <- filter(dfPonzo, stimulusNr == c(2,4,14,16,26,28)) %>% select(xGaze) %>% summarise(mean(xGaze))
+```
+
+    ## Warning in stimulusNr == c(2, 4, 14, 16, 26, 28): longer object length is not a
+    ## multiple of shorter object length
+
+``` r
+controlsXGaze
+```
+
+    ##   mean(xGaze)
+    ## 1    0.484625
+
+``` r
+controlsYGaze <-filter(dfPonzo, stimulusNr == c(2,4,14,16,26,28)) %>% select(yGaze) %>% summarise(mean(yGaze))
+```
+
+    ## Warning in stimulusNr == c(2, 4, 14, 16, 26, 28): longer object length is not a
+    ## multiple of shorter object length
+
+``` r
+controlsYGaze
+```
+
+    ##   mean(yGaze)
+    ## 1   0.4103393
 
 ## III.
 

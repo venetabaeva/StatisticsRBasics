@@ -5,32 +5,35 @@ library(dplyr)
 library(dslabs)
 library(tidyverse)
 library(downloader) 
-
+library(UsingR)
+------
 dfTest <- data.frame(names=c("A","B","C","D"),
                      num1 = c(1,2,3,4),
                      num2 = c(10,20,30,40),
                      stringsAsFactors = FALSE)
 dfTest
 data(heights)
-
-url <- "https://github.com/venetabaeva/edxDataScience/blob/0ff86efb2f68750b0eb45894a7d1de126dca1b52/PonzoEyeTrack.csv"
-filename <- "PonzoEyeTrack.csv" 
-download(url, destfile=filename)
-filename <- "PonzoEyeTrack.csv" 
-dfPonzo<- read.csv(filename, header = TRUE,sep = ";")
-View(dfPonzo)
-
+------
+dfPonzo <- read.csv(
+  file = ("/Users/venetabaeva/git/repository4/PonzoEyeTrack.csv"),
+  header = TRUE,
+  sep = ";",
+  dec = ".")
+------
 dfAlc <- read.csv(
                       file = ("/Users/venetabaeva/git/repository4/gapminder.csv"),
                       header = TRUE,
                       sep = ";",
                       dec = ".")
 View(dfAlc)
+------
 str(dfAlc)
+------
 tableAlcCountry <- c(dfAlc$abbrv)
 table(tableAlcCountry)
 country<- c("Afghanistan","Albania","Algeria","Andorra","Angola", "Antigua and Barbuda")
 abbrv <- c("AF", "AL", "DZ", "AD", "AO", "AG")
+------
 x<-c(1,"test",3)
 x
 class(x)
@@ -112,11 +115,17 @@ i <- dfAlc$aconsum  < 5
 i
 dfAlc$abbrv[i]
 sum(i,na.rm =TRUE)
-oneStim <- dfPonzo[dfPonzo$stimulusNr == "1",]
-oneStim <- as.data.frame(oneStim) 
-mean(oneStim$xGaze)
+
+stimNREqual <- dfPonzo[dfPonzo$stimulusNr == c(1,3,13,15,25,27),]
+stimNREqual <- as.data.frame(stimNREqual) 
+mean(stimNREqual$xGaze)
+
+
+
 zeroRespondentXGaze <- dfPonzo$xGaze
 mean(zeroRespondentXGaze[1:350])
+
+
 emea<- dfAlc$region == "EMEA" 
 aconsum <- dfAlc$aconsum <= 5 
 i <- aconsum&emea
@@ -235,18 +244,46 @@ lines(n,n*(n+1)/2)
 -----------------------------------------
 #Sampling
   
-sample(oneStim$xGaze,1)
+sample(stimNREqual$xGaze,1)
+sample(stimNREqual$yGaze,1)
 ------
 set.seed(1) 
-sampleRespondentNrZero<- sample(1:350,1)
-dfPonzo$xGaze[sampleRespondentNrZero]
 ------
-controls <- filter(dfPonzo, stimulusNr == c(2,4,14,16,26,28))
-longUp <-filter(dfPonzo, stimulusNr == c(6,8,18,20,30,32))
-longDown<- filter(dfPonzo, stimulusNr == c(10,12,22,24,34,36))
-str(controls)
+controls <- filter(dfPonzo, stimulusNr == c(1,3,13,15,25,27))
+longUp <-filter(dfPonzo, stimulusNr == c(5,7,17,19,29,31))
+longDown<- filter(dfPonzo, stimulusNr == c(9,11,21,23,33,35))
+head(controls)
+head(longUp)
+head(longDown)
 ------ 
-controls<- select(controls, xGaze) 
+controlsXGaze<- select(controls, xGaze) 
+controlsYGaze<- select(controls, yGaze) 
+------
+unlist(controlsXGaze)
+unlist(controlsYGaze)
+------
+controlsXGaze<- filter(dfPonzo, stimulusNr == c(1,3,13,15,25,27)) %>% select(xGaze) %>% unlist
+controlsYGaze<- filter(dfPonzo, stimulusNr == c(1,3,13,15,25,27)) %>% select(yGaze) %>% unlist
+------
+mean(controlsXGaze)
+mean(controlsYGaze)
+------
+controlsXGaze <- filter(dfPonzo, stimulusNr == c(1,3,13,15,25,27)) %>% select(xGaze) %>% summarise(mean(xGaze))
+controlsXGaze
+controlsYGaze <-filter(dfPonzo, stimulusNr == c(1,3,13,15,25,27)) %>% select(yGaze) %>% summarise(mean(yGaze))
+controlsYGaze
+------
+samplexGaze<-dfPonzo$xGaze
+sampleyGaze<-dfPonzo$yGaze
+length(samplexGaze)
+length(sampleyGaze)
+round(sample(samplexGaze,40),3)
+round(sample(sampleyGaze,40),3)
+------
+seq(floor(min(samplexGaze)),ceiling(max(samplexGaze)))
+seq(floor(min(sampleyGaze)),ceiling(max(sampleyGaze)))
+
+
 -----------------------------------------
 #DFs visualization 
   
@@ -282,3 +319,46 @@ boxplot(aconsum~region, data=dfAlc,na.action = NULL)
 boxplot(suicidesPer100~region, data = dfAlc)
 boxplot(employrt~region, data = dfAlc)
 boxplot(urbanrt~region, data = dfAlc)
+------
+hist(samplexGaze,freq = TRUE, breaks = c(0.00,0.05,0.10,0.15,0.20,0.25,0.30,0.35,0.40,0.45,0.50,0.55,0.60,0.65,0.70,0.75,0.80,0.85,0.90,0.95,1.00,1.05,1.10,1.15,1.20),main="xGaze Position", xlab="xGaze position in %")
+hist(samplexGaze,freq = FALSE, breaks = c(0.00,0.05,0.10,0.15,0.20,0.25,0.30,0.35,0.40,0.45,0.50,0.55,0.60,0.65,0.70,0.75,0.80,0.85,0.90,0.95,1.00,1.05,1.10,1.15,1.20),main="xGaze Position", xlab="xGaze position in %")
+hist(sampleyGaze,freq = TRUE, breaks = c(0.00,0.05,0.10,0.15,0.20,0.25,0.30,0.35,0.40,0.45,0.50,0.55,0.60,0.65,0.70,0.75,0.80,0.85,0.90,0.95,1.00,1.05,1.10,1.15,1.20),main="yGaze Position", xlab="yGaze position in %")
+hist(sampleyGaze,freq = FALSE, breaks = c(0.00,0.05,0.10,0.15,0.20,0.25,0.30,0.35,0.40,0.45,0.50,0.55,0.60,0.65,0.70,0.75,0.80,0.85,0.90,0.95,1.00,1.05,1.10,1.15,1.20),main="yGaze Position", xlab="yGaze position in %")
+------
+samplexGazeS<- seq(floor(min(samplexGaze)),ceiling(max(samplexGaze)),0.1)
+plot(samplexGazeS,ecdf(samplexGaze)(samplexGazeS),type="l",xlim=c(0.0,2.0),
+     xlab="xGaze position in %",ylab="F(samplexGaze)")
+sampleyGazeS<- seq(floor(min(sampleyGaze)),ceiling(max(sampleyGaze)),0.1)
+plot(sampleyGazeS,ecdf(samplexGaze)(sampleyGazeS),type="l",xlim=c(0.0,2.0),
+     xlab="yGaze position in %",ylab="F(sampleyGaze)")
+------
+mean(samplexGaze<50)
+pnorm(50,mean(samplexGaze),sd(samplexGaze))
+mean(sampleyGaze<50)
+pnorm(50,mean(sampleyGaze),sd(sampleyGaze))
+------
+ps<- seq(0.01,0.99,0.01)
+qs<- quantile(samplexGaze,ps)
+normalQs <- qnorm(ps, mean(samplexGaze), sd(samplexGaze))
+plot(normalQs,qs,xlab = "Normal percentiles", ylab="xGaze percentiles")
+qs<- quantile(sampleyGaze,ps)
+normalQs <- qnorm(ps, mean(sampleyGaze), sd(sampleyGaze))
+plot(normalQs,qs,xlab = "Normal percentiles", ylab="yGaze percentiles")
+------
+par(mfrow = c(2,2)) 
+qqnorm(samplexGaze)
+qqline(samplexGaze)
+qqnorm(sampleyGaze)
+qqline(sampleyGaze)
+------
+par(mfrow = c(2,2)) 
+boxplot(samplexGaze,ylab="xGaze position",ylim=c(0,1))
+boxplot(sampleyGaze,ylab="yGaze position",ylim=c(0,1))
+------
+par(mfrow = c(1,1)) 
+boxplot(split(dfPonzo$xGaze,dfPonzo$stimulusNr))
+boxplot(split(dfPonzo$xGaze,dfPonzo$respondentNr))
+boxplot(split(dfPonzo$yGaze,dfPonzo$stimulusNr))
+boxplot(split(dfPonzo$yGaze,dfPonzo$respondentNr))
+
+
