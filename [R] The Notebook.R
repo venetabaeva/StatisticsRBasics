@@ -70,6 +70,7 @@ aconsum <- dfAlc$aconsum
 naS <- is.na(aconsum)
 sum(naS)
 mean(aconsum[!naS])
+mean(dfAlc[,2])
 urbanrt <-dfAlc$urbanrt
 employrt <- dfAlc$employrt
 length(aconsum)
@@ -127,7 +128,7 @@ dfAlc %>% select(country,region,aconsum) %>% filter(aconsum <= 10)
 filter(dfAlc, region %in% c("EMEA", "APAC") & aconsum < 10 )%>% select(country, aconsum, rank)
 dfAlc %>% mutate(aconsum, rank) %>% filter(region %in% c('EMEA','APAC') & aconsum <10) %>% select(country,aconsum,rank)
 ------
-  ind <- heights$height > mean(heights$height)#How many individuals in the dataset are above average height?
+ind <- heights$height > mean(heights$height)#How many individuals in the dataset are above average height?
 sum(ind)
 ind <- heights$height > mean(heights$height) & (heights$sex =="Female")#How many individuals in the dataset are above average height and are female?
 sum(ind)
@@ -148,6 +149,64 @@ females <- filter(heights, sex == "Female") #females by filtering the heights2 d
 head(females)
 nrow(females)#How many females are in the heights2 dataset?
 mean(females$ht_cm)#What is the mean height of the females in centimeters?
+------
+i <- which.min(dfAlc$aconsum)
+if (dfAlc$aconsum[i] < 10){
+  print(dfAlc$country[i])
+}else{
+  print("No coutnry has alcochol rate that low")
+}
+------
+minAlc <- which.min(dfAlc$aconsum)
+ifelse(minAlc,dfAlc$country,NA) 
+------
+sum(is.na(dfAlc))
+dfAlc[is.na(dfAlc)] = 0
+View(dfAlc)
+------
+if(all(dfAlc$aconsum < 30)){
+  print("World Alcochol rate is under 30")
+} else{
+  print("World Alcochol rate is not under 30")
+}
+------
+str(dfAlc)
+x <- dfAlc$country
+xCharCountry <- nchar(x)
+y <- dfAlc$abbrv
+changeCountryToAbbrv<- ifelse(xCharCountry >2,y,x)
+changeCountryToAbbrv
+------
+avg <- function(x){
+  s <- sum(x)
+  n <- length(x)# Note:  not saved in the workspace; the values of the variables are changed only during the F's call
+  s/n
+} 
+x<- dfAlc$urbanrt
+identical (mean(x),avg(x))
+------
+avg <- function(x,arithmetic=TRUE){ # calculate either geometric, or arithmetic avrg dependign on uder-defined variable
+    n <- length(x)
+    arithmetic <-sum(x)/n
+    geometric<- prod(x)^(1/n)
+    ifelse(arithmetic,arithmetic,geometric)
+  }
+x<- dfAlc$urbanrt
+avg(x)
+------
+compute_s_n <- function(n){
+    x<- 1:n
+    sum(x) 
+  }
+compute_s_n(3)
+m <-25 
+s_n <- vector(length = m)#create an empty vector for storing
+for(n in 1:m){
+  s_n[n] <- compute_s_n(n)
+}
+n <- 1:m
+plot(n,s_n)
+lines(n,n*(n+1)/2)
 
 -----------------------------------------
 #DFs visualization 

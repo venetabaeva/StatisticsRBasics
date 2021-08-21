@@ -291,6 +291,12 @@ sum(naS)
 mean(aconsum[!naS])
 ```
 
+1.[vector] point column from data frame to calculate the mean for
+
+```{r}
+mean(dfAlc[,2])
+```
+
 
 1.[object] define lenght
 
@@ -496,6 +502,120 @@ nrow(females)#How many females are in the heights2 dataset?
 mean(females$ht_cm)#What is the mean height of the females in centimeters?
 ```
 
+3.[if-els] 
+
+```{r}
+i <- which.min(dfAlc$aconsum)
+if (dfAlc$aconsum[i] < 10){
+  print(dfAlc$country[i])
+}else{
+  print("No coutnry has alcochol rate that low")
+}
+```
+
+3.[ifelse] if logical is TRUE, then return 1st answer, if FALSE, then 2nd answer
+
+```{r}
+minAlc <- which.min(dfAlc$aconsum)
+ifelse(minAlc,dfAlc$country,NA)
+```
+
+2.[dataFrame]remove NA
+
+```{r}
+sum(is.na(dfAlc))
+dfAlc[is.na(dfAlc)] = 0
+View(dfAlc)
+```
+
+3.[ifelse][all]
+
+```{r}
+if(all(dfAlc$aconsum < 30)){
+  print("World Alcochol rate is under 30")
+} else{
+  print("World Alcochol rate is not under 30")
+}
+```
+
+3.[ifelse]
+
+```{r}
+str(dfAlc)
+x <- dfAlc$country
+xCharCountry <- nchar(x)
+y <- dfAlc$abbrv
+changeCountryToAbbrv<- ifelse(xCharCountry >2,y,x)
+changeCountryToAbbrv
+```
+
+3.[any] take a vector of logicals ; return true, if any of the entries is true 
+
+```{r}
+x <- c(TRUE, FALSE)
+any(x)
+```
+
+3.[all] take a vector of logicals; return  TRUE, if all the entries are true 
+
+```{r}
+x <- c(TRUE, FALSE)
+all(x)
+```
+
+4.[function]
+
+```{r}
+avg <- function(x){
+  s <- sum(x)
+  n <- length(x)# Note:  not saved in the work space; the values of the variables are changed only during the F's call
+  s/n
+} 
+x<- dfAlc$urbanrt
+identical (mean(x),avg(x))
+```
+
+4.[function]
+
+```{r}
+avg <- function(x,arithmetic=TRUE){ # calculate either geometric, or arithmetic average depending on predefined variable
+    n <- length(x)
+    arithmetic <-sum(x)/n
+    geometric<- prod(x)^(1/n)
+    ifelse(arithmetic,arithmetic,geometric)
+  }
+x<- dfAlc$urbanrt
+avg(x)
+```
+
+3.[forloop]
+
+```{r}
+compute_s_n <- function(n){
+    x<- 1:n
+    sum(x) 
+  }
+compute_s_n(3)
+m <-25 
+s_n <- vector(length = m)#create an empty vector for storing
+for(n in 1:m){
+  s_n[n] <- compute_s_n(n)
+}
+n <- 1:m
+plot(n,s_n)
+lines(n,n*(n+1)/2)
+```
+
+3.[forloop]
+
+```{r}
+sum <- 0
+for(i in 1:2) 
+  sum <- sum + i^2
+sum
+```
+
+
 2.[ggplot]
 
 ```{r}
@@ -559,6 +679,8 @@ boxplot(urbanrt~region, data = dfAlc)
 
 
 ## II.
+
+
 
 ## III.
 

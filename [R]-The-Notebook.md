@@ -2068,9 +2068,145 @@ mean(females$ht_cm)#What is the mean height of the females in centimeters?
 
     ## [1] 164.9461
 
-1.\[vector\] define 1.1.\[vector\] rank elements’ values, through
-indexing 1.1.1.\[object\]keep index of the elements’ values in
-increasing order 1.1.1.1.\[dataFrame\] create 2.\[ggplot\]
+3.\[if-els\]
+
+``` r
+i <- which.min(dfAlc$aconsum)
+if (dfAlc$aconsum[i] < 10){
+  print(dfAlc$country[i])
+}else{
+  print("No coutnry has alcochol rate that low")
+}
+```
+
+    ## [1] "Afghanistan"
+
+3.\[ifelse\] if logical is TRUE, then return 1st answer, if FALSE, then
+2nd answer
+
+``` r
+minAlc <- which.min(dfAlc$aconsum)
+ifelse(minAlc,dfAlc$country,NA)
+```
+
+    ## [1] "Afghanistan"
+
+2.\[dataFrame\]remove NA
+
+``` r
+sum(is.na(dfAlc))
+```
+
+    ## [1] 117
+
+``` r
+dfAlc[is.na(dfAlc)] = 0
+View(dfAlc)
+```
+
+3.\[ifelse\]\[all\]
+
+``` r
+if(all(dfAlc$aconsum < 30)){
+  print("World Alcochol rate is under 30")
+} else{
+  print("World Alcochol rate is not under 30")
+}
+```
+
+    ## [1] "World Alcochol rate is under 30"
+
+3.\[ifelse\]
+
+``` r
+str(dfAlc)
+```
+
+    ## 'data.frame':    213 obs. of  9 variables:
+    ##  $ country      : chr  "Afghanistan" "Albania" "Algeria" "Andorra" ...
+    ##  $ abbrv        : chr  "AF" "Al" "DZ" "AD" ...
+    ##  $ aconsum      : num  0 7 1 10 6 8 9 14 0 10 ...
+    ##  $ incomeper1   : num  0 1915 2232 21943 1381 ...
+    ##  $ suicideper100: num  7 8 5 5 15 2 8 4 0 8 ...
+    ##  $ employrt     : num  56 51 51 0 76 0 58 40 0 62 ...
+    ##  $ urbanrt      : num  24 47 65 89 57 30 92 64 47 89 ...
+    ##  $ region       : chr  "EMEA" "EMEA" "EMEA" "EMEA" ...
+    ##  $ rank         : num  181.5 81.5 164 47 94 ...
+
+``` r
+x <- dfAlc$country
+xCharCountry <- nchar(x)
+y <- dfAlc$abbrv
+changeCountryToAbbrv<- ifelse(xCharCountry >2,y,x)
+changeCountryToAbbrv
+```
+
+    ##   [1] "AF" "Al" "DZ" "AD" "AO" "AG" "AR" "AM" "AW" "AU" "AT" "AZ" "BS" "BH" "BU"
+    ##  [16] "BB" "BY" "BE" "BZ" "BJ" "BM" "BT" "BO" "BA" "BW" "BR" "BN" "BG" "BF" "BI"
+    ##  [31] "KH" "CM" "CA" "CV" "KY" "CF" "TD" "CL" "CH" "CO" "KM" "CD" "CG" "CK" "CR"
+    ##  [46] "CI" "HR" "CU" "CY" "CZ" "DK" "DJ" "DM" "DO" "EC" "EG" "SV" "GQ" "ER" "EE"
+    ##  [61] "ET" "FO" "FJ" "FI" "FR" "FX" "GA" "GM" "GE" "DE" "GH" "GI" "GR" "GL" "GD"
+    ##  [76] "GP" "GT" "GT" "GN" "GW" "GY" "HT" "HN" "HK" "HU" "IS" "IN" "ID" "IR" "IQ"
+    ##  [91] "IE" "IL" "IT" "JM" "JP" "JO" "KZ" "KE" "KI" "KP" "KR" "KW" "KG" "LA" "LV"
+    ## [106] "LB" "LS" "LR" "LY" "LI" "LT" "LU" "MO" "MK" "MG" "MW" "MY" "MV" "ML" "MT"
+    ## [121] "MH" "MQ" "MR" "MU" "MX" "FM" "MD" "MC" "MN" "ME" "MA" "MZ" "MM" "0"  "NR"
+    ## [136] "NP" "AN" "NL" "NC" "NZ" "NI" "NE" "NG" "NU" "NO" "OM" "PK" "PW" "PA" "PG"
+    ## [151] "PY" "PE" "PH" "PL" "PT" "PR" "QA" "RE" "RO" "RU" "RW" "KN" "LC" "VC" "AS"
+    ## [166] "SM" "ST" "SA" "SN" "RS" "ME" "SC" "SL" "SG" "SK" "SI" "SB" "SO" "ZA" "ES"
+    ## [181] "LK" "SD" "SR" "SZ" "SE" "CH" "SY" "TW" "TJ" "TZ" "TH" "TP" "TG" "TO" "TT"
+    ## [196] "TN" "TR" "TM" "TV" "UG" "UA" "AE" "GB" "US" "UY" "UZ" "VU" "VE" "VN" "EH"
+    ## [211] "YE" "ZM" "ZW"
+
+3.\[any\] take a vector of logicals ; return true, if any of the entries
+is true
+
+``` r
+x <- c(TRUE, FALSE)
+any(x)
+```
+
+    ## [1] TRUE
+
+3.\[all\] take a vector of logicals; return TRUE, if all the entries are
+true
+
+``` r
+x <- c(TRUE, FALSE)
+all(x)
+```
+
+    ## [1] FALSE
+
+4.\[function\]
+
+``` r
+avg <- function(x){
+  s <- sum(x)
+  n <- length(x)# Note:  not saved in the work space; the values of the variables are changed only during the F's call
+  s/n
+} 
+x<- dfAlc$urbanrt
+identical (mean(x),avg(x))
+```
+
+    ## [1] TRUE
+
+4.\[function\]
+
+``` r
+avg <- function(x,arithmetic=TRUE){ # calculate either geometric, or arithmetic average depending on predefined variable
+    n <- length(x)
+    arithmetic <-sum(x)/n
+    geometric<- prod(x)^(1/n)
+    ifelse(arithmetic,arithmetic,geometric)
+  }
+x<- dfAlc$urbanrt
+avg(x)
+```
+
+    ## [1] 54.10798
+
+2.\[ggplot\]
 
 ``` r
 abbCountry <- dfAlc$abbrv 
@@ -2084,9 +2220,7 @@ df %>%
   ggplot(aes(urbanrate, suicide, label=country,color=rank)) + geom_label()
 ```
 
-    ## Warning: Removed 28 rows containing missing values (geom_label).
-
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-66-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-75-1.png)<!-- -->
 
 2.\[ggplot\]
 
@@ -2095,7 +2229,7 @@ dfAlc %>%
   ggplot(aes(urbanrt, employrt, label=abbrv, color=region)) + geom_label()
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-67-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-76-1.png)<!-- -->
 
 2.\[ggplot\]
 
@@ -2104,7 +2238,7 @@ dfAlc %>%
   ggplot(aes(urbanrt, employrt, label=abbrv, color=region)) + geom_label()
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-68-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-77-1.png)<!-- -->
 
 2.\[scatterPlot\]
 
@@ -2112,19 +2246,19 @@ dfAlc %>%
 plot(dfAlc$suicideper100,dfAlc$aconsum, xlab = "suicides/100 people", ylab="alcohol consumption")
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-69-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-78-1.png)<!-- -->
 
 ``` r
 plot(dfAlc$employrt,dfAlc$aconsum, xlab = "employee rate", ylab="alcohol consumption")
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-69-2.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-78-2.png)<!-- -->
 
 ``` r
 plot(dfAlc$urbanrt,dfAlc$aconsum, xlab = "urban rate", ylab="alcohol consumption")
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-69-3.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-78-3.png)<!-- -->
 
 2.\[scatterPlot\] in logs
 
@@ -2134,7 +2268,7 @@ log10Aconsum <- log10(dfAlc$aconsum)
 plot(log10IncomePer1,log10Aconsum)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-70-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-79-1.png)<!-- -->
 
 2.\[histogram\]
 
@@ -2142,7 +2276,7 @@ plot(log10IncomePer1,log10Aconsum)
 hist(dfAlc$aconsum,xlab = "alcohol consumption") 
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-71-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-80-1.png)<!-- -->
 
 ``` r
 dfAlc$country[which.max(dfAlc$aconsum)]
@@ -2156,25 +2290,25 @@ dfAlc$country[which.max(dfAlc$aconsum)]
 boxplot(aconsum~region, data = dfAlc,na.action = NULL) 
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-72-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-81-1.png)<!-- -->
 
 ``` r
 boxplot(suicidesPer100~region, data = dfAlc)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-72-2.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-81-2.png)<!-- -->
 
 ``` r
 boxplot(employrt~region, data = dfAlc)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-72-3.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-81-3.png)<!-- -->
 
 ``` r
 boxplot(urbanrt~region, data = dfAlc)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-72-4.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-81-4.png)<!-- -->
 
 ## II.
 
