@@ -923,6 +923,7 @@ for(i in 1:n){
   averagesPopX[i]<- mean(X)
 }
 ```
+
 ```{r}
 hist(averagesPopX)
 ```
@@ -1008,6 +1009,58 @@ plot(ecdf(popDfPonzoXGaze))
 
 ###### ^1^ Note: #2 option: empirical cumulative distribution function 
 
+
+1.[centralLimitTheorem] 
+
+```{r}
+head(popDfPonzoXGaze)
+set.seed(1)
+n<-1000
+averagesPopX5 <- vector("numeric",n)
+for(i in 1:n){
+  X <- sample(popDfPonzoXGaze,5)#using a for-loop take a random sample of 5 mice 1,000 times ; Save these averages
+  averagesPopX5[i]<- mean(X)
+}
+```
+
+```{r}
+head(popDfPonzoXGaze)
+set.seed(1)
+n<-1000
+averagesPopX50 <- vector("numeric",n)
+for(i in 1:n){
+  X <- sample(popDfPonzoXGaze,50)#using a for-loop take a random sample of 5 mice 1,000 times ; Save these averages
+  averagesPopX50[i]<- mean(X)
+}
+```
+
+```{r}
+par(mfrow = c(2,1))
+hist(averages5)
+hist(averages50)
+```
+
+```{r}
+mean(averagesPopX5<0.600 & averagesPopX5>0.400)
+mean(averagesPopX50<0.600 & averagesPopX50>0.400)
+```
+
+###### ^1^ Note: for the last set of averages, the ones obtained from a sample size of 5 vs. 50, what proportion are between 0.400 and 0.600? 
+
+```{r}
+mu <- mean(averagesPopX50)
+mu
+sigma <- sd(averagesPopX50)
+sigma
+```
+
+1. [pNorm] find  proportion of observations below a cutoff x given a normal distribution with mean mu and standard deviation sigma with pnorm(x, mu, sigma) or pnorm( (x-mu)/sigma )
+
+```{r}
+pnorm(0.600, mu, sigma) - pnorm(0.400,mu,sigma)  
+```
+
+###### ^1^ Note:#What is the proportion of observations between 0.600 and 0.400 in a normal distribution with mu and sd?
 
 
 

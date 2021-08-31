@@ -388,8 +388,44 @@ plot(qs, props)
 props = sapply(qs, function(q) mean(popDfPonzoXGaze <= q))
 ###2nd
 plot(ecdf(popDfPonzoXGaze))
-  
-  
+------   
+## proportion of numbers between a and b 
+## mu (average) 
+## sigma (standard deviation)
+# if the distribution of ones data is approximated by a normal distribution, then one knows, for ones data, what proportion of the data is in the interval 
+# [zscore] standartized units = how many standard deviations from the mean? = substract the mean and divide by standard deviation for each point in the distribution 
+# Central Limit Theorem
+head(popDfPonzoXGaze)
+set.seed(1)
+n<-1000
+averagesPopX5 <- vector("numeric",n)
+for(i in 1:n){
+  X <- sample(popDfPonzoXGaze,5)#using a for-loop take a random sample of 5 mice 1,000 times ; Save these averages
+  averagesPopX5[i]<- mean(X)
+}
+------   
+head(popDfPonzoXGaze)
+set.seed(1)
+n<-1000
+averagesPopX50 <- vector("numeric",n)
+for(i in 1:n){
+  X <- sample(popDfPonzoXGaze,50)#using a for-loop take a random sample of 5 mice 1,000 times ; Save these averages
+  averagesPopX50[i]<- mean(X)
+}
+par(mfrow = c(2,1))
+hist(averagesPopX5)
+hist(averagesPopX50)
+#For the last set of averages, the ones obtained from a sample size of 50, what proportion are between 0.500 and 0.500?
+mean(averagesPopX50<0.600 & averagesPopX50>0.400)
+------ 
+#[pnorm] find the proportion of observations below a cutoff x given a normal distribution with mean mu and standard deviation sigma with pnorm(x, mu, sigma) or pnorm( (x-mu)/sigma )
+##What is the proportion of observations between 0.600 and 0.400 in a normal distribution with mu and sd?
+mu <- mean(averagesPopX50)
+mu
+sigma <- sd(averagesPopX50)
+sigma
+pnorm(0.600, mu, sigma) - pnorm(0.400,mu,sigma)  
+------ 
   
 controlsXGaze<- filter(dfPonzo, stimulusNr == c(1,3,13,15,25,27)) %>% dplyr::select(xGaze) %>% unlist
 controlsYGaze<- filter(dfPonzo, stimulusNr == c(1,3,13,15,25,27)) %>% dplyr::select(yGaze) %>% unlist
