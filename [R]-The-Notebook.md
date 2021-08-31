@@ -488,10 +488,10 @@ dfAlc$country[11]
 1.\[column-column\] filter/ access multiple values
 
 ``` r
-stimNREqual <- dfPonzo[dfPonzo$stimulusNr == c(2,4,14,16,26,28),]
+stimNREqual <- dfPonzo[dfPonzo$stimulusNr == c(1,3,13,15,25,27),]
 ```
 
-    ## Warning in dfPonzo$stimulusNr == c(2, 4, 14, 16, 26, 28): longer object length
+    ## Warning in dfPonzo$stimulusNr == c(1, 3, 13, 15, 25, 27): longer object length
     ## is not a multiple of shorter object length
 
 ``` r
@@ -499,7 +499,7 @@ stimNREqual <- as.data.frame(stimNREqual)
 mean(stimNREqual$xGaze)
 ```
 
-    ## [1] 0.484625
+    ## [1] 0.4894464
 
 1.\[column-row\] filter/ access range of rows’ values
 
@@ -1409,7 +1409,7 @@ nrow(dfEMEAAPAC)
 
 ``` r
 EMEAAPACAconsum10 <- filter(dfAlc,region %in% c("EMEA","APAC") & aconsum < 10)
-select(EMEAAPACAconsum10,country,aconsum,rank)
+dplyr::select(EMEAAPACAconsum10,country,aconsum,rank)
 ```
 
     ##                   country aconsum  rank
@@ -1520,7 +1520,7 @@ select(EMEAAPACAconsum10,country,aconsum,rank)
 1.1.\[dataFrame\] select subsetting and filter
 
 ``` r
-newTable <- select(dfAlc,country,region,aconsum) 
+newTable <- dplyr::select(dfAlc,country,region,aconsum) 
 filter(newTable,aconsum <= 10)
 ```
 
@@ -1686,7 +1686,7 @@ str(newTable)
 1.\[dataFrame\] pipe select and pipe filter
 
 ``` r
-dfAlc %>% select(country,region,aconsum) %>% filter(aconsum <= 10)
+dfAlc %>% dplyr::select(country,region,aconsum) %>% filter(aconsum <= 10)
 ```
 
     ##                              country region aconsum
@@ -1842,7 +1842,7 @@ dfAlc %>% select(country,region,aconsum) %>% filter(aconsum <= 10)
 1.\[dataFrame\] filter pipe select
 
 ``` r
-filter(dfAlc, region %in% c("EMEA", "APAC") & aconsum < 10 )%>% select(country, aconsum, rank)
+filter(dfAlc, region %in% c("EMEA", "APAC") & aconsum < 10 )%>% dplyr::select(country, aconsum, rank)
 ```
 
     ##                   country aconsum  rank
@@ -1953,7 +1953,7 @@ filter(dfAlc, region %in% c("EMEA", "APAC") & aconsum < 10 )%>% select(country, 
 1.\[dataFrame\] pipe filter select
 
 ``` r
-dfAlc %>% mutate(aconsum, rank) %>% filter(region %in% c('EMEA','APAC') & aconsum <10) %>% select(country,aconsum,rank)
+dfAlc %>% mutate(aconsum, rank) %>% filter(region %in% c('EMEA','APAC') & aconsum <10) %>% dplyr::select(country,aconsum,rank)
 ```
 
     ##                   country aconsum  rank
@@ -2438,25 +2438,100 @@ boxplot(urbanrt~region, data = dfAlc)
 
 ## II.
 
+## Libraries
+
+> library load
+
+``` r
+library(UsingR)
+```
+
+    ## Loading required package: MASS
+
+    ## 
+    ## Attaching package: 'MASS'
+
+    ## The following object is masked from 'package:dplyr':
+    ## 
+    ##     select
+
+    ## Loading required package: HistData
+
+    ## Loading required package: Hmisc
+
+    ## Loading required package: lattice
+
+    ## Loading required package: survival
+
+    ## Loading required package: Formula
+
+    ## 
+    ## Attaching package: 'Hmisc'
+
+    ## The following objects are masked from 'package:dplyr':
+    ## 
+    ##     src, summarize
+
+    ## The following objects are masked from 'package:base':
+    ## 
+    ##     format.pval, units
+
+    ## 
+    ## Attaching package: 'UsingR'
+
+    ## The following object is masked from 'package:survival':
+    ## 
+    ##     cancer
+
 1.\[sample\] take a random sample of size
 
 ``` r
 sample(stimNREqual$xGaze,1)
 ```
 
-    ## [1] 0.501
+    ## [1] 0.463
 
 ``` r
 sample(stimNREqual$yGaze,1)
 ```
 
-    ## [1] 0.39
+    ## [1] 0.419
 
 1.\[sample\]set seed
 
 ``` r
 set.seed(1) 
 ```
+
+1.\[dataFrame\]filter
+
+``` r
+controlsXGaze <- filter(dfPonzo, stimulusNr == c(1,3,13,15,25,27)) %>% dplyr::select(xGaze) %>% summarise(mean(xGaze))
+```
+
+    ## Warning in stimulusNr == c(1, 3, 13, 15, 25, 27): longer object length is not a
+    ## multiple of shorter object length
+
+``` r
+controlsXGaze
+```
+
+    ##   mean(xGaze)
+    ## 1   0.4894464
+
+``` r
+controlsYGaze <-filter(dfPonzo, stimulusNr == c(1,3,13,15,25,27)) %>% dplyr::select(yGaze) %>% summarise(mean(yGaze))
+```
+
+    ## Warning in stimulusNr == c(1, 3, 13, 15, 25, 27): longer object length is not a
+    ## multiple of shorter object length
+
+``` r
+controlsYGaze
+```
+
+    ##   mean(yGaze)
+    ## 1     0.39975
 
 1.\[dataFrame\] filter
 
@@ -2520,8 +2595,8 @@ head(longDown)
 1.\[dataFrame\] select
 
 ``` r
-controlsXGaze<- select(controls, xGaze) 
-controlsYGaze<- select(controls, yGaze) 
+controlsXGaze<- dplyr::select( controls, xGaze) 
+controlsYGaze<- dplyr::select(controls, yGaze) 
 ```
 
 1.\[dataFrame\] turn into numeric vector
@@ -2563,65 +2638,507 @@ unlist(controlsYGaze)
 1.\[dataFrame\] pipe
 
 ``` r
-controlsXGaze<- filter(dfPonzo, stimulusNr == c(2,4,14,16,26,28)) %>% select(xGaze) %>% unlist
+controlsXGaze<- filter(dfPonzo, stimulusNr == c(1,3,13,15,25,27)) %>% dplyr::select(xGaze) %>% unlist
 ```
 
-    ## Warning in stimulusNr == c(2, 4, 14, 16, 26, 28): longer object length is not a
+    ## Warning in stimulusNr == c(1, 3, 13, 15, 25, 27): longer object length is not a
     ## multiple of shorter object length
 
 ``` r
-controlsXGaze<- filter(dfPonzo, stimulusNr == c(2,4,14,16,26,28)) %>% select(yGaze) %>% unlist
+controlsYGaze<- filter(dfPonzo, stimulusNr == c(1,3,13,15,25,27)) %>% dplyr::select(yGaze) %>% unlist
 ```
 
-    ## Warning in stimulusNr == c(2, 4, 14, 16, 26, 28): longer object length is not a
+    ## Warning in stimulusNr == c(1, 3, 13, 15, 25, 27): longer object length is not a
+    ## multiple of shorter object length
+
+``` r
+longUpXGaze<- filter(dfPonzo, stimulusNr == c(5,7,17,19,29,31)) %>% dplyr::select(xGaze) %>% unlist 
+```
+
+    ## Warning in stimulusNr == c(5, 7, 17, 19, 29, 31): longer object length is not a
+    ## multiple of shorter object length
+
+``` r
+longUpYGaze<- filter(dfPonzo, stimulusNr == c(5,7,17,19,29,31)) %>% dplyr::select(yGaze) %>% unlist
+```
+
+    ## Warning in stimulusNr == c(5, 7, 17, 19, 29, 31): longer object length is not a
+    ## multiple of shorter object length
+
+``` r
+longDownXGaze<- filter(dfPonzo, stimulusNr == c(9,11,21,23,33,35)) %>% dplyr::select(xGaze) %>% unlist
+```
+
+    ## Warning in stimulusNr == c(9, 11, 21, 23, 33, 35): longer object length is not a
+    ## multiple of shorter object length
+
+``` r
+longDownYGaze<- filter(dfPonzo, stimulusNr == c(9,11,21,23,33,35)) %>% dplyr::select(yGaze) %>% unlist
+```
+
+    ## Warning in stimulusNr == c(9, 11, 21, 23, 33, 35): longer object length is not a
     ## multiple of shorter object length
 
 1.\[dataFrame\] mean piped
 
 ``` r
-mean(controlsXGaze)
+meanCXGaze<- mean(controlsXGaze,2)
+meanCYGaze<-mean(controlsYGaze,2)
+meanLUXGaze<-mean(longUpXGaze,2)
+meanLUYGaze<-mean(longUpYGaze,2)
+meanLDXGaze<-mean(longDownXGaze,2)
+meanLDYGaze<-mean(longDownYGaze,2)
 ```
 
-    ## [1] 0.4103393
+1.\[dataFrame\] sample
 
 ``` r
-mean(controlsYGaze)
+samplexGaze<-dfPonzo$xGaze
+sampleyGaze<-dfPonzo$yGaze
+length(samplexGaze)
 ```
 
-    ## Warning in mean.default(controlsYGaze): argument is not numeric or logical:
-    ## returning NA
+    ## [1] 2062
+
+``` r
+length(sampleyGaze)
+```
+
+    ## [1] 2062
+
+``` r
+round(sample(samplexGaze,40),3)
+```
+
+    ##  [1] 0.579 0.433 0.519 0.504 0.438 0.433 0.526 0.482 0.499 0.463 0.462 0.441
+    ## [13] 0.474 0.442 0.457 0.576 0.456 0.439 0.467 0.439 0.433 0.443 0.530 0.469
+    ## [25] 0.453 0.554 0.524 0.452 0.518 0.448 0.451 0.480 0.509 0.481 0.489 0.457
+    ## [37] 0.450 0.504 0.470 0.526
+
+``` r
+round(sample(sampleyGaze,40),3)
+```
+
+    ##  [1] 0.294 0.287 0.452 0.269 0.241 0.414 0.277 0.431 0.456 0.210 0.264 0.411
+    ## [13] 0.548 0.611 0.342 0.270 0.407 0.208 0.238 0.413 0.548 0.318 0.680 0.523
+    ## [25] 0.547 0.503 0.430 0.259 0.534 0.572 0.617 0.578 0.327 0.665 0.342 0.599
+    ## [37] 0.614 0.264 0.321 0.226
+
+3.\[histogram\]
+
+``` r
+hist(samplexGaze,freq = TRUE, breaks = c(0.00,0.05,0.10,0.15,0.20,0.25,0.30,0.35,0.40,0.45,0.50,0.55,0.60,0.65,0.70,0.75,0.80,0.85,0.90,0.95,1.00,1.05,1.10,1.15,1.20),main="xGaze Position", xlab="xGaze position in %")
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-103-1.png)<!-- -->
+
+``` r
+hist(samplexGaze,freq = FALSE, breaks = c(0.00,0.05,0.10,0.15,0.20,0.25,0.30,0.35,0.40,0.45,0.50,0.55,0.60,0.65,0.70,0.75,0.80,0.85,0.90,0.95,1.00,1.05,1.10,1.15,1.20),main="xGaze Position", xlab="xGaze position in %")
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-103-2.png)<!-- -->
+
+``` r
+hist(sampleyGaze,freq = TRUE, breaks = c(0.00,0.05,0.10,0.15,0.20,0.25,0.30,0.35,0.40,0.45,0.50,0.55,0.60,0.65,0.70,0.75,0.80,0.85,0.90,0.95,1.00,1.05,1.10,1.15,1.20),main="yGaze Position", xlab="yGaze position in %")
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-103-3.png)<!-- -->
+
+``` r
+hist(sampleyGaze,freq = FALSE, breaks = c(0.00,0.05,0.10,0.15,0.20,0.25,0.30,0.35,0.40,0.45,0.50,0.55,0.60,0.65,0.70,0.75,0.80,0.85,0.90,0.95,1.00,1.05,1.10,1.15,1.20),main="yGaze Position", xlab="yGaze position in %")
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-103-4.png)<!-- -->
+
+3.\[scatterplot\] empirical cumulative distribution - ECD ; shows % of
+individuals below a threshold
+
+``` r
+samplexGazeS<- seq(floor(min(samplexGaze)),ceiling(max(samplexGaze)),0.1)
+plot(samplexGazeS,ecdf(samplexGaze)(samplexGazeS),type="l",xlim=c(0.0,2.0),
+     xlab="xGaze position in %",ylab="F(samplexGaze)")
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-104-1.png)<!-- -->
+
+``` r
+sampleyGazeS<- seq(floor(min(sampleyGaze)),ceiling(max(sampleyGaze)),0.1)
+plot(sampleyGazeS,ecdf(samplexGaze)(sampleyGazeS),type="l",xlim=c(0.0,2.0),
+     xlab="yGaze position in %",ylab="F(sampleyGaze)")
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-104-2.png)<!-- -->
+
+3.\[QQ\] check whether mean agrees with pnorm,if TRUE, then the normal
+distribution is very good approximation
+
+``` r
+mean(samplexGaze<50)
+```
+
+    ## [1] 1
+
+``` r
+pnorm(50,mean(samplexGaze),sd(samplexGaze))
+```
+
+    ## [1] 1
+
+``` r
+mean(sampleyGaze<50)
+```
+
+    ## [1] 1
+
+``` r
+pnorm(50,mean(sampleyGaze),sd(sampleyGaze))
+```
+
+    ## [1] 1
+
+3.\[QQ\]
+
+``` r
+ps<- seq(0.01,0.99,0.01)
+qs<- quantile(samplexGaze,ps)
+normalQs <- qnorm(ps, mean(samplexGaze), sd(samplexGaze))
+plot(normalQs,qs,xlab = "Normal percentiles", ylab="xGaze percentiles")
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-106-1.png)<!-- -->
+
+``` r
+qs<- quantile(sampleyGaze,ps)
+normalQs <- qnorm(ps, mean(sampleyGaze), sd(sampleyGaze))
+plot(normalQs,qs,xlab = "Normal percentiles", ylab="yGaze percentiles")
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-106-2.png)<!-- -->
+
+3.\[QQ\] automatic
+
+``` r
+par(mfrow = c(2,2)) 
+qqnorm(samplexGaze)
+qqline(samplexGaze)
+qqnorm(sampleyGaze)
+qqline(sampleyGaze)
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-107-1.png)<!-- -->
+
+3.\[boxplot\]use for non normally distributed data
+
+``` r
+par(mfrow = c(2,2)) 
+boxplot(samplexGaze,ylab="xGaze position",ylim=c(0,1))
+boxplot(sampleyGaze,range = 1.5,ylab="yGaze position",ylim=c(0,1))
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-108-1.png)<!-- -->
+
+3.\[boxplot\] split
+
+``` r
+par(mfrow = c(1,1)) 
+boxplot(split(dfPonzo$xGaze,dfPonzo$stimulusNr),xlab("StimulusNr"))
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-109-1.png)<!-- -->
+
+``` r
+boxplot(split(dfPonzo$xGaze,dfPonzo$respondentNr),xlab("RespondentNr"))
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-109-2.png)<!-- -->
+
+``` r
+boxplot(split(dfPonzo$yGaze,dfPonzo$stimulusNr),xlab("StimulusNr"))
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-109-3.png)<!-- -->
+
+``` r
+boxplot(split(dfPonzo$yGaze,dfPonzo$respondentNr),xlab("RespondentNr"))
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-109-4.png)<!-- -->
+
+> library load
+
+``` r
+library(ggplot2)
+```
+
+3.\[plot\]
+
+``` r
+length(controlsXGaze)
+```
+
+    ## [1] 56
+
+``` r
+length(longUpXGaze)
+```
+
+    ## [1] 60
+
+``` r
+length(longDownXGaze)
+```
+
+    ## [1] 57
+
+``` r
+controlsXGaze<- append(controlsXGaze, c(NA,NA,NA,NA))
+controlsYGaze<- append(controlsYGaze, c(NA,NA,NA,NA))
+longDownXGaze<- append(longDownXGaze, c(NA,NA,NA))
+longDownYGaze<- append(longDownYGaze, c(NA,NA,NA))
+```
+
+``` r
+plot(controlsXGaze,longUpXGaze,xlab = "controls XGaze", ylab="longUp XGaze") 
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-112-1.png)<!-- -->
+
+``` r
+plot(controlsXGaze,longDownXGaze,xlab = "controls XGaze", ylab="longDown XGaze") 
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-112-2.png)<!-- -->
+
+``` r
+plot(controlsYGaze,longUpYGaze,xlab = "controls YGaze", ylab="longUp YGaze") 
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-112-3.png)<!-- -->
+
+``` r
+plot(controlsYGaze,longDownYGaze,xlab = "controls YGaze", ylab="longDown YGaze") 
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-112-4.png)<!-- -->
+
+2.\[sample random\]get different random sample of 12 ;random variable of
+random sample;the average of the samples is a random variable
+
+``` r
+mean(sample(stimNREqual$xGaze,2))
+```
+
+    ## [1] 0.56
+
+``` r
+mean(controlsXGaze,2)  
+```
 
     ## [1] NA
 
-1.\[dataFrame\]
-
 ``` r
-controlsXGaze <- filter(dfPonzo, stimulusNr == c(2,4,14,16,26,28)) %>% select(xGaze) %>% summarise(mean(xGaze))
+mean(longUpXGaze,2)
 ```
 
-    ## Warning in stimulusNr == c(2, 4, 14, 16, 26, 28): longer object length is not a
+    ## [1] 0.4755
+
+``` r
+mean(longDownXGaze,2)
+```
+
+    ## [1] NA
+
+2.\[seed\] set to always get the same sample;sets the starting number
+used to generate a sequence of random numbers
+
+``` r
+set.seed(1)
+sample<- sample(stimNREqual$xGaze,40)
+```
+
+2.\[sample\] absolute value of the difference between the average of the
+sample and the average of all the values
+
+``` r
+abs(mean(sample)-mean(stimNREqual$xGaze)) 
+```
+
+    ## [1] 0.002053571
+
+2.\[seed\] set to always get the same sample;;sets the starting number
+used to generate a sequence of random numbers
+
+``` r
+set.seed(5)
+sample<- sample(stimNREqual$xGaze,40)
+abs(mean(sample)-mean(stimNREqual$xGaze))
+```
+
+    ## [1] 0.002028571
+
+2.\[difference\] means
+
+``` r
+obsCLU<- mean(longUpXGaze) - mean(controlsXGaze)
+obsCLD<- mean(longDownXGaze) - mean(controlsXGaze)
+```
+
+2.\[population\] set
+
+``` r
+pop <- stimNREqual$xGaze
+pop<- unlist(pop)
+```
+
+2.\[nullDistibution\] proportion of 1,000 averages sampled per 5
+
+``` r
+head(pop)
+```
+
+    ## [1] 0.492 0.485 0.443 0.446 0.461 0.486
+
+``` r
+set.seed(1)
+n<-1000
+averages5 <- vector("numeric",n)
+for(i in 1:n){
+  POP <- sample(pop,5)
+  averages5[i]<- mean(POP)
+}
+```
+
+2.\[nullDistibution\] proportion of 1,000 averages sampled per 50
+
+``` r
+set.seed(1)
+n <- 1000
+averages50 <- vector("numeric",n)
+for(i in 1:n){
+  POP <- sample(pop,50)
+  averages50[i]<- mean(POP)
+}
+```
+
+3.\[histogram\]
+
+``` r
+par(mfrow = c(2,1))
+hist(averages5)
+hist(averages50)
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-121-1.png)<!-- -->
+
+2.\[p-value\] proportion of observations between 0.600 and 0.400 in a
+normal distribution
+
+``` r
+mu <- mean(pop) 
+sigma <- sd(pop)
+pnorm(0.600, mu, sigma) - pnorm(0.400,mu,sigma)  
+```
+
+    ## [1] 0.986168
+
+``` r
+mu <- mean(pop) 
+sigma <- sd(pop)
+pnorm(0.600, mu, sigma) - pnorm(0.300,mu,sigma)  
+```
+
+    ## [1] 0.9975565
+
+``` r
+mu <- mean(pop) 
+sigma <- sd(pop)
+pnorm(0.600, mu, sigma) - pnorm(0.200,mu,sigma) 
+```
+
+    ## [1] 0.9975572
+
+``` r
+mu <- mean(pop) 
+sigma <- sd(pop)
+pnorm(0.700, mu, sigma) - pnorm(0.400,mu,sigma)  
+```
+
+    ## [1] 0.9886108
+
+> library load
+
+``` r
+library(dplyr)
+```
+
+``` r
+controlsMXGaze<- filter(dfPonzo, respondentNr==c(8,2), stimulusNr == c(1,3,13,15,25,27))
+```
+
+    ## Warning in stimulusNr == c(1, 3, 13, 15, 25, 27): longer object length is not a
     ## multiple of shorter object length
 
 ``` r
-controlsXGaze
+controlsMXGaze <- as.vector(controlsMXGaze$xGaze,mode = "any") 
+mcontrolsMXGaze<-mean(controlsMXGaze)
 ```
 
-    ##   mean(xGaze)
-    ## 1    0.484625
+> library load
 
 ``` r
-controlsYGaze <-filter(dfPonzo, stimulusNr == c(2,4,14,16,26,28)) %>% select(yGaze) %>% summarise(mean(yGaze))
+library(rafalib)
 ```
 
-    ## Warning in stimulusNr == c(2, 4, 14, 16, 26, 28): longer object length is not a
+``` r
+popsd(controlsMXGaze)
+```
+
+    ## [1] 0.02669449
+
+``` r
+set.seed(1) 
+XcontrolsMXGaze <- sample(controlsMXGaze,10)
+McontrolsMXGaze<-mean(XcontrolsMXGaze) 
+```
+
+> library load
+
+``` r
+library(dplyr)
+```
+
+``` r
+longUpMXGaze<- filter(dfPonzo,respondentNr==c(8,2) & stimulusNr == c(5,7,17,19,29,31)) 
+```
+
+    ## Warning in stimulusNr == c(5, 7, 17, 19, 29, 31): longer object length is not a
     ## multiple of shorter object length
 
 ``` r
-controlsYGaze
+longUpMXGaze <-as.vector(longUpMXGaze$xGaze,mode = "any")
+mlongUpMXGaze<-mean(longUpMXGaze)
 ```
 
-    ##   mean(yGaze)
-    ## 1   0.4103393
+> library load
+
+``` r
+library(rafalib)
+```
+
+``` r
+popsd(longUpMXGaze)
+```
+
+    ## [1] 0.02419816
+
+``` r
+set.seed(1)
+YlongUpMXGaze <- sample(longUpMXGaze,10) 
+MlongUpMXGaze<-mean(YlongUpMXGaze)  
+abs( ( mlongUpMXGaze - mcontrolsMXGaze ) - ( MlongUpMXGaze - McontrolsMXGaze ) )
+```
+
+    ## [1] 0.003090476
 
 ## III.
 

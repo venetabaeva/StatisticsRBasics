@@ -285,20 +285,6 @@ dfPonzo[12,3]
 dfAlc$country[11]
 ```
 
-1.[column-column] filter/ access multiple values 
-
-```{r}
-stimNREqual <- dfPonzo[dfPonzo$stimulusNr == c(1,3,13,15,25,27),]
-stimNREqual <- as.data.frame(stimNREqual) 
-mean(stimNREqual$xGaze)
-```
-
-1.[column-row] filter/ access range of rows' values 
-
-```{r}
-zeroRespondentXGaze <- dfPonzo$xGaze
-mean(zeroRespondentXGaze[1:350])
-```
 
 1.[column] access
 
@@ -513,30 +499,30 @@ nrow(dfEMEAAPAC)
 
 ```{r}
 EMEAAPACAconsum10 <- filter(dfAlc,region %in% c("EMEA","APAC") & aconsum < 10)
-select(EMEAAPACAconsum10,country,aconsum,rank)
+dplyr::select(EMEAAPACAconsum10,country,aconsum,rank)
 ```
 
 1.1.[dataFrame] select subsetting and filter 
 
 ```{r}
-newTable <- select(dfAlc,country,region,aconsum) 
+newTable <- dplyr::select(dfAlc,country,region,aconsum) 
 filter(newTable,aconsum <= 10)
 str(newTable)
 ```
 1.[dataFrame] pipe select and pipe filter
 
 ```{r}
-dfAlc %>% select(country,region,aconsum) %>% filter(aconsum <= 10)
+dfAlc %>% dplyr::select(country,region,aconsum) %>% filter(aconsum <= 10)
 ```
 
 1.[dataFrame] filter pipe select
 
 ```{r}
-filter(dfAlc, region %in% c("EMEA", "APAC") & aconsum < 10 )%>% select(country, aconsum, rank)
+filter(dfAlc, region %in% c("EMEA", "APAC") & aconsum < 10 )%>% dplyr::select(country, aconsum, rank)
 ```
 1.[dataFrame] pipe filter select
 ```{r}
-dfAlc %>% mutate(aconsum, rank) %>% filter(region %in% c('EMEA','APAC') & aconsum <10) %>% select(country,aconsum,rank)
+dfAlc %>% mutate(aconsum, rank) %>% filter(region %in% c('EMEA','APAC') & aconsum <10) %>% dplyr::select(country,aconsum,rank)
 ```
 
 1.[dataFrame]
@@ -751,65 +737,290 @@ boxplot(urbanrt~region, data = dfAlc)
 library(UsingR)
 ```
 
-1.[sample] take a random sample of size 
+1.[dataFrame]filter
 
 ```{r}
-sample(stimNREqual$xGaze,1)
-sample(stimNREqual$yGaze,1)
+controlsXGaze <- filter(dfPonzo, stimulusNr == c(1,3,13,15,25,27)) %>% dplyr::select(xGaze) %>% summarise(mean(xGaze))
+controlsXGaze
+controlsYGaze <-filter(dfPonzo, stimulusNr == c(1,3,13,15,25,27)) %>% dplyr::select(yGaze) %>% summarise(mean(yGaze))
+controlsYGaze
 ```
 
-1.[sample]set seed
+1.[dataFrame] pipe filter select unlist
 
 ```{r}
-set.seed(1) 
+controlsXGaze <- filter(dfPonzo, stimulusNr == c(1,3,13,15,25,27)) %>% dplyr::select(xGaze) 
+mean(controlsXGaze$xGaze)
+controlsYGaze <-filter(dfPonzo, stimulusNr == c(1,3,13,15,25,27)) %>% dplyr::select(yGaze)
+mean(controlsYGaze$yGaze)
+longUpXGaze  <-filter(dfPonzo, stimulusNr == c(5,7,17,19,29,31))%>% dplyr::select(xGaze)
+mean(longUpXGaze$xGaze)
+longUpYGaze  <-filter(dfPonzo, stimulusNr == c(5,7,17,19,29,31))%>% dplyr::select(yGaze)
+mean(longUpYGaze$yGaze)
+longDownXGaze<- filter(dfPonzo, stimulusNr == c(9,11,21,23,33,35))%>% dplyr::select(xGaze)
+mean(longDownXGaze$xGaze)
+longDownYGaze<- filter(dfPonzo, stimulusNr == c(9,11,21,23,33,35))%>% dplyr::select(yGaze)
+mean(longDownYGaze$yGaze)
 ```
 
-1.[dataFrame] filter
+1.[dataFrame] filter select
 
 ```{r}
-controls <- filter(dfPonzo, stimulusNr == c(2,4,14,16,26,28))
-longUp <-filter(dfPonzo, stimulusNr == c(6,8,18,20,30,32))
-longDown<- filter(dfPonzo, stimulusNr == c(10,12,22,24,34,36))
+controls <- filter(dfPonzo, stimulusNr == c(1,3,13,15,25,27)) 
 head(controls)
+View(controls)
+mean(controls$xGaze)
+mean(controls$yGaze)
+longUp  <-filter(dfPonzo, stimulusNr == c(5,7,17,19,29,31))
 head(longUp)
+View(longUp)
+mean(longUp$xGaze)
+mean(longUp$yGaze)
+longDown <- filter(dfPonzo, stimulusNr == c(9,11,21,23,33,35))
 head(longDown)
-```
-
-1.[dataFrame] select 
-
-```{r}
-controlsXGaze<- select(controls, xGaze) 
-controlsYGaze<- select(controls, yGaze) 
+View(longDown)
+mean(longDown$xGaze)
+mean(longDown$yGaze)
 ```
 
 1.[dataFrame] turn into numeric vector
 
 ```{r}
-unlist(controlsXGaze)
-unlist(controlsYGaze)
+unlist(controls)
+unlist(longUp)
+unlist(longDown)
 ```
 
-1.[dataFrame] pipe
+3.[plot]
 
 ```{r}
-controlsXGaze<- filter(dfPonzo, stimulusNr == c(1,3,13,15,25,27)) %>% select(xGaze) %>% unlist
-controlsXGaze<- filter(dfPonzo, stimulusNr == c(1,3,13,15,25,27)) %>% select(yGaze) %>% unlist
+plot(controls$xGaze,controls$yGaze,xlab = "controlsXGaze", ylab="controlsYGaze") 
+plot(longUp$xGaze,longUp$yGaze,xlab = "longUpXGaze", ylab="longUpYGaze") 
+plot(longDown$xGaze,longDown$yGaze,xlab = "longDownXGaze", ylab="longDownYGaze") 
 ```
+
+1.[population]get different random sample of 12;random variable of random sample
+
+```{r}
+popDfPonzoXGaze <- unlist(dfPonzo$xGaze)
+popDfPonzoYGaze <- unlist(dfPonzo$yGaze)
+mean(sample(popDfPonzoXGaze,12))
+mean(sample(popDfPonzoYGaze,12))
+mean(popDfPonzoXGaze)
+mean(popDfPonzoYGaze)
+```
+
+1.[seed] set/ produce the same sample again and again = generate same set at each time
+
+```{r}
+set.seed(1) 
+```
+
+1.[average] difference between the average of the sample and the average of the pop
+
+```{r}
+sampleDfPonzoXGaze<- sample(popDfPonzoXGaze,5)
+abs(mean(sampleDfPonzoXGaze)-mean(popDfPonzoXGaze))
+sampleDfPonzoYGaze<- sample(popDfPonzoYGaze,5)
+abs(mean(sampleDfPonzoYGaze)-mean(popDfPonzoYGaze))
+```
+
+1.[seed] set/ produce the same sample again and again = generate same set at each time by setting the starting number used to generate a sequence of random numbers
+
+```{r}
+set.seed(5) 
+```
+
+1.[average] difference between the average of the sample and the average of the pop
+
+```{r}
+sampleDfPonzoXGaze<- sample(popDfPonzoXGaze,5)
+abs(mean(sampleDfPonzoXGaze)-mean(popDfPonzoXGaze))
+sampleDfPonzoYGaze<- sample(popDfPonzoYGaze,5)
+abs(mean(sampleDfPonzoYGaze)-mean(popDfPonzoYGaze))
+```
+
+###### ^1^ Note: the average of the samples is a random variable =>inferential statistics needed
+
+1.[nullDistribution] all possible realizations under the null 
+
+```{r}
+obslongUpControlsX <- mean(longUp$xGaze) - mean(controls$xGaze)
+obslongUpControlsY <- mean(longUp$yGaze) - mean(controls$yGaze)
+obslongDownControls <- mean(longDown$xGaze) - mean(controls$xGaze)
+obslongDownControls <- mean(longDown$yGaze) - mean(controls$yGaze)
+popDfPonzoXGaze <- unlist(dfPonzo$xGaze)
+popDfPonzoXGaze <- unlist(dfPonzo$yGaze)
+popDfPonzoControls <- sample(popDfPonzoXGaze,12)
+popDfPonzoLongUp <- sample(popDfPonzoXGaze,12)
+mean(popDfPonzoLongUp) - mean(popDfPonzoControls)
+popDfPonzoControlsY <- sample(popDfPonzoYGaze,12)
+popDfPonzoLongUpY <- sample(popDfPonzoYGaze,12)
+mean(popDfPonzoLongUpY) - mean(popDfPonzoControlsY)
+```
+
+###### ^1^ Note: do sampling and substraction multiple times = see several realizations of the difference in mean  for the null hypothesis
+
+1.[nullHypothesis] check 
+
+```{r}
+n<-10000
+nullsPopX <- vector("numeric",n)
+for(i in 1:n){
+  popDfPonzoControlsX <- sample(popDfPonzoXGaze,12)
+  popDfPonzoLongUpX <- sample(popDfPonzoXGaze,12)
+  nullsPopX[i]<- mean(popDfPonzoLongUpX) - mean(popDfPonzoControlsX)
+}
+max(nullsPopX)
+hist(nullsPopX)
+```
+
+```{r}
+n<-10000
+nullsPopY <- vector("numeric",n)
+for(i in 1:n){
+  popDfPonzoControlsY <- sample(popDfPonzoYGaze,12)
+  popDfPonzoLongUpY <- sample(popDfPonzoYGaze,12)
+  nullsPopY[i]<- mean(popDfPonzoLongUpY) - mean(popDfPonzoControlsY)
+}
+max(nullsPopY)
+hist(nullsPopY)
+```
+
+###### ^1^ Note: if knowing the null distribution, one can describe the proportion of values one sees for any interval of values -> define a number of times to redo the null hypothesis check; record all differences  
+
+1.[nullHypothesis] #1 option: how often (frequency) null values are bigger or not than observed values 
+```{r}
+sum(nullsPopX > obslongUpControlsX)/n 
+sum(nullsPopY > obslongUpControlsY)/n 
+```
+
+1.[nullHypothesis] #2 option: proportion of times the null is bigger than the observation 
+
+```{r}
+mean(nullsPopX > obslongUpControlsX)
+mean(nullsPopY > obslongUpControlsY)
+```
+
+1.[pValue] probability that an outcome from the null distribution is bigger than what one observed when the null hypothesis is true 
+
+```{r}
+mean(abs(nullsPopX) >obslongUpControlsX)
+mean(abs(nullsPopY) >obslongUpControlsY)
+```
+
+###### ^1^ Note: #3 option: how often (frequency) it is bigger in absolute 
+
+1.[nullDistribution] loop for 1000 times taking a random sample of 5 gazes calculating the mean and storing it within an averages vector 
+
+```{r}
+head(popDfPonzoXGaze)
+set.seed(1)
+n<-1000
+averagesPopX <- vector("numeric",n)
+for(i in 1:n){
+  X <- sample(popDfPonzoXGaze,5)#using a for-loop take a random sample of 5 gazes 1,000 times ; save these averages
+  averagesPopX[i]<- mean(X)
+}
+```
+```{r}
+hist(averagesPopX)
+```
+
+1.[nullHypothesis] check 
+
+```{r}
+mean( abs( averagesPopX - mean(popDfPonzoXGaze) ) > 0.05) #What proportion of these 1,000 averages are more than 0.05%  away from the average of mean(X) ?
+```
+
+1.[nullDistribution] loop for 10000 times taking a random sample of 5 gazes calculating the mean and storing it within an averages vector 
+
+```{r}
+head(popDfPonzoXGaze)
+set.seed(1)
+n<-10000
+averagesPopX <- vector("numeric",n)
+for(i in 1:n){
+  X <- sample(popDfPonzoXGaze,5)#using a for-loop take a random sample of 5 gazes 10000 times ; save these averages
+  averagesPopX[i]<- mean(X)
+}
+```
+
+```{r}
+hist(averagesPopX)
+```
+
+1.[nullHypothesis] check 
+
+```{r}
+mean( abs( averagesPopX - mean(popDfPonzoXGaze) ) > 0.05) #What proportion of these 10000 averages are more than 0.05%  away from the average of mean(X) ?
+```
+
+1.[nullDistribution] loop for 10000 times taking a random sample of 5 gazes calculating the mean and storing it within an averages vector 
+
+```{r}
+head(popDfPonzoYGaze)
+set.seed(1)
+n<-1000
+averagesPopY <- vector("numeric",n)
+for(i in 1:n){
+  Y <- sample(popDfPonzoYGaze,5)#using a for-loop take a random sample of 5 gazes 1,000 times ; save these averages
+  averagesPopY[i]<- mean(Y)
+}
+```
+
+```{r}
+hist(averagesPopY)
+```
+
+1.[nullHypothesis] check 
+
+```{r}
+mean( abs( averagesPopY - mean(popDfPonzoYGaze) ) > 0.05)#What proportion of these 1,000 averages are more than 0.05%  away from the average of mean(Y) ?
+```
+
+1.[normalApproximation] describe distribution = describe the entier list
+
+```{r}
+head(popDfPonzoXGaze)
+mean(popDfPonzoXGaze <= 0.500)
+prop = function(q) {
+  mean(popDfPonzoXGaze <= q)
+}
+qs<- seq(from = min(popDfPonzoXGaze), to = max(popDfPonzoXGaze), length=20)
+props = sapply(qs,prop)
+props = sapply(qs, function(q) mean(popDfPonzoXGaze <= q))
+```
+
+1.[normalApproximation] plot
+
+```{r}
+plot(qs, props)
+```
+
+###### ^1^ Note: #1 option: empirical cumulative distribution function 
+
+1.[normalApproximation] describe distribution = describe the entier list => empirical cumulative distribution function 
+
+```{r}
+plot(ecdf(popDfPonzoXGaze))
+```
+
+###### ^1^ Note: #2 option: empirical cumulative distribution function 
+
+
+
+
 
 1.[dataFrame] mean piped
 
 ```{r}
-mean(controlsXGaze)
-mean(controlsYGaze)
-```
-
-1.[dataFrame]filter
-
-```{r}
-controlsXGaze <- filter(dfPonzo, stimulusNr == c(1,3,13,15,25,27)) %>% select(xGaze) %>% summarise(mean(xGaze))
-controlsXGaze
-controlsYGaze <-filter(dfPonzo, stimulusNr == c(1,3,13,15,25,27)) %>% select(yGaze) %>% summarise(mean(yGaze))
-controlsYGaze
+meanCXGaze<- mean(controlsXGaze,2)
+meanCYGaze<-mean(controlsYGaze,2)
+meanLUXGaze<-mean(longUpXGaze,2)
+meanLUYGaze<-mean(longUpYGaze,2)
+meanLDXGaze<-mean(longDownXGaze,2)
+meanLDYGaze<-mean(longDownYGaze,2)
 ```
 
 1.[dataFrame] sample
@@ -823,7 +1034,7 @@ round(sample(samplexGaze,40),3)
 round(sample(sampleyGaze,40),3)
 ```
 
-1.[histogram]
+3.[histogram]
 
 ```{r}
 hist(samplexGaze,freq = TRUE, breaks = c(0.00,0.05,0.10,0.15,0.20,0.25,0.30,0.35,0.40,0.45,0.50,0.55,0.60,0.65,0.70,0.75,0.80,0.85,0.90,0.95,1.00,1.05,1.10,1.15,1.20),main="xGaze Position", xlab="xGaze position in %")
@@ -833,18 +1044,18 @@ hist(sampleyGaze,freq = FALSE, breaks = c(0.00,0.05,0.10,0.15,0.20,0.25,0.30,0.3
 
 ```
 
-1.[scatterplot] empirical cumulative distribution - ECD ; shows % of individuals below a threshold
+3.[scatterplot] empirical cumulative distribution - ECD ; shows % of individuals below a threshold
 
 ```{r}
 samplexGazeS<- seq(floor(min(samplexGaze)),ceiling(max(samplexGaze)),0.1)
-plo2t(samplexGazeS,ecdf(samplexGaze)(samplexGazeS),type="l",xlim=c(0.0,2.0),
+plot(samplexGazeS,ecdf(samplexGaze)(samplexGazeS),type="l",xlim=c(0.0,2.0),
      xlab="xGaze position in %",ylab="F(samplexGaze)")
 sampleyGazeS<- seq(floor(min(sampleyGaze)),ceiling(max(sampleyGaze)),0.1)
 plot(sampleyGazeS,ecdf(samplexGaze)(sampleyGazeS),type="l",xlim=c(0.0,2.0),
      xlab="yGaze position in %",ylab="F(sampleyGaze)")
 ```
 
-1.[QQ] check whether mean agrees with pnorm,if TRUE, then the normal distribution is very good approximation
+3.[QQ] check whether mean agrees with pnorm,if TRUE, then the normal distribution is very good approximation
 
 ```{r}
 mean(samplexGaze<50)
@@ -853,7 +1064,7 @@ mean(sampleyGaze<50)
 pnorm(50,mean(sampleyGaze),sd(sampleyGaze))
 ```
 
-1.[QQ]
+3.[QQ]
 
 ```{r}
 ps<- seq(0.01,0.99,0.01)
@@ -865,7 +1076,7 @@ normalQs <- qnorm(ps, mean(sampleyGaze), sd(sampleyGaze))
 plot(normalQs,qs,xlab = "Normal percentiles", ylab="yGaze percentiles")
 ```
 
-1.[QQ] automatic
+3.[QQ] automatic
 
 ```{r}
 par(mfrow = c(2,2)) 
@@ -875,7 +1086,7 @@ qqnorm(sampleyGaze)
 qqline(sampleyGaze)
 ```
 
-1.[boxplot]use for non normally distributed data
+3.[boxplot]use for non normally distributed data
 
 ```{r}
 par(mfrow = c(2,2)) 
@@ -884,7 +1095,7 @@ boxplot(sampleyGaze,range = 1.5,ylab="yGaze position",ylim=c(0,1))
 ```
 
 
-1[boxplot] split
+3.[boxplot] split
 
 ```{r}
 par(mfrow = c(1,1)) 
@@ -892,6 +1103,177 @@ boxplot(split(dfPonzo$xGaze,dfPonzo$stimulusNr),xlab("StimulusNr"))
 boxplot(split(dfPonzo$xGaze,dfPonzo$respondentNr),xlab("RespondentNr"))
 boxplot(split(dfPonzo$yGaze,dfPonzo$stimulusNr),xlab("StimulusNr"))
 boxplot(split(dfPonzo$yGaze,dfPonzo$respondentNr),xlab("RespondentNr"))
+```
+
+> library load 
+
+```{r}
+library(ggplot2)
+```
+
+3.[plot]
+
+```{r}
+length(controlsXGaze)
+length(longUpXGaze)
+length(longDownXGaze)
+
+controlsXGaze<- append(controlsXGaze, c(NA,NA,NA,NA))
+controlsYGaze<- append(controlsYGaze, c(NA,NA,NA,NA))
+longDownXGaze<- append(longDownXGaze, c(NA,NA,NA))
+longDownYGaze<- append(longDownYGaze, c(NA,NA,NA))
+```
+
+```{r}
+plot(controlsXGaze,longUpXGaze,xlab = "controls XGaze", ylab="longUp XGaze") 
+plot(controlsXGaze,longDownXGaze,xlab = "controls XGaze", ylab="longDown XGaze") 
+plot(controlsYGaze,longUpYGaze,xlab = "controls YGaze", ylab="longUp YGaze") 
+plot(controlsYGaze,longDownYGaze,xlab = "controls YGaze", ylab="longDown YGaze") 
+```
+
+2.[sample random]get different random sample of 12 ;random variable of random sample;the average of the samples is a random variable
+
+```{r}
+mean(sample(stimNREqual$xGaze,2))
+mean(controlsXGaze,2)  
+mean(longUpXGaze,2)
+mean(longDownXGaze,2)
+```
+
+2.[seed] set to always get the same sample;sets the starting number used to generate a sequence of random numbers
+
+```{r}
+set.seed(1)
+sample<- sample(stimNREqual$xGaze,40)
+```
+
+2.[sample] absolute value of the difference between the average of the sample and the average of all the values
+
+```{r}
+abs(mean(sample)-mean(stimNREqual$xGaze)) 
+```
+
+2.[seed] set to always get the same sample;;sets the starting number used to generate a sequence of random numbers
+
+```{r}
+set.seed(5)
+sample<- sample(stimNREqual$xGaze,40)
+abs(mean(sample)-mean(stimNREqual$xGaze))
+```
+
+2.[difference] means
+
+```{r}
+obsCLU<- mean(longUpXGaze) - mean(controlsXGaze)
+obsCLD<- mean(longDownXGaze) - mean(controlsXGaze)
+```
+
+2.[population] set
+ 
+```{r}
+pop <- stimNREqual$xGaze
+pop<- unlist(pop)
+```
+
+2.[nullDistibution]  proportion of 1,000 averages sampled per 5
+
+```{r}
+head(pop)
+set.seed(1)
+n<-1000
+averages5 <- vector("numeric",n)
+for(i in 1:n){
+  POP <- sample(pop,5)
+  averages5[i]<- mean(POP)
+}
+```
+
+2.[nullDistibution]  proportion of 1,000 averages sampled per 50
+
+```{r}
+set.seed(1)
+n <- 1000
+averages50 <- vector("numeric",n)
+for(i in 1:n){
+  POP <- sample(pop,50)
+  averages50[i]<- mean(POP)
+}
+```
+
+3.[histogram]  
+
+```{r}
+par(mfrow = c(2,1))
+hist(averages5)
+hist(averages50)
+```
+
+2.[p-value] proportion of observations between 0.600 and 0.400 in a normal distribution
+
+```{r}
+mu <- mean(pop) 
+sigma <- sd(pop)
+pnorm(0.600, mu, sigma) - pnorm(0.400,mu,sigma)  
+mu <- mean(pop) 
+sigma <- sd(pop)
+pnorm(0.600, mu, sigma) - pnorm(0.300,mu,sigma)  
+mu <- mean(pop) 
+sigma <- sd(pop)
+pnorm(0.600, mu, sigma) - pnorm(0.200,mu,sigma) 
+mu <- mean(pop) 
+sigma <- sd(pop)
+pnorm(0.700, mu, sigma) - pnorm(0.400,mu,sigma)  
+```
+
+>library load
+
+```{r}
+library(dplyr)
+```
+
+```{r}
+controlsMXGaze<- filter(dfPonzo, respondentNr==c(8,2), stimulusNr == c(1,3,13,15,25,27))
+controlsMXGaze <- as.vector(controlsMXGaze$xGaze,mode = "any") 
+mcontrolsMXGaze<-mean(controlsMXGaze)
+```
+
+>library load
+
+```{r}
+library(rafalib)
+```
+
+```{r}
+popsd(controlsMXGaze)
+set.seed(1) 
+XcontrolsMXGaze <- sample(controlsMXGaze,10)
+McontrolsMXGaze<-mean(XcontrolsMXGaze) 
+```
+
+>library load
+
+```{r}
+library(dplyr)
+```
+
+```{r}
+longUpMXGaze<- filter(dfPonzo,respondentNr==c(8,2) & stimulusNr == c(5,7,17,19,29,31)) 
+longUpMXGaze <-as.vector(longUpMXGaze$xGaze,mode = "any")
+mlongUpMXGaze<-mean(longUpMXGaze)
+```
+
+> library load
+
+```{r}
+library(rafalib)
+```
+
+```{r}
+popsd(longUpMXGaze)
+set.seed(1)
+YlongUpMXGaze <- sample(longUpMXGaze,10) 
+MlongUpMXGaze<-mean(YlongUpMXGaze)  
+abs( ( mlongUpMXGaze - mcontrolsMXGaze ) - ( MlongUpMXGaze - McontrolsMXGaze ) )
 ```
 
 ## III.
