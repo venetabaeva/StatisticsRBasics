@@ -422,197 +422,98 @@ mean(averagesPopX50<0.600 & averagesPopX50>0.400)
 ##What is the proportion of observations between 0.600 and 0.400 in a normal distribution with mu and sd?
 mu <- mean(averagesPopX50)
 mu
-sigma <- sd(averagesPopX50)
+sigma <- popsd(averagesPopX50)
 sigma
 pnorm(0.600, mu, sigma) - pnorm(0.400,mu,sigma)  
 ------ 
-  
-controlsXGaze<- filter(dfPonzo, stimulusNr == c(1,3,13,15,25,27)) %>% dplyr::select(xGaze) %>% unlist
-controlsYGaze<- filter(dfPonzo, stimulusNr == c(1,3,13,15,25,27)) %>% dplyr::select(yGaze) %>% unlist
-longUpXGaze<- filter(dfPonzo, stimulusNr == c(5,7,17,19,29,31)) %>% dplyr::select(xGaze) %>% unlist 
-longUpYGaze<- filter(dfPonzo, stimulusNr == c(5,7,17,19,29,31)) %>% dplyr::select(yGaze) %>% unlist
-longDownXGaze<- filter(dfPonzo, stimulusNr == c(9,11,21,23,33,35)) %>% dplyr::select(xGaze) %>% unlist
-longDownYGaze<- filter(dfPonzo, stimulusNr == c(9,11,21,23,33,35)) %>% dplyr::select(yGaze) %>% unlist
-------
-meanCXGaze<- mean(controlsXGaze,2)
-meanCYGaze<-mean(controlsYGaze,2)
-meanLUXGaze<-mean(longUpXGaze,2)
-meanLUYGaze<-mean(longUpYGaze,2)
-meanLDXGaze<-mean(longDownXGaze,2)
-meanLDYGaze<-mean(longDownYGaze,2)
-------
-samplexGaze<-dfPonzo$xGaze
-sampleyGaze<-dfPonzo$yGaze
-length(samplexGaze)
-length(sampleyGaze)
-round(sample(samplexGaze,40),3)
-round(sample(sampleyGaze,40),3)
-------
-seq(floor(min(samplexGaze)),ceiling(max(samplexGaze)))
-seq(floor(min(sampleyGaze)),ceiling(max(sampleyGaze)))
-------
-mean(sample(stimNREqual$xGaze,40),2)#random sample; get different random sample of 40 ;random variable of random sample
-mean(controlsXGaze,2)  
-mean(longUpXGaze,2)
-mean(longDownXGaze,2)
-------
-set.seed(1)
-sample<- sample(stimNREqual$xGaze,40)
-abs(mean(sample)-mean(stimNREqual$xGaze))
-set.seed(5)
-sample<- sample(stimNREqual$xGaze,40)
-abs(mean(sample)-mean(stimNREqual$xGaze))
-------
-obsCLU<- mean(longUpXGaze) - mean(controlsXGaze)
-obsCLD<- mean(longDownXGaze) - mean(controlsXGaze)
-pop <- stimNREqual$xGaze
-pop<- unlist(pop)
+#central limit theorem 
+##sample average follows (~) follows normal distribution with mean population average, so it's centered at the population average and standard deviation of sigmaX divide by the square root of the sample size
+#sigmaX = the population standard deviation = teh average distance to the population mean = what is the distance of a typical individual from the mean 
+#standard deviation = idea of how much the population varies from around the mean 
+##CLT 
+##sample average is a random variable -> take a sample, receive different variable 
+##variables are getting distributed with increasing the number of taken samples
+#sample of size 10 vs sample size 50  = spread of histogram is smaller when the sample size is bigger 
+#interest on difference between sample averages (Y-X) = random variable = how different could it be?
+#CLT says -> what variance of differences is , not what is the difference =>
+## when 0 = Null hypothesis is TRUE => problem is that  we don't know population standard deviation => hence, the question is whether a value different from 0 is due to chance, or no 
+# the normal distribution as an approximation of the distribution of a fixed list of numbers or a population 
 
-head(pop)
-set.seed(1)
-n<-1000
-averages5 <- vector("numeric",n)
-for(i in 1:n){
-  POP <- sample(pop,5)
-  averages5[i]<- mean(POP)
-}
-------
-set.seed(1)
-n <- 1000
-averages50 <- vector("numeric",n)
-for(i in 1:n){
-  POP <- sample(pop,50)
-  averages50[i]<- mean(POP)
-}
-par(mfrow = c(2,1))
-hist(averages5)
-hist(averages50)
-------
-mu <- mean(pop) 
-sigma <- sd(pop)
-pnorm(0.600, mu, sigma) - pnorm(0.400,mu,sigma)  
-mu <- mean(pop) 
-sigma <- sd(pop)
-pnorm(0.600, mu, sigma) - pnorm(0.300,mu,sigma)  
-mu <- mean(pop) 
-sigma <- sd(pop)
-pnorm(0.600, mu, sigma) - pnorm(0.200,mu,sigma) 
-mu <- mean(pop) 
-sigma <- sd(pop)
-pnorm(0.700, mu, sigma) - pnorm(0.400,mu,sigma) 
-------
-
-library(dplyr)
-controlsMXGaze<- filter(dfPonzo, respondentNr==c(8,2), stimulusNr == c(1,3,13,15,25,27))
-controlsMXGaze <- as.vector(controlsMXGaze$xGaze,mode = "any") 
-mcontrolsMXGaze<-mean(controlsMXGaze)
+popMean <- mean(popDfPonzoXGaze)# What is this population's average?
+popSD <- popsd(popDfPonzoXGaze)#the rafalib package and use the popsd() function to compute the population standard deviation
+propWithinOneSD<- (popDfPonzoXGaze-popMean)/popSD
+mean(abs(propWithinOneSD) <=1) #What proportion of the mice are within one standard deviation away from the average weight?
+mean(abs(propWithinOneSD) <=2) #What proportion of these numbers are within two standard deviations away from the list's average?
+mean(abs(propWithinOneSD) <=3) #What proportion of these numbers are within three standard deviations away from the list's average?
+#Note that the numbers for the normal distribution and our weights are relatively close. Also, notice that we are indirectly comparing quantiles of the normal distribution to quantiles of the mouse weight distribution. We can actually compare all quantiles using a qqplot.
 library(rafalib)
-popsd(controlsMXGaze)
-set.seed(1) 
-XcontrolsMXGaze <- sample(controlsMXGaze,10) 
-McontrolsMXGaze<-mean(XcontrolsMXGaze) 
+qqnorm(popDfPonzoXGaze)#The mouse weights are well approximated by the normal distribution, although the larger values (right tail) are larger than predicted by the normal. This is consistent with the differences seen between question 3 and 6.
+abline(0,1)
+#probability
+#We will now take a sample of size 25 from the population of males on the chow diet. The average of this sample is our random variable. We will use the replicate() function to observe 10,000 realizations of this random variable. Set the seed at 1, then generate these 10,000 averages. Make a histogram and qq-plot of these 10,000 numbers against the normal distribution.
 library(dplyr)
-longUpMXGaze<- filter(dfPonzo,respondentNr==c(8,2) & stimulusNr == c(5,7,17,19,29,31)) 
-longUpMXGaze <-as.vector(longUpMXGaze$xGaze,mode = "any")
-mlongUpMXGaze<-mean(longUpMXGaze)
+avgs <- replicate(10000, mean( sample(popDfPonzoXGaze, 25)))
+mypar(1,2)
+hist(avgs)
+qqnorm(avgs)
+qqline(avgs)
+mean(avgs) #What is the average of the distribution of the sample average?
 library(rafalib)
-popsd(longUpMXGaze)
-set.seed(1)
-YlongUpMXGaze <- sample(longUpMXGaze,10) 
-MlongUpMXGaze<-mean(YlongUpMXGaze)  
-abs( ( mlongUpMXGaze - mcontrolsMXGaze ) - ( MlongUpMXGaze - McontrolsMXGaze ) )
+popsd(avgs)#What is the standard deviation of the distribution of sample averages (use popsd())?
+------ 
+#CLT practice
+##the NUll distirbution is very well approximated by a normal distribution 
+#check whether normal approximation applies here 
+library(dplyr)
+obslongUpControlsX <- mean(longUp$xGaze) - mean(controls$xGaze)
+obslongUpControlsY <- mean(longUp$yGaze) - mean(controls$yGaze)
+#how statistical inference is used to support scientific statements
+#[p value]
+popDfPonzoXGaze <- unlist(dfPonzo$xGaze)
+popDfPonzoYGaze <- unlist(dfPonzo$yGaze)
+## Null Distribution = all possible realizations under the null
+popDfPonzoControlsX <- sample(popDfPonzoXGaze,12)
+popDfPonzoLongUpX <- sample(popDfPonzoXGaze,12)
+mean(popDfPonzoLongUpX) - mean(popDfPonzoControlsX) #random sample; get different random sample of 12 ;random variable of random sample
+popDfPonzoControlsY <- sample(popDfPonzoYGaze,12)
+popDfPonzoLongUpY <- sample(popDfPonzoYGaze,12)
+mean(popDfPonzoLongUpY) - mean(popDfPonzoControlsY)
+### if knowing the null distribution, one can describe the proportion of values one sees for any interval of values 
+####define a number of times to redo the null hypothesis check; record all differences
+n<-10000
+nullsPopX <- vector("numeric",n)
+for(i in 1:n){
+  popDfPonzoControlsX <- sample(popDfPonzoXGaze,12)
+  popDfPonzoLongUpX <- sample(popDfPonzoXGaze,12)
+  nullsPopX[i]<- mean(popDfPonzoLongUpX) - mean(popDfPonzoControlsX)
+}
+max(nullsPopX)
+hist(nullsPopX)
+n<-10000
+nullsPopY <- vector("numeric",n)
+for(i in 1:n){
+  popDfPonzoControlsY <- sample(popDfPonzoYGaze,12)
+  popDfPonzoLongUpY <- sample(popDfPonzoYGaze,12)
+  nullsPopY[i]<- mean(popDfPonzoLongUpY) - mean(popDfPonzoControlsY)
+}
+max(nullsPopY)
+hist(nullsPopY)
+#[null hypothesis]
+sum(nullsPopX > obslongUpControlsX)/n #1st option: how often null values are bigger or not than observed values 
+mean(nullsPopX >obslongUpControlsX) #2nd option: proportion of times the null is bigger than the observation 
+sum(nullsPopY > obslongUpControlsY)/n 
+mean(nullsPopY >obslongUpControlsY)
+#[p value] the probability that an outcome from the null distribution is bigger than what one observed when the null hypothesis is true 
+mean(abs(nullsPopX) >obslongUpControlsX)#3rd option: how often it is bigger in absolute 
+mean(abs(nullsPopY) >obslongUpControlsY)
+library(rafalib)
+mypar()
+qqnorm(nullsPopX)
+qqline(nullsPopX)
+qqnorm(nullsPopY)
+qqline(nullsPopY)
+#do it with sample 3 -> And when we do it with just 3, we can see that the normal approximation becomes slightly worse
+#use normal approximation instead of accessing the population through changes of the sample 
 
------------------------------------------
-#DFs visualization 
+
   
-------
-abbCountry <- dfAlc$abbrv 
-suicidesPer100 <- dfAlc$suicideper100
-urbanRT <- dfAlc$urbanrt
-region <- dfAlc$region
-ranksAConsumption <- rank(dfAlc$aconsum,na.last = NA)
-i <- order(dfAlc$aconsum)
-df<- data.frame(country = abbCountry[i], suicide = suicidesPer100[i], rank = ranksAConsumption[i],urbanrate = urbanRT[i],region = region[i])
-df %>%
-  ggplot(aes(urbanrate, suicide, label=country,color=rank)) + geom_label()
-------
-dfAlc %>%
-  ggplot(aes(urbanrt, employrt, label=abbrv, color=region)) + geom_label()
-------
-dfAlc %>%
-  ggplot(aes(urbanrt, employrt, label=abbrv, color=aconsum)) + geom_label()
-------
-plot(dfAlc$suicideper100,dfAlc$aconsum, xlab = "suicides/100 people", ylab="alcohol consumption")
-plot(dfAlc$employrt,dfAlc$aconsum, xlab = "employee rate", ylab="alcohol consumption")
-plot(dfAlc$urbanrt,dfAlc$aconsum, xlab = "urban rate", ylab="alcohol consumption")
-------
-log10IncomePer1 <- log10(dfAlc$incomeper1)
-log10Aconsum <- log10(dfAlc$aconsum)
-plot(log10IncomePer1,log10Aconsum)
-------
-hist(dfAlc$aconsum,xlab = "alcohol consumption") 
-dfAlc$country[which.max(dfAlc$aconsum)]
-------
-boxplot(aconsum~region, data=dfAlc,na.action = NULL) 
-boxplot(suicidesPer100~region, data = dfAlc)
-boxplot(employrt~region, data = dfAlc)
-boxplot(urbanrt~region, data = dfAlc)
-------
-hist(samplexGaze,freq = TRUE, breaks = c(0.00,0.05,0.10,0.15,0.20,0.25,0.30,0.35,0.40,0.45,0.50,0.55,0.60,0.65,0.70,0.75,0.80,0.85,0.90,0.95,1.00,1.05,1.10,1.15,1.20),main="xGaze Position", xlab="xGaze position in %")
-hist(samplexGaze,freq = FALSE, breaks = c(0.00,0.05,0.10,0.15,0.20,0.25,0.30,0.35,0.40,0.45,0.50,0.55,0.60,0.65,0.70,0.75,0.80,0.85,0.90,0.95,1.00,1.05,1.10,1.15,1.20),main="xGaze Position", xlab="xGaze position in %")
-hist(sampleyGaze,freq = TRUE, breaks = c(0.00,0.05,0.10,0.15,0.20,0.25,0.30,0.35,0.40,0.45,0.50,0.55,0.60,0.65,0.70,0.75,0.80,0.85,0.90,0.95,1.00,1.05,1.10,1.15,1.20),main="yGaze Position", xlab="yGaze position in %")
-hist(sampleyGaze,freq = FALSE, breaks = c(0.00,0.05,0.10,0.15,0.20,0.25,0.30,0.35,0.40,0.45,0.50,0.55,0.60,0.65,0.70,0.75,0.80,0.85,0.90,0.95,1.00,1.05,1.10,1.15,1.20),main="yGaze Position", xlab="yGaze position in %")
-------
-samplexGazeS<- seq(floor(min(samplexGaze)),ceiling(max(samplexGaze)),0.1)
-plot(samplexGazeS,ecdf(samplexGaze)(samplexGazeS),type="l",xlim=c(0.0,2.0),
-     xlab="xGaze position in %",ylab="F(samplexGaze)")
-sampleyGazeS<- seq(floor(min(sampleyGaze)),ceiling(max(sampleyGaze)),0.1)
-plot(sampleyGazeS,ecdf(samplexGaze)(sampleyGazeS),type="l",xlim=c(0.0,2.0),
-     xlab="yGaze position in %",ylab="F(sampleyGaze)")
-------
-mean(samplexGaze<50)
-pnorm(50,mean(samplexGaze),sd(samplexGaze))
-mean(sampleyGaze<50)
-pnorm(50,mean(sampleyGaze),sd(sampleyGaze))
-------
-ps<- seq(0.01,0.99,0.01)
-qs<- quantile(samplexGaze,ps)
-normalQs <- qnorm(ps, mean(samplexGaze), sd(samplexGaze))
-plot(normalQs,qs,xlab = "Normal percentiles", ylab="xGaze percentiles")
-qs<- quantile(sampleyGaze,ps)
-normalQs <- qnorm(ps, mean(sampleyGaze), sd(sampleyGaze))
-plot(normalQs,qs,xlab = "Normal percentiles", ylab="yGaze percentiles")
-------
-par(mfrow = c(2,2)) 
-qqnorm(samplexGaze)
-qqline(samplexGaze)
-qqnorm(sampleyGaze)
-qqline(sampleyGaze)
-------
-par(mfrow = c(2,2)) 
-boxplot(samplexGaze,ylab="xGaze position",ylim=c(0,1))
-boxplot(sampleyGaze,ylab="yGaze position",ylim=c(0,1))
-------
-par(mfrow = c(1,1)) 
-boxplot(split(dfPonzo$xGaze,dfPonzo$stimulusNr))
-boxplot(split(dfPonzo$xGaze,dfPonzo$respondentNr))
-boxplot(split(dfPonzo$yGaze,dfPonzo$stimulusNr))
-boxplot(split(dfPonzo$yGaze,dfPonzo$respondentNr))
-------
-length(controlsXGaze)
-length(longUpXGaze)
-length(longDownXGaze)
-
-controlsXGaze<- append(controlsXGaze, c(NA,NA,NA,NA))
-controlsYGaze<- append(controlsYGaze, c(NA,NA,NA,NA))
-longDownXGaze<- append(longDownXGaze, c(NA,NA,NA))
-longDownYGaze<- append(longDownYGaze, c(NA,NA,NA))
-
-library(ggplot2)
-plot(controlsXGaze,longUpXGaze,xlab = "controls XGaze", ylab="longUp XGaze") 
-plot(controlsXGaze,longDownXGaze,xlab = "controls XGaze", ylab="longDown XGaze") 
-plot(controlsYGaze,longUpYGaze,xlab = "controls YGaze", ylab="longUp YGaze") 
-plot(controlsYGaze,longDownYGaze,xlab = "controls YGaze", ylab="longDown YGaze") 
-
-
-
