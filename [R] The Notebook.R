@@ -514,6 +514,105 @@ qqnorm(nullsPopY)
 qqline(nullsPopY)
 #do it with sample 3 -> And when we do it with just 3, we can see that the normal approximation becomes slightly worse
 #use normal approximation instead of accessing the population through changes of the sample 
+------ 
+#CLT in conjunction with t-Tests to obtain p - value and obtain confidence values 
+#construct t stat = form a t-statistic = dividing the observed difference by its estimated standard deviation
+library(dplyr)
+N <- length(controlsXGaze)
+se <- sqrt(var(longUpXGaze)/N+ #square root of the variance of the sample estimate of the variance divided by N=sample size
+               var(controlsXGaze)/N) #gives us standard error estimate
+tstatX <- obslongUpControlsX/se
+tstatX
+library(dplyr)
+N <- length(controlsYGaze)
+se <- sqrt(var(longUpYGaze)/N+ 
+             var(controlsYGaze)/N) 
+tstatY <- obslongUpControlsY/se
+tstatY
+# assume that,  that the normal approximation holds for the null distribution =  don't need to have access to the population data
+# central limit theorem  tells that  the null distribution is approximated by a normal distribution with mean 0 and variance 1
+1- pnorm(tstatX) #what proportion of normally distributed data, with means 0 and standard deviation 1,are lower than whatever value you put here
+2*(1- pnorm(tstatX))
+1- pnorm(tstatY) 
+2*(1- pnorm(tstatY))
+# how good of an approximation this is => access the population 
+n<-10000
+nullsPopX <- vector("numeric",n)
+for(i in 1:n){
+  popDfPonzoControlsX <- sample(popDfPonzoXGaze,12)
+  popDfPonzoLongUpX <- sample(popDfPonzoXGaze,12)
+  nullsPopX[i]<- mean(popDfPonzoLongUpX) - mean(popDfPonzoControlsX)
+}
 
+n<-10000
+nullsPopY <- vector("numeric",n)
+for(i in 1:n){
+  popDfPonzoControlsY <- sample(popDfPonzoYGaze,12)
+  popDfPonzoLongUpY <- sample(popDfPonzoYGaze,12)
+  nullsPopY[i]<- mean(popDfPonzoLongUpY) - mean(popDfPonzoControlsY)
+}
+# Q-Q plot against the normal for these nulls, it should be right on the line
+# Q-Q plot should have slope 1 and intercept 0
+# check through doing abline 0, 1 = a line with intercept 0 and slope 1 => go right through the data
+library(rafalib)
+mypar()
+qqnorm(nullsPopX)
+abline(0,1)
+qqline(nullsPopX)
+qqnorm(nullsPopY)
+abline(0,1)
+qqline(nullsPopY)
+#t-test practice 
+library(dplyr)
+tTestX<-  t.test(longUpXGaze$xGaze,controlsXGaze$xGaze)
+tTestX
+tTestX$p.value#what is the p-value under the t-distribution approximation?
+tTestY<-  t.test(longUpYGaze$yGaze,controlsYGaze$yGaze)
+tTestY 
+tTestY$p.value
+# an assumption we're making when we use that distribution, the original data is normally distributed, meaning that if we had access to the entire population
+library(rafalib)
+qqnorm(controlsXGaze$xGaze) # now we can test that somewhat by making q-q plots of the sample
+qqline(controlsXGaze$xGaze) 
+qqnorm(longUpXGaze$xGaze) # now we can test that somewhat by making q-q plots of the sample
+qqline(longUpXGaze$xGaze)
+library(rafalib)
+qqnorm(controlsYGaze$yGaze) # now we can test that somewhat by making q-q plots of the sample
+qqline(controlsYGaze$yGaze)
+qqnorm(longUpYGaze$yGaze) # now we can test that somewhat by making q-q plots of the sample
+qqline(longUpYGaze$yGaze)
 
-  
+------ 
+#DFs visualization 
+------
+abbCountry <- dfAlc$abbrv 
+suicidesPer100 <- dfAlc$suicideper100
+urbanRT <- dfAlc$urbanrt
+region <- dfAlc$region
+ranksAConsumption <- rank(dfAlc$aconsum,na.last = NA)
+i <- order(dfAlc$aconsum)
+df<- data.frame(country = abbCountry[i], suicide = suicidesPer100[i], rank = ranksAConsumption[i],urbanrate = urbanRT[i],region = region[i])
+df %>%
+  ggplot(aes(urbanrate, suicide, label=country,color=rank)) + geom_label()
+------
+  dfAlc %>%
+  ggplot(aes(urbanrt, employrt, label=abbrv, color=region)) + geom_label()
+------
+  dfAlc %>%
+  ggplot(aes(urbanrt, employrt, label=abbrv, color=aconsum)) + geom_label()
+------
+plot(dfAlc$suicideper100,dfAlc$aconsum, xlab = "suicides/100 people", ylab="alcohol consumption")
+plot(dfAlc$employrt,dfAlc$aconsum, xlab = "employee rate", ylab="alcohol consumption")
+plot(dfAlc$urbanrt,dfAlc$aconsum, xlab = "urban rate", ylab="alcohol consumption")
+------
+log10IncomePer1 <- log10(dfAlc$incomeper1)
+log10Aconsum <- log10(dfAlc$aconsum)
+plot(log10IncomePer1,log10Aconsum)
+------
+hist(dfAlc$aconsum,xlab = "alcohol consumption") 
+dfAlc$country[which.max(dfAlc$aconsum)]
+------
+boxplot(aconsum~region, data=dfAlc,na.action = NULL) 
+boxplot(suicidesPer100~region, data = dfAlc)
+boxplot(employrt~region, data = dfAlc)
+boxplot(urbanrt~region, data = dfAlc)

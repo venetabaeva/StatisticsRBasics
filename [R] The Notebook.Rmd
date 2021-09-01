@@ -1036,8 +1036,8 @@ for(i in 1:n){
 
 ```{r}
 par(mfrow = c(2,1))
-hist(averages5)
-hist(averages50)
+hist(averagesPopX5)
+hist(averagesPopX50)  
 ```
 
 ```{r}
@@ -1050,7 +1050,7 @@ mean(averagesPopX50<0.600 & averagesPopX50>0.400)
 ```{r}
 mu <- mean(averagesPopX50)
 mu
-sigma <- popsd(averagesPopX50)
+sigma <- sd(averagesPopX50)
 sigma
 ```
 
@@ -1066,13 +1066,13 @@ pnorm(0.600, mu, sigma) - pnorm(0.400,mu,sigma)
 
 ```{r}
 popMean <- mean(popDfPonzoXGaze)
-popSD <- popsd(popDfPonzoXGaze)
+popSD <- sd(popDfPonzoXGaze)
 propWithinOneSDX<- (popDfPonzoXGaze-popMean)/popSD
 mean(abs(propWithinOneSDX) <=1) #What proportion of xGaze% are within 1 SD away from the average Gaze%?
 mean(abs(propWithinOneSDX) <=2)#What proportion of xGaze% are within 2 SD away from the average Gaze%?
 mean(abs(propWithinOneSDX) <=3) #What proportion of xGaze% are within 3 SD away from the average Gaze%?
 popMean <- mean(popDfPonzoYGaze)
-popSD <- popsd(popDfPonzoYGaze)
+popSD <- sd(popDfPonzoYGaze)
 propWithinOneSDY<- (popDfPonzoYGaze-popMean)/popSD
 mean(abs(propWithinOneSDY) <=1) #What proportion of xGaze% are within 1 SD away from the average Gaze%?
 mean(abs(propWithinOneSDY) <=2)#What proportion of xGaze% are within 2 SD away from the average Gaze%?
@@ -1114,7 +1114,7 @@ library(rafalib)
 ```
 
 ```{r}
-popsd(avgs)#What is the standard deviation of the distribution of sample averages (use popsd())?
+sd(avgs)#What is the standard deviation of the distribution of sample averages (use popsd())?
 ```
 
 > library load 
@@ -1203,6 +1203,70 @@ qqline(nullsPopY)
 ```
 ###### ^1^ Note: use normal approximation instead of accessing the population through changes of the sample 
 
+> library load 
+
+```{r}
+library(dplyr)
+```
+
+1.[tTest]
+
+```{r}
+N <- length(controlsXGaze)
+se <- sqrt(var(longUpXGaze)/N+ #square root of the variance of the sample estimate of the variance divided by N=sample size
+               var(controlsXGaze)/N) #gives us standard error estimate
+tstatX <- obslongUpControlsX/se
+tstatX
+library(dplyr)
+N <- length(controlsYGaze)
+se <- sqrt(var(longUpYGaze)/N+ 
+             var(controlsYGaze)/N) 
+tstatY <- obslongUpControlsY/se
+tstatY
+```
+
+```{r}
+1- pnorm(tstatX) #what proportion of normally distributed data, with means 0 and standard deviation 1,are lower than whatever value you put here
+2*(1- pnorm(tstatX))
+1- pnorm(tstatY) 
+2*(1- pnorm(tstatY))
+```
+
+```{r}
+n<-10000
+nullsPopX <- vector("numeric",n)
+for(i in 1:n){
+  popDfPonzoControlsX <- sample(popDfPonzoXGaze,12)
+  popDfPonzoLongUpX <- sample(popDfPonzoXGaze,12)
+  nullsPopX[i]<- mean(popDfPonzoLongUpX) - mean(popDfPonzoControlsX)
+}
+
+n<-10000
+nullsPopY <- vector("numeric",n)
+for(i in 1:n){
+  popDfPonzoControlsY <- sample(popDfPonzoYGaze,12)
+  popDfPonzoLongUpY <- sample(popDfPonzoYGaze,12)
+  nullsPopY[i]<- mean(popDfPonzoLongUpY) - mean(popDfPonzoControlsY)
+}
+```
+
+###### ^1^ Note: how good of an approximation this is => access the population 
+
+> library load 
+
+```{r}
+library(rafalib)
+```
+
+```{r}
+mypar()
+qqnorm(nullsPopX)
+abline(0,1)
+qqline(nullsPopX)
+qqnorm(nullsPopY)
+abline(0,1)
+qqline(nullsPopY)
+```
 
 
 ## III.

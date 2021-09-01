@@ -485,31 +485,6 @@ dfAlc$country[11]
 
     ## [1] "Austria"
 
-1.\[column-column\] filter/ access multiple values
-
-``` r
-stimNREqual <- dfPonzo[dfPonzo$stimulusNr == c(1,3,13,15,25,27),]
-```
-
-    ## Warning in dfPonzo$stimulusNr == c(1, 3, 13, 15, 25, 27): longer object length
-    ## is not a multiple of shorter object length
-
-``` r
-stimNREqual <- as.data.frame(stimNREqual) 
-mean(stimNREqual$xGaze)
-```
-
-    ## [1] 0.4894464
-
-1.\[column-row\] filter/ access range of rows’ values
-
-``` r
-zeroRespondentXGaze <- dfPonzo$xGaze
-mean(zeroRespondentXGaze[1:350])
-```
-
-    ## [1] 0.46996
-
 1.\[column\] access
 
 ``` r
@@ -2319,7 +2294,7 @@ plot(n,s_n)
 lines(n,n*(n+1)/2)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-84-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-82-1.png)<!-- -->
 
 3.\[forloop\]
 
@@ -2346,25 +2321,25 @@ df %>%
   ggplot(aes(urbanrate, suicide, label=country,color=rank)) + geom_label()
 ```
 
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-84-1.png)<!-- -->
+
+2.\[ggplot\]
+
+``` r
+dfAlc %>%
+  ggplot(aes(urbanrt, employrt, label=abbrv, color=region)) + geom_label()
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-85-1.png)<!-- -->
+
+2.\[ggplot\]
+
+``` r
+dfAlc %>%
+  ggplot(aes(urbanrt, employrt, label=abbrv, color=region)) + geom_label()
+```
+
 ![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-86-1.png)<!-- -->
-
-2.\[ggplot\]
-
-``` r
-dfAlc %>%
-  ggplot(aes(urbanrt, employrt, label=abbrv, color=region)) + geom_label()
-```
-
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-87-1.png)<!-- -->
-
-2.\[ggplot\]
-
-``` r
-dfAlc %>%
-  ggplot(aes(urbanrt, employrt, label=abbrv, color=region)) + geom_label()
-```
-
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-88-1.png)<!-- -->
 
 2.\[scatterPlot\]
 
@@ -2372,19 +2347,19 @@ dfAlc %>%
 plot(dfAlc$suicideper100,dfAlc$aconsum, xlab = "suicides/100 people", ylab="alcohol consumption")
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-89-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-87-1.png)<!-- -->
 
 ``` r
 plot(dfAlc$employrt,dfAlc$aconsum, xlab = "employee rate", ylab="alcohol consumption")
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-89-2.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-87-2.png)<!-- -->
 
 ``` r
 plot(dfAlc$urbanrt,dfAlc$aconsum, xlab = "urban rate", ylab="alcohol consumption")
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-89-3.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-87-3.png)<!-- -->
 
 2.\[scatterPlot\] in logs
 
@@ -2394,7 +2369,7 @@ log10Aconsum <- log10(dfAlc$aconsum)
 plot(log10IncomePer1,log10Aconsum)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-90-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-88-1.png)<!-- -->
 
 2.\[histogram\]
 
@@ -2402,7 +2377,7 @@ plot(log10IncomePer1,log10Aconsum)
 hist(dfAlc$aconsum,xlab = "alcohol consumption") 
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-91-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-89-1.png)<!-- -->
 
 ``` r
 dfAlc$country[which.max(dfAlc$aconsum)]
@@ -2416,25 +2391,25 @@ dfAlc$country[which.max(dfAlc$aconsum)]
 boxplot(aconsum~region, data = dfAlc,na.action = NULL) 
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-92-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-90-1.png)<!-- -->
 
 ``` r
 boxplot(suicidesPer100~region, data = dfAlc)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-92-2.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-90-2.png)<!-- -->
 
 ``` r
 boxplot(employrt~region, data = dfAlc)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-92-3.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-90-3.png)<!-- -->
 
 ``` r
 boxplot(urbanrt~region, data = dfAlc)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-92-4.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-90-4.png)<!-- -->
 
 ## II.
 
@@ -2483,26 +2458,6 @@ library(UsingR)
     ## 
     ##     cancer
 
-1.\[sample\] take a random sample of size
-
-``` r
-sample(stimNREqual$xGaze,1)
-```
-
-    ## [1] 0.463
-
-``` r
-sample(stimNREqual$yGaze,1)
-```
-
-    ## [1] 0.419
-
-1.\[sample\]set seed
-
-``` r
-set.seed(1) 
-```
-
 1.\[dataFrame\]filter
 
 ``` r
@@ -2533,591 +2488,1031 @@ controlsYGaze
     ##   mean(yGaze)
     ## 1     0.39975
 
-1.\[dataFrame\] filter
+1.\[dataFrame\] pipe filter select unlist
 
 ``` r
-controls <- filter(dfPonzo, stimulusNr == c(2,4,14,16,26,28))
+controlsXGaze <- filter(dfPonzo, stimulusNr == c(1,3,13,15,25,27)) %>% dplyr::select(xGaze) 
 ```
 
-    ## Warning in stimulusNr == c(2, 4, 14, 16, 26, 28): longer object length is not a
+    ## Warning in stimulusNr == c(1, 3, 13, 15, 25, 27): longer object length is not a
     ## multiple of shorter object length
 
 ``` r
-longUp <-filter(dfPonzo, stimulusNr == c(6,8,18,20,30,32))
+mean(controlsXGaze$xGaze)
 ```
 
-    ## Warning in stimulusNr == c(6, 8, 18, 20, 30, 32): longer object length is not a
+    ## [1] 0.4894464
+
+``` r
+controlsYGaze <-filter(dfPonzo, stimulusNr == c(1,3,13,15,25,27)) %>% dplyr::select(yGaze)
+```
+
+    ## Warning in stimulusNr == c(1, 3, 13, 15, 25, 27): longer object length is not a
     ## multiple of shorter object length
 
 ``` r
-longDown<- filter(dfPonzo, stimulusNr == c(10,12,22,24,34,36))
+mean(controlsYGaze$yGaze)
 ```
 
-    ## Warning in stimulusNr == c(10, 12, 22, 24, 34, 36): longer object length is not
-    ## a multiple of shorter object length
+    ## [1] 0.39975
+
+``` r
+longUpXGaze  <-filter(dfPonzo, stimulusNr == c(5,7,17,19,29,31))%>% dplyr::select(xGaze)
+```
+
+    ## Warning in stimulusNr == c(5, 7, 17, 19, 29, 31): longer object length is not a
+    ## multiple of shorter object length
+
+``` r
+mean(longUpXGaze$xGaze)
+```
+
+    ## [1] 0.4817167
+
+``` r
+longUpYGaze  <-filter(dfPonzo, stimulusNr == c(5,7,17,19,29,31))%>% dplyr::select(yGaze)
+```
+
+    ## Warning in stimulusNr == c(5, 7, 17, 19, 29, 31): longer object length is not a
+    ## multiple of shorter object length
+
+``` r
+mean(longUpYGaze$yGaze)
+```
+
+    ## [1] 0.43095
+
+``` r
+longDownXGaze<- filter(dfPonzo, stimulusNr == c(9,11,21,23,33,35))%>% dplyr::select(xGaze)
+```
+
+    ## Warning in stimulusNr == c(9, 11, 21, 23, 33, 35): longer object length is not a
+    ## multiple of shorter object length
+
+``` r
+mean(longDownXGaze$xGaze)
+```
+
+    ## [1] 0.494
+
+``` r
+longDownYGaze<- filter(dfPonzo, stimulusNr == c(9,11,21,23,33,35))%>% dplyr::select(yGaze)
+```
+
+    ## Warning in stimulusNr == c(9, 11, 21, 23, 33, 35): longer object length is not a
+    ## multiple of shorter object length
+
+``` r
+mean(longDownYGaze$yGaze)
+```
+
+    ## [1] 0.4166316
+
+1.\[dataFrame\] filter select
+
+``` r
+controls <- filter(dfPonzo, stimulusNr == c(1,3,13,15,25,27)) 
+```
+
+    ## Warning in stimulusNr == c(1, 3, 13, 15, 25, 27): longer object length is not a
+    ## multiple of shorter object length
 
 ``` r
 head(controls)
 ```
 
     ##   respondentNr stimulusNr timeStampsMs xGaze yGaze
-    ## 1            0          2           21 0.473 0.352
-    ## 2            0          2          221 0.457 0.302
-    ## 3            0          2          421 0.444 0.278
-    ## 4            0          4           53 0.468 0.300
-    ## 5            0          4          253 0.480 0.302
-    ## 6            0         14           57 0.479 0.383
+    ## 1            0          1           89 0.492 0.439
+    ## 2            0          1          289 0.485 0.388
+    ## 3            0          3            0 0.443 0.278
+    ## 4            0          3          155 0.446 0.281
+    ## 5            0          3          354 0.461 0.295
+    ## 6            0         15           57 0.486 0.320
+
+``` r
+View(controls)
+mean(controls$xGaze)
+```
+
+    ## [1] 0.4894464
+
+``` r
+mean(controls$yGaze)
+```
+
+    ## [1] 0.39975
+
+``` r
+longUp  <-filter(dfPonzo, stimulusNr == c(5,7,17,19,29,31))
+```
+
+    ## Warning in stimulusNr == c(5, 7, 17, 19, 29, 31): longer object length is not a
+    ## multiple of shorter object length
 
 ``` r
 head(longUp)
 ```
 
     ##   respondentNr stimulusNr timeStampsMs xGaze yGaze
-    ## 1            0          6            0 0.467 0.595
-    ## 2            0          6          399 0.460 0.410
-    ## 3            0          8          130 0.471 0.275
-    ## 4            0          8          362 0.482 0.348
-    ## 5            0         18            0 0.485 0.329
-    ## 6            0         18          188 0.481 0.298
+    ## 1            0          5          121 0.451 0.680
+    ## 2            0          7            0 0.466 0.360
+    ## 3            0          7          164 0.464 0.331
+    ## 4            0          7          362 0.466 0.300
+    ## 5            0         17           90 0.481 0.301
+    ## 6            0         17          289 0.478 0.355
+
+``` r
+View(longUp)
+mean(longUp$xGaze)
+```
+
+    ## [1] 0.4817167
+
+``` r
+mean(longUp$yGaze)
+```
+
+    ## [1] 0.43095
+
+``` r
+longDown <- filter(dfPonzo, stimulusNr == c(9,11,21,23,33,35))
+```
+
+    ## Warning in stimulusNr == c(9, 11, 21, 23, 33, 35): longer object length is not a
+    ## multiple of shorter object length
 
 ``` r
 head(longDown)
 ```
 
     ##   respondentNr stimulusNr timeStampsMs xGaze yGaze
-    ## 1            0         10          128 0.472 0.299
-    ## 2            0         22           87 0.463 0.257
-    ## 3            0         22          386 0.468 0.256
-    ## 4            0         24          118 0.442 0.230
-    ## 5            0         34            7 0.471 0.297
-    ## 6            0         34          240 0.471 0.338
-
-1.\[dataFrame\] select
+    ## 1            0          9           28 0.486 0.384
+    ## 2            0          9          229 0.483 0.404
+    ## 3            0          9          429 0.478 0.349
+    ## 4            0         21          154 0.479 0.452
+    ## 5            0         23            0 0.481 0.302
+    ## 6            0         23          152 0.485 0.504
 
 ``` r
-controlsXGaze<- dplyr::select( controls, xGaze) 
-controlsYGaze<- dplyr::select(controls, yGaze) 
+View(longDown)
+mean(longDown$xGaze)
 ```
+
+    ## [1] 0.494
+
+``` r
+mean(longDown$yGaze)
+```
+
+    ## [1] 0.4166316
 
 1.\[dataFrame\] turn into numeric vector
 
 ``` r
-unlist(controlsXGaze)
+unlist(controls)
 ```
 
-    ##  xGaze1  xGaze2  xGaze3  xGaze4  xGaze5  xGaze6  xGaze7  xGaze8  xGaze9 xGaze10 
-    ##   0.473   0.457   0.444   0.468   0.480   0.479   0.484   0.461   0.465   0.487 
-    ## xGaze11 xGaze12 xGaze13 xGaze14 xGaze15 xGaze16 xGaze17 xGaze18 xGaze19 xGaze20 
-    ##   0.486   0.485   0.521   0.511   0.475   0.472   0.498   0.435   0.417   0.437 
-    ## xGaze21 xGaze22 xGaze23 xGaze24 xGaze25 xGaze26 xGaze27 xGaze28 xGaze29 xGaze30 
-    ##   0.467   0.489   0.494   0.530   0.470   0.446   0.471   0.477   0.574   0.544 
-    ## xGaze31 xGaze32 xGaze33 xGaze34 xGaze35 xGaze36 xGaze37 xGaze38 xGaze39 xGaze40 
-    ##   0.609   0.628   0.575   0.534   0.508   0.505   0.488   0.486   0.491   0.492 
-    ## xGaze41 xGaze42 xGaze43 xGaze44 xGaze45 xGaze46 xGaze47 xGaze48 xGaze49 xGaze50 
-    ##   0.481   0.523   0.508   0.497   0.491   0.501   0.445   0.436   0.426   0.424 
-    ## xGaze51 xGaze52 xGaze53 xGaze54 xGaze55 xGaze56 
-    ##   0.443   0.458   0.457   0.455   0.443   0.438
+    ##  respondentNr1  respondentNr2  respondentNr3  respondentNr4  respondentNr5 
+    ##          0.000          0.000          0.000          0.000          0.000 
+    ##  respondentNr6  respondentNr7  respondentNr8  respondentNr9 respondentNr10 
+    ##          0.000          0.000          0.000          2.000          2.000 
+    ## respondentNr11 respondentNr12 respondentNr13 respondentNr14 respondentNr15 
+    ##          2.000          2.000          2.000          2.000          2.000 
+    ## respondentNr16 respondentNr17 respondentNr18 respondentNr19 respondentNr20 
+    ##          2.000          2.000          2.000          2.000          2.000 
+    ## respondentNr21 respondentNr22 respondentNr23 respondentNr24 respondentNr25 
+    ##          2.000          2.000          2.000          6.000          6.000 
+    ## respondentNr26 respondentNr27 respondentNr28 respondentNr29 respondentNr30 
+    ##          6.000          6.000          6.000          6.000          6.000 
+    ## respondentNr31 respondentNr32 respondentNr33 respondentNr34 respondentNr35 
+    ##          6.000          6.000          8.000          8.000          8.000 
+    ## respondentNr36 respondentNr37 respondentNr38 respondentNr39 respondentNr40 
+    ##          8.000          8.000          8.000          8.000          8.000 
+    ## respondentNr41 respondentNr42 respondentNr43 respondentNr44 respondentNr45 
+    ##          8.000          8.000          8.000          8.000          8.000 
+    ## respondentNr46 respondentNr47 respondentNr48 respondentNr49 respondentNr50 
+    ##          8.000         10.000         10.000         10.000         10.000 
+    ## respondentNr51 respondentNr52 respondentNr53 respondentNr54 respondentNr55 
+    ##         10.000         10.000         10.000         10.000         10.000 
+    ## respondentNr56    stimulusNr1    stimulusNr2    stimulusNr3    stimulusNr4 
+    ##         10.000          1.000          1.000          3.000          3.000 
+    ##    stimulusNr5    stimulusNr6    stimulusNr7    stimulusNr8    stimulusNr9 
+    ##          3.000         15.000         15.000         27.000          1.000 
+    ##   stimulusNr10   stimulusNr11   stimulusNr12   stimulusNr13   stimulusNr14 
+    ##          1.000          1.000          3.000          3.000         13.000 
+    ##   stimulusNr15   stimulusNr16   stimulusNr17   stimulusNr18   stimulusNr19 
+    ##         13.000         15.000         15.000         15.000         25.000 
+    ##   stimulusNr20   stimulusNr21   stimulusNr22   stimulusNr23   stimulusNr24 
+    ##         25.000         25.000         27.000         27.000          1.000 
+    ##   stimulusNr25   stimulusNr26   stimulusNr27   stimulusNr28   stimulusNr29 
+    ##          1.000          1.000         13.000         13.000         15.000 
+    ##   stimulusNr30   stimulusNr31   stimulusNr32   stimulusNr33   stimulusNr34 
+    ##         25.000         25.000         27.000          1.000          1.000 
+    ##   stimulusNr35   stimulusNr36   stimulusNr37   stimulusNr38   stimulusNr39 
+    ##          3.000          3.000         13.000         13.000         13.000 
+    ##   stimulusNr40   stimulusNr41   stimulusNr42   stimulusNr43   stimulusNr44 
+    ##         15.000         15.000         25.000         25.000         25.000 
+    ##   stimulusNr45   stimulusNr46   stimulusNr47   stimulusNr48   stimulusNr49 
+    ##         27.000         27.000          1.000          1.000          3.000 
+    ##   stimulusNr50   stimulusNr51   stimulusNr52   stimulusNr53   stimulusNr54 
+    ##          3.000         13.000         15.000         25.000         25.000 
+    ##   stimulusNr55   stimulusNr56  timeStampsMs1  timeStampsMs2  timeStampsMs3 
+    ##         27.000         27.000         89.000        289.000          0.000 
+    ##  timeStampsMs4  timeStampsMs5  timeStampsMs6  timeStampsMs7  timeStampsMs8 
+    ##        155.000        354.000         57.000        290.000        215.000 
+    ##  timeStampsMs9 timeStampsMs10 timeStampsMs11 timeStampsMs12 timeStampsMs13 
+    ##          9.000        243.000        442.000         74.000        274.000 
+    ## timeStampsMs14 timeStampsMs15 timeStampsMs16 timeStampsMs17 timeStampsMs18 
+    ##        130.000        328.000          0.000        160.000        360.000 
+    ## timeStampsMs19 timeStampsMs20 timeStampsMs21 timeStampsMs22 timeStampsMs23 
+    ##          0.000        187.000        386.000         21.000        253.000 
+    ## timeStampsMs24 timeStampsMs25 timeStampsMs26 timeStampsMs27 timeStampsMs28 
+    ##          0.000        187.000        387.000         44.000        244.000 
+    ## timeStampsMs29 timeStampsMs30 timeStampsMs31 timeStampsMs32 timeStampsMs33 
+    ##        374.000          0.000        332.000         28.000          0.000 
+    ## timeStampsMs34 timeStampsMs35 timeStampsMs36 timeStampsMs37 timeStampsMs38 
+    ##        222.000         21.000        288.000          0.000        182.000 
+    ## timeStampsMs39 timeStampsMs40 timeStampsMs41 timeStampsMs42 timeStampsMs43 
+    ##        382.000         47.000        247.000         32.000        232.000 
+    ## timeStampsMs44 timeStampsMs45 timeStampsMs46 timeStampsMs47 timeStampsMs48 
+    ##        431.000         64.000        264.000          0.000        223.000 
+    ## timeStampsMs49 timeStampsMs50 timeStampsMs51 timeStampsMs52 timeStampsMs53 
+    ##        132.000        332.000        194.000          0.000         96.000 
+    ## timeStampsMs54 timeStampsMs55 timeStampsMs56         xGaze1         xGaze2 
+    ##        296.000          0.000        226.000          0.492          0.485 
+    ##         xGaze3         xGaze4         xGaze5         xGaze6         xGaze7 
+    ##          0.443          0.446          0.461          0.486          0.466 
+    ##         xGaze8         xGaze9        xGaze10        xGaze11        xGaze12 
+    ##          0.496          0.509          0.515          0.519          0.483 
+    ##        xGaze13        xGaze14        xGaze15        xGaze16        xGaze17 
+    ##          0.474          0.477          0.473          0.441          0.480 
+    ##        xGaze18        xGaze19        xGaze20        xGaze21        xGaze22 
+    ##          0.462          0.481          0.453          0.462          0.547 
+    ##        xGaze23        xGaze24        xGaze25        xGaze26        xGaze27 
+    ##          0.510          0.528          0.513          0.501          0.542 
+    ##        xGaze28        xGaze29        xGaze30        xGaze31        xGaze32 
+    ##          0.554          0.573          0.555          0.598          0.566 
+    ##        xGaze33        xGaze34        xGaze35        xGaze36        xGaze37 
+    ##          0.512          0.528          0.504          0.493          0.484 
+    ##        xGaze38        xGaze39        xGaze40        xGaze41        xGaze42 
+    ##          0.476          0.478          0.496          0.493          0.505 
+    ##        xGaze43        xGaze44        xGaze45        xGaze46        xGaze47 
+    ##          0.507          0.519          0.508          0.499          0.417 
+    ##        xGaze48        xGaze49        xGaze50        xGaze51        xGaze52 
+    ##          0.433          0.432          0.424          0.436          0.440 
+    ##        xGaze53        xGaze54        xGaze55        xGaze56         yGaze1 
+    ##          0.458          0.458          0.455          0.463          0.439 
+    ##         yGaze2         yGaze3         yGaze4         yGaze5         yGaze6 
+    ##          0.388          0.278          0.281          0.295          0.320 
+    ##         yGaze7         yGaze8         yGaze9        yGaze10        yGaze11 
+    ##          0.260          0.503          0.441          0.438          0.407 
+    ##        yGaze12        yGaze13        yGaze14        yGaze15        yGaze16 
+    ##          0.391          0.373          0.447          0.420          0.538 
+    ##        yGaze17        yGaze18        yGaze19        yGaze20        yGaze21 
+    ##          0.462          0.419          0.457          0.424          0.342 
+    ##        yGaze22        yGaze23        yGaze24        yGaze25        yGaze26 
+    ##          0.290          0.248          0.490          0.527          0.553 
+    ##        yGaze27        yGaze28        yGaze29        yGaze30        yGaze31 
+    ##          0.294          0.303          0.393          0.235          0.314 
+    ##        yGaze32        yGaze33        yGaze34        yGaze35        yGaze36 
+    ##          0.305          0.417          0.352          0.286          0.287 
+    ##        yGaze37        yGaze38        yGaze39        yGaze40        yGaze41 
+    ##          0.229          0.223          0.249          0.373          0.304 
+    ##        yGaze42        yGaze43        yGaze44        yGaze45        yGaze46 
+    ##          0.312          0.371          0.405          0.464          0.420 
+    ##        yGaze47        yGaze48        yGaze49        yGaze50        yGaze51 
+    ##          0.395          0.440          0.534          0.516          0.568 
+    ##        yGaze52        yGaze53        yGaze54        yGaze55        yGaze56 
+    ##          0.659          0.545          0.545          0.637          0.580
 
 ``` r
-unlist(controlsYGaze)
+unlist(longUp)
 ```
 
-    ##  yGaze1  yGaze2  yGaze3  yGaze4  yGaze5  yGaze6  yGaze7  yGaze8  yGaze9 yGaze10 
-    ##   0.352   0.302   0.278   0.300   0.302   0.383   0.390   0.224   0.239   0.410 
-    ## yGaze11 yGaze12 yGaze13 yGaze14 yGaze15 yGaze16 yGaze17 yGaze18 yGaze19 yGaze20 
-    ##   0.394   0.330   0.390   0.395   0.384   0.428   0.430   0.499   0.566   0.540 
-    ## yGaze21 yGaze22 yGaze23 yGaze24 yGaze25 yGaze26 yGaze27 yGaze28 yGaze29 yGaze30 
-    ##   0.395   0.383   0.343   0.333   0.248   0.338   0.401   0.458   0.398   0.281 
-    ## yGaze31 yGaze32 yGaze33 yGaze34 yGaze35 yGaze36 yGaze37 yGaze38 yGaze39 yGaze40 
-    ##   0.439   0.421   0.315   0.283   0.298   0.237   0.358   0.441   0.269   0.369 
-    ## yGaze41 yGaze42 yGaze43 yGaze44 yGaze45 yGaze46 yGaze47 yGaze48 yGaze49 yGaze50 
-    ##   0.421   0.516   0.523   0.466   0.520   0.520   0.420   0.455   0.499   0.501 
-    ## yGaze51 yGaze52 yGaze53 yGaze54 yGaze55 yGaze56 
-    ##   0.607   0.566   0.685   0.641   0.547   0.548
-
-1.\[dataFrame\] pipe
+    ##  respondentNr1  respondentNr2  respondentNr3  respondentNr4  respondentNr5 
+    ##          0.000          0.000          0.000          0.000          0.000 
+    ##  respondentNr6  respondentNr7  respondentNr8  respondentNr9 respondentNr10 
+    ##          0.000          0.000          0.000          0.000          0.000 
+    ## respondentNr11 respondentNr12 respondentNr13 respondentNr14 respondentNr15 
+    ##          2.000          2.000          2.000          2.000          2.000 
+    ## respondentNr16 respondentNr17 respondentNr18 respondentNr19 respondentNr20 
+    ##          2.000          2.000          2.000          2.000          2.000 
+    ## respondentNr21 respondentNr22 respondentNr23 respondentNr24 respondentNr25 
+    ##          2.000          2.000          2.000          2.000          2.000 
+    ## respondentNr26 respondentNr27 respondentNr28 respondentNr29 respondentNr30 
+    ##          2.000          6.000          6.000          6.000          6.000 
+    ## respondentNr31 respondentNr32 respondentNr33 respondentNr34 respondentNr35 
+    ##          6.000          6.000          6.000          6.000          8.000 
+    ## respondentNr36 respondentNr37 respondentNr38 respondentNr39 respondentNr40 
+    ##          8.000          8.000          8.000          8.000          8.000 
+    ## respondentNr41 respondentNr42 respondentNr43 respondentNr44 respondentNr45 
+    ##          8.000          8.000          8.000          8.000          8.000 
+    ## respondentNr46 respondentNr47 respondentNr48 respondentNr49 respondentNr50 
+    ##          8.000          8.000         10.000         10.000         10.000 
+    ## respondentNr51 respondentNr52 respondentNr53 respondentNr54 respondentNr55 
+    ##         10.000         10.000         10.000         10.000         10.000 
+    ## respondentNr56 respondentNr57 respondentNr58 respondentNr59 respondentNr60 
+    ##         10.000         10.000         10.000         10.000         10.000 
+    ##    stimulusNr1    stimulusNr2    stimulusNr3    stimulusNr4    stimulusNr5 
+    ##          5.000          7.000          7.000          7.000         17.000 
+    ##    stimulusNr6    stimulusNr7    stimulusNr8    stimulusNr9   stimulusNr10 
+    ##         17.000         19.000         19.000         29.000         29.000 
+    ##   stimulusNr11   stimulusNr12   stimulusNr13   stimulusNr14   stimulusNr15 
+    ##          5.000          5.000          5.000          7.000          7.000 
+    ##   stimulusNr16   stimulusNr17   stimulusNr18   stimulusNr19   stimulusNr20 
+    ##         17.000         17.000         19.000         19.000         19.000 
+    ##   stimulusNr21   stimulusNr22   stimulusNr23   stimulusNr24   stimulusNr25 
+    ##         29.000         29.000         29.000         31.000         31.000 
+    ##   stimulusNr26   stimulusNr27   stimulusNr28   stimulusNr29   stimulusNr30 
+    ##         31.000         17.000         17.000         17.000         19.000 
+    ##   stimulusNr31   stimulusNr32   stimulusNr33   stimulusNr34   stimulusNr35 
+    ##         19.000         29.000         29.000         31.000          5.000 
+    ##   stimulusNr36   stimulusNr37   stimulusNr38   stimulusNr39   stimulusNr40 
+    ##          5.000          7.000          7.000         17.000         17.000 
+    ##   stimulusNr41   stimulusNr42   stimulusNr43   stimulusNr44   stimulusNr45 
+    ##         19.000         19.000         19.000         29.000         29.000 
+    ##   stimulusNr46   stimulusNr47   stimulusNr48   stimulusNr49   stimulusNr50 
+    ##         31.000         31.000          5.000          7.000          7.000 
+    ##   stimulusNr51   stimulusNr52   stimulusNr53   stimulusNr54   stimulusNr55 
+    ##         17.000         17.000         19.000         19.000         19.000 
+    ##   stimulusNr56   stimulusNr57   stimulusNr58   stimulusNr59   stimulusNr60 
+    ##         29.000         29.000         31.000         31.000         31.000 
+    ##  timeStampsMs1  timeStampsMs2  timeStampsMs3  timeStampsMs4  timeStampsMs5 
+    ##        121.000          0.000        164.000        362.000         90.000 
+    ##  timeStampsMs6  timeStampsMs7  timeStampsMs8  timeStampsMs9 timeStampsMs10 
+    ##        289.000        122.000        322.000         78.000        279.000 
+    ## timeStampsMs11 timeStampsMs12 timeStampsMs13 timeStampsMs14 timeStampsMs15 
+    ##         39.000        238.000        439.000         65.000        265.000 
+    ## timeStampsMs16 timeStampsMs17 timeStampsMs18 timeStampsMs19 timeStampsMs20 
+    ##        126.000        327.000          0.000        158.000        358.000 
+    ## timeStampsMs21 timeStampsMs22 timeStampsMs23 timeStampsMs24 timeStampsMs25 
+    ##         19.000        221.000        418.000          0.000        154.000 
+    ## timeStampsMs26 timeStampsMs27 timeStampsMs28 timeStampsMs29 timeStampsMs30 
+    ##        352.000          5.000        207.000        406.000         71.000 
+    ## timeStampsMs31 timeStampsMs32 timeStampsMs33 timeStampsMs34 timeStampsMs35 
+    ##        271.000         81.000        347.000          0.000        152.000 
+    ## timeStampsMs36 timeStampsMs37 timeStampsMs38 timeStampsMs39 timeStampsMs40 
+    ##        353.000        120.000        352.000         78.000        312.000 
+    ## timeStampsMs41 timeStampsMs42 timeStampsMs43 timeStampsMs44 timeStampsMs45 
+    ##          0.000        177.000        377.000         96.000        297.000 
+    ## timeStampsMs46 timeStampsMs47 timeStampsMs48 timeStampsMs49 timeStampsMs50 
+    ##         28.000        261.000        264.000        130.000        329.000 
+    ## timeStampsMs51 timeStampsMs52 timeStampsMs53 timeStampsMs54 timeStampsMs55 
+    ##          0.000        156.000         30.000        233.000        434.000 
+    ## timeStampsMs56 timeStampsMs57 timeStampsMs58 timeStampsMs59 timeStampsMs60 
+    ##        122.000        358.000          0.000        189.000        391.000 
+    ##         xGaze1         xGaze2         xGaze3         xGaze4         xGaze5 
+    ##          0.451          0.466          0.464          0.466          0.481 
+    ##         xGaze6         xGaze7         xGaze8         xGaze9        xGaze10 
+    ##          0.478          0.458          0.457          0.476          0.460 
+    ##        xGaze11        xGaze12        xGaze13        xGaze14        xGaze15 
+    ##          0.488          0.481          0.440          0.466          0.460 
+    ##        xGaze16        xGaze17        xGaze18        xGaze19        xGaze20 
+    ##          0.521          0.525          0.481          0.458          0.451 
+    ##        xGaze21        xGaze22        xGaze23        xGaze24        xGaze25 
+    ##          0.478          0.483          0.457          0.514          0.468 
+    ##        xGaze26        xGaze27        xGaze28        xGaze29        xGaze30 
+    ##          0.425          0.530          0.511          0.551          0.521 
+    ##        xGaze31        xGaze32        xGaze33        xGaze34        xGaze35 
+    ##          0.526          0.555          0.575          0.560          0.494 
+    ##        xGaze36        xGaze37        xGaze38        xGaze39        xGaze40 
+    ##          0.506          0.522          0.518          0.494          0.500 
+    ##        xGaze41        xGaze42        xGaze43        xGaze44        xGaze45 
+    ##          0.497          0.506          0.510          0.493          0.498 
+    ##        xGaze46        xGaze47        xGaze48        xGaze49        xGaze50 
+    ##          0.475          0.470          0.417          0.452          0.454 
+    ##        xGaze51        xGaze52        xGaze53        xGaze54        xGaze55 
+    ##          0.441          0.451          0.460          0.459          0.463 
+    ##        xGaze56        xGaze57        xGaze58        xGaze59        xGaze60 
+    ##          0.437          0.433          0.472          0.460          0.439 
+    ##         yGaze1         yGaze2         yGaze3         yGaze4         yGaze5 
+    ##          0.680          0.360          0.331          0.300          0.301 
+    ##         yGaze6         yGaze7         yGaze8         yGaze9        yGaze10 
+    ##          0.355          0.567          0.448          0.273          0.222 
+    ##        yGaze11        yGaze12        yGaze13        yGaze14        yGaze15 
+    ##          0.437          0.403          0.461          0.450          0.433 
+    ##        yGaze16        yGaze17        yGaze18        yGaze19        yGaze20 
+    ##          0.446          0.427          0.488          0.456          0.422 
+    ##        yGaze21        yGaze22        yGaze23        yGaze24        yGaze25 
+    ##          0.403          0.359          0.312          0.456          0.420 
+    ##        yGaze26        yGaze27        yGaze28        yGaze29        yGaze30 
+    ##          0.390          0.254          0.290          0.332          0.403 
+    ##        yGaze31        yGaze32        yGaze33        yGaze34        yGaze35 
+    ##          0.408          0.226          0.216          0.369          0.307 
+    ##        yGaze36        yGaze37        yGaze38        yGaze39        yGaze40 
+    ##          0.408          0.250          0.209          0.419          0.342 
+    ##        yGaze41        yGaze42        yGaze43        yGaze44        yGaze45 
+    ##          0.323          0.325          0.283          0.495          0.477 
+    ##        yGaze46        yGaze47        yGaze48        yGaze49        yGaze50 
+    ##          0.499          0.467          0.559          0.611          0.552 
+    ##        yGaze51        yGaze52        yGaze53        yGaze54        yGaze55 
+    ##          0.570          0.573          0.874          0.733          0.659 
+    ##        yGaze56        yGaze57        yGaze58        yGaze59        yGaze60 
+    ##          0.534          0.555          0.639          0.582          0.514
 
 ``` r
-controlsXGaze<- filter(dfPonzo, stimulusNr == c(1,3,13,15,25,27)) %>% dplyr::select(xGaze) %>% unlist
+unlist(longDown)
 ```
 
-    ## Warning in stimulusNr == c(1, 3, 13, 15, 25, 27): longer object length is not a
-    ## multiple of shorter object length
+    ##  respondentNr1  respondentNr2  respondentNr3  respondentNr4  respondentNr5 
+    ##          0.000          0.000          0.000          0.000          0.000 
+    ##  respondentNr6  respondentNr7  respondentNr8  respondentNr9 respondentNr10 
+    ##          0.000          0.000          0.000          2.000          2.000 
+    ## respondentNr11 respondentNr12 respondentNr13 respondentNr14 respondentNr15 
+    ##          2.000          2.000          2.000          2.000          2.000 
+    ## respondentNr16 respondentNr17 respondentNr18 respondentNr19 respondentNr20 
+    ##          2.000          2.000          2.000          2.000          2.000 
+    ## respondentNr21 respondentNr22 respondentNr23 respondentNr24 respondentNr25 
+    ##          2.000          2.000          6.000          6.000          6.000 
+    ## respondentNr26 respondentNr27 respondentNr28 respondentNr29 respondentNr30 
+    ##          6.000          6.000          6.000          6.000          6.000 
+    ## respondentNr31 respondentNr32 respondentNr33 respondentNr34 respondentNr35 
+    ##          6.000          6.000          6.000          6.000          8.000 
+    ## respondentNr36 respondentNr37 respondentNr38 respondentNr39 respondentNr40 
+    ##          8.000          8.000          8.000          8.000          8.000 
+    ## respondentNr41 respondentNr42 respondentNr43 respondentNr44 respondentNr45 
+    ##          8.000          8.000          8.000          8.000          8.000 
+    ## respondentNr46 respondentNr47 respondentNr48 respondentNr49 respondentNr50 
+    ##          8.000          8.000          8.000          8.000         10.000 
+    ## respondentNr51 respondentNr52 respondentNr53 respondentNr54 respondentNr55 
+    ##         10.000         10.000         10.000         10.000         10.000 
+    ## respondentNr56 respondentNr57    stimulusNr1    stimulusNr2    stimulusNr3 
+    ##         10.000         10.000          9.000          9.000          9.000 
+    ##    stimulusNr4    stimulusNr5    stimulusNr6    stimulusNr7    stimulusNr8 
+    ##         21.000         23.000         23.000         23.000         33.000 
+    ##    stimulusNr9   stimulusNr10   stimulusNr11   stimulusNr12   stimulusNr13 
+    ##          9.000          9.000         11.000         11.000         21.000 
+    ##   stimulusNr14   stimulusNr15   stimulusNr16   stimulusNr17   stimulusNr18 
+    ##         21.000         23.000         23.000         23.000         33.000 
+    ##   stimulusNr19   stimulusNr20   stimulusNr21   stimulusNr22   stimulusNr23 
+    ##         33.000         35.000         35.000         35.000          9.000 
+    ##   stimulusNr24   stimulusNr25   stimulusNr26   stimulusNr27   stimulusNr28 
+    ##          9.000         11.000         11.000         21.000         21.000 
+    ##   stimulusNr29   stimulusNr30   stimulusNr31   stimulusNr32   stimulusNr33 
+    ##         23.000         33.000         33.000         33.000         35.000 
+    ##   stimulusNr34   stimulusNr35   stimulusNr36   stimulusNr37   stimulusNr38 
+    ##         35.000          9.000          9.000         11.000         11.000 
+    ##   stimulusNr39   stimulusNr40   stimulusNr41   stimulusNr42   stimulusNr43 
+    ##         21.000         21.000         21.000         23.000         23.000 
+    ##   stimulusNr44   stimulusNr45   stimulusNr46   stimulusNr47   stimulusNr48 
+    ##         23.000         33.000         33.000         35.000         35.000 
+    ##   stimulusNr49   stimulusNr50   stimulusNr51   stimulusNr52   stimulusNr53 
+    ##         35.000         11.000         11.000         21.000         21.000 
+    ##   stimulusNr54   stimulusNr55   stimulusNr56   stimulusNr57  timeStampsMs1 
+    ##         21.000         23.000         23.000         33.000         28.000 
+    ##  timeStampsMs2  timeStampsMs3  timeStampsMs4  timeStampsMs5  timeStampsMs6 
+    ##        229.000        429.000        154.000          0.000        152.000 
+    ##  timeStampsMs7  timeStampsMs8  timeStampsMs9 timeStampsMs10 timeStampsMs11 
+    ##        352.000        241.000         63.000        263.000         95.000 
+    ## timeStampsMs12 timeStampsMs13 timeStampsMs14 timeStampsMs15 timeStampsMs16 
+    ##        296.000        125.000        324.000          0.000        156.000 
+    ## timeStampsMs17 timeStampsMs18 timeStampsMs19 timeStampsMs20 timeStampsMs21 
+    ##        351.000        117.000        317.000          0.000        152.000 
+    ## timeStampsMs22 timeStampsMs23 timeStampsMs24 timeStampsMs25 timeStampsMs26 
+    ##        351.000        182.000        381.000         81.000        279.000 
+    ## timeStampsMs27 timeStampsMs28 timeStampsMs29 timeStampsMs30 timeStampsMs31 
+    ##         37.000        421.000        336.000          0.000        192.000 
+    ## timeStampsMs32 timeStampsMs33 timeStampsMs34 timeStampsMs35 timeStampsMs36 
+    ##        393.000          9.000        275.000         85.000        318.000 
+    ## timeStampsMs37 timeStampsMs38 timeStampsMs39 timeStampsMs40 timeStampsMs41 
+    ##          0.000        217.000          0.000        174.000        374.000 
+    ## timeStampsMs42 timeStampsMs43 timeStampsMs44 timeStampsMs45 timeStampsMs46 
+    ##          6.000        205.000        406.000         93.000        293.000 
+    ## timeStampsMs47 timeStampsMs48 timeStampsMs49 timeStampsMs50 timeStampsMs51 
+    ##          0.000        159.000        358.000         28.000        291.000 
+    ## timeStampsMs52 timeStampsMs53 timeStampsMs54 timeStampsMs55 timeStampsMs56 
+    ##          0.000        197.000        432.000         64.000        263.000 
+    ## timeStampsMs57         xGaze1         xGaze2         xGaze3         xGaze4 
+    ##          0.000          0.486          0.483          0.478          0.479 
+    ##         xGaze5         xGaze6         xGaze7         xGaze8         xGaze9 
+    ##          0.481          0.485          0.455          0.482          0.477 
+    ##        xGaze10        xGaze11        xGaze12        xGaze13        xGaze14 
+    ##          0.463          0.458          0.455          0.482          0.450 
+    ##        xGaze15        xGaze16        xGaze17        xGaze18        xGaze19 
+    ##          0.460          0.475          0.477          0.473          0.455 
+    ##        xGaze20        xGaze21        xGaze22        xGaze23        xGaze24 
+    ##          0.451          0.442          0.435          0.514          0.518 
+    ##        xGaze25        xGaze26        xGaze27        xGaze28        xGaze29 
+    ##          0.562          0.576          0.561          0.577          0.581 
+    ##        xGaze30        xGaze31        xGaze32        xGaze33        xGaze34 
+    ##          0.597          0.608          0.608          0.518          0.542 
+    ##        xGaze35        xGaze36        xGaze37        xGaze38        xGaze39 
+    ##          0.506          0.509          0.501          0.491          0.494 
+    ##        xGaze40        xGaze41        xGaze42        xGaze43        xGaze44 
+    ##          0.517          0.521          0.522          0.529          0.528 
+    ##        xGaze45        xGaze46        xGaze47        xGaze48        xGaze49 
+    ##          0.496          0.488          0.472          0.474          0.475 
+    ##        xGaze50        xGaze51        xGaze52        xGaze53        xGaze54 
+    ##          0.444          0.444          0.460          0.437          0.441 
+    ##        xGaze55        xGaze56        xGaze57         yGaze1         yGaze2 
+    ##          0.452          0.463          0.450          0.384          0.404 
+    ##         yGaze3         yGaze4         yGaze5         yGaze6         yGaze7 
+    ##          0.349          0.452          0.302          0.504          0.464 
+    ##         yGaze8         yGaze9        yGaze10        yGaze11        yGaze12 
+    ##          0.388          0.495          0.444          0.439          0.453 
+    ##        yGaze13        yGaze14        yGaze15        yGaze16        yGaze17 
+    ##          0.444          0.456          0.404          0.401          0.390 
+    ##        yGaze18        yGaze19        yGaze20        yGaze21        yGaze22 
+    ##          0.496          0.475          0.472          0.485          0.493 
+    ##        yGaze23        yGaze24        yGaze25        yGaze26        yGaze27 
+    ##          0.446          0.411          0.317          0.386          0.234 
+    ##        yGaze28        yGaze29        yGaze30        yGaze31        yGaze32 
+    ##          0.264          0.249          0.305          0.318          0.322 
+    ##        yGaze33        yGaze34        yGaze35        yGaze36        yGaze37 
+    ##          0.206          0.240          0.276          0.289          0.236 
+    ##        yGaze38        yGaze39        yGaze40        yGaze41        yGaze42 
+    ##          0.258          0.476          0.398          0.352          0.353 
+    ##        yGaze43        yGaze44        yGaze45        yGaze46        yGaze47 
+    ##          0.387          0.364          0.501          0.432          0.284 
+    ##        yGaze48        yGaze49        yGaze50        yGaze51        yGaze52 
+    ##          0.294          0.300          0.589          0.591          0.809 
+    ##        yGaze53        yGaze54        yGaze55        yGaze56        yGaze57 
+    ##          0.724          0.636          0.600          0.608          0.699
+
+3.\[plot\]
 
 ``` r
-controlsYGaze<- filter(dfPonzo, stimulusNr == c(1,3,13,15,25,27)) %>% dplyr::select(yGaze) %>% unlist
+plot(controls$xGaze,controls$yGaze,xlab = "controlsXGaze", ylab="controlsYGaze") 
 ```
 
-    ## Warning in stimulusNr == c(1, 3, 13, 15, 25, 27): longer object length is not a
-    ## multiple of shorter object length
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-96-1.png)<!-- -->
 
 ``` r
-longUpXGaze<- filter(dfPonzo, stimulusNr == c(5,7,17,19,29,31)) %>% dplyr::select(xGaze) %>% unlist 
+plot(longUp$xGaze,longUp$yGaze,xlab = "longUpXGaze", ylab="longUpYGaze") 
 ```
 
-    ## Warning in stimulusNr == c(5, 7, 17, 19, 29, 31): longer object length is not a
-    ## multiple of shorter object length
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-96-2.png)<!-- -->
 
 ``` r
-longUpYGaze<- filter(dfPonzo, stimulusNr == c(5,7,17,19,29,31)) %>% dplyr::select(yGaze) %>% unlist
+plot(longDown$xGaze,longDown$yGaze,xlab = "longDownXGaze", ylab="longDownYGaze") 
 ```
 
-    ## Warning in stimulusNr == c(5, 7, 17, 19, 29, 31): longer object length is not a
-    ## multiple of shorter object length
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-96-3.png)<!-- -->
+
+1.\[population\]get different random sample of 12;random variable of
+random sample
 
 ``` r
-longDownXGaze<- filter(dfPonzo, stimulusNr == c(9,11,21,23,33,35)) %>% dplyr::select(xGaze) %>% unlist
+popDfPonzoXGaze <- unlist(dfPonzo$xGaze)
+popDfPonzoYGaze <- unlist(dfPonzo$yGaze)
+mean(sample(popDfPonzoXGaze,12))
 ```
 
-    ## Warning in stimulusNr == c(9, 11, 21, 23, 33, 35): longer object length is not a
-    ## multiple of shorter object length
+    ## [1] 0.4851667
 
 ``` r
-longDownYGaze<- filter(dfPonzo, stimulusNr == c(9,11,21,23,33,35)) %>% dplyr::select(yGaze) %>% unlist
+mean(sample(popDfPonzoYGaze,12))
 ```
 
-    ## Warning in stimulusNr == c(9, 11, 21, 23, 33, 35): longer object length is not a
-    ## multiple of shorter object length
-
-1.\[dataFrame\] mean piped
+    ## [1] 0.4210833
 
 ``` r
-meanCXGaze<- mean(controlsXGaze,2)
-meanCYGaze<-mean(controlsYGaze,2)
-meanLUXGaze<-mean(longUpXGaze,2)
-meanLUYGaze<-mean(longUpYGaze,2)
-meanLDXGaze<-mean(longDownXGaze,2)
-meanLDYGaze<-mean(longDownYGaze,2)
+mean(popDfPonzoXGaze)
 ```
 
-1.\[dataFrame\] sample
+    ## [1] 0.4863933
 
 ``` r
-samplexGaze<-dfPonzo$xGaze
-sampleyGaze<-dfPonzo$yGaze
-length(samplexGaze)
+mean(popDfPonzoYGaze)
 ```
 
-    ## [1] 2062
+    ## [1] 0.4223865
+
+1.\[seed\] set/ produce the same sample again and again = generate same
+set at each time
 
 ``` r
-length(sampleyGaze)
+set.seed(1) 
 ```
 
-    ## [1] 2062
+1.\[average\] difference between the average of the sample and the
+average of the pop
 
 ``` r
-round(sample(samplexGaze,40),3)
+sampleDfPonzoXGaze<- sample(popDfPonzoXGaze,5)
+abs(mean(sampleDfPonzoXGaze)-mean(popDfPonzoXGaze))
 ```
 
-    ##  [1] 0.579 0.433 0.519 0.504 0.438 0.433 0.526 0.482 0.499 0.463 0.462 0.441
-    ## [13] 0.474 0.442 0.457 0.576 0.456 0.439 0.467 0.439 0.433 0.443 0.530 0.469
-    ## [25] 0.453 0.554 0.524 0.452 0.518 0.448 0.451 0.480 0.509 0.481 0.489 0.457
-    ## [37] 0.450 0.504 0.470 0.526
+    ## [1] 0.008206693
 
 ``` r
-round(sample(sampleyGaze,40),3)
+sampleDfPonzoYGaze<- sample(popDfPonzoYGaze,5)
+abs(mean(sampleDfPonzoYGaze)-mean(popDfPonzoYGaze))
 ```
 
-    ##  [1] 0.294 0.287 0.452 0.269 0.241 0.414 0.277 0.431 0.456 0.210 0.264 0.411
-    ## [13] 0.548 0.611 0.342 0.270 0.407 0.208 0.238 0.413 0.548 0.318 0.680 0.523
-    ## [25] 0.547 0.503 0.430 0.259 0.534 0.572 0.617 0.578 0.327 0.665 0.342 0.599
-    ## [37] 0.614 0.264 0.321 0.226
+    ## [1] 0.04378652
 
-3.\[histogram\]
+1.\[seed\] set/ produce the same sample again and again = generate same
+set at each time by setting the starting number used to generate a
+sequence of random numbers
 
 ``` r
-hist(samplexGaze,freq = TRUE, breaks = c(0.00,0.05,0.10,0.15,0.20,0.25,0.30,0.35,0.40,0.45,0.50,0.55,0.60,0.65,0.70,0.75,0.80,0.85,0.90,0.95,1.00,1.05,1.10,1.15,1.20),main="xGaze Position", xlab="xGaze position in %")
+set.seed(5) 
+```
+
+1.\[average\] difference between the average of the sample and the
+average of the pop
+
+``` r
+sampleDfPonzoXGaze<- sample(popDfPonzoXGaze,5)
+abs(mean(sampleDfPonzoXGaze)-mean(popDfPonzoXGaze))
+```
+
+    ## [1] 0.001793307
+
+``` r
+sampleDfPonzoYGaze<- sample(popDfPonzoYGaze,5)
+abs(mean(sampleDfPonzoYGaze)-mean(popDfPonzoYGaze))
+```
+
+    ## [1] 0.03138652
+
+###### <sup>1</sup> Note: the average of the samples is a random variable =&gt;inferential statistics needed
+
+1.\[nullDistribution\] all possible realizations under the null
+
+``` r
+obslongUpControlsX <- mean(longUp$xGaze) - mean(controls$xGaze)
+obslongUpControlsY <- mean(longUp$yGaze) - mean(controls$yGaze)
+obslongDownControls <- mean(longDown$xGaze) - mean(controls$xGaze)
+obslongDownControls <- mean(longDown$yGaze) - mean(controls$yGaze)
+popDfPonzoXGaze <- unlist(dfPonzo$xGaze)
+popDfPonzoXGaze <- unlist(dfPonzo$yGaze)
+popDfPonzoControls <- sample(popDfPonzoXGaze,12)
+popDfPonzoLongUp <- sample(popDfPonzoXGaze,12)
+mean(popDfPonzoLongUp) - mean(popDfPonzoControls)
+```
+
+    ## [1] -0.05941667
+
+``` r
+popDfPonzoControlsY <- sample(popDfPonzoYGaze,12)
+popDfPonzoLongUpY <- sample(popDfPonzoYGaze,12)
+mean(popDfPonzoLongUpY) - mean(popDfPonzoControlsY)
+```
+
+    ## [1] -0.03208333
+
+###### <sup>1</sup> Note: do sampling and substraction multiple times = see several realizations of the difference in mean for the null hypothesis
+
+1.\[nullHypothesis\] check
+
+``` r
+n<-10000
+nullsPopX <- vector("numeric",n)
+for(i in 1:n){
+  popDfPonzoControlsX <- sample(popDfPonzoXGaze,12)
+  popDfPonzoLongUpX <- sample(popDfPonzoXGaze,12)
+  nullsPopX[i]<- mean(popDfPonzoLongUpX) - mean(popDfPonzoControlsX)
+}
+max(nullsPopX)
+```
+
+    ## [1] 0.2485
+
+``` r
+hist(nullsPopX)
 ```
 
 ![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-103-1.png)<!-- -->
 
 ``` r
-hist(samplexGaze,freq = FALSE, breaks = c(0.00,0.05,0.10,0.15,0.20,0.25,0.30,0.35,0.40,0.45,0.50,0.55,0.60,0.65,0.70,0.75,0.80,0.85,0.90,0.95,1.00,1.05,1.10,1.15,1.20),main="xGaze Position", xlab="xGaze position in %")
+n<-10000
+nullsPopY <- vector("numeric",n)
+for(i in 1:n){
+  popDfPonzoControlsY <- sample(popDfPonzoYGaze,12)
+  popDfPonzoLongUpY <- sample(popDfPonzoYGaze,12)
+  nullsPopY[i]<- mean(popDfPonzoLongUpY) - mean(popDfPonzoControlsY)
+}
+max(nullsPopY)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-103-2.png)<!-- -->
+    ## [1] 0.2074167
 
 ``` r
-hist(sampleyGaze,freq = TRUE, breaks = c(0.00,0.05,0.10,0.15,0.20,0.25,0.30,0.35,0.40,0.45,0.50,0.55,0.60,0.65,0.70,0.75,0.80,0.85,0.90,0.95,1.00,1.05,1.10,1.15,1.20),main="yGaze Position", xlab="yGaze position in %")
-```
-
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-103-3.png)<!-- -->
-
-``` r
-hist(sampleyGaze,freq = FALSE, breaks = c(0.00,0.05,0.10,0.15,0.20,0.25,0.30,0.35,0.40,0.45,0.50,0.55,0.60,0.65,0.70,0.75,0.80,0.85,0.90,0.95,1.00,1.05,1.10,1.15,1.20),main="yGaze Position", xlab="yGaze position in %")
-```
-
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-103-4.png)<!-- -->
-
-3.\[scatterplot\] empirical cumulative distribution - ECD ; shows % of
-individuals below a threshold
-
-``` r
-samplexGazeS<- seq(floor(min(samplexGaze)),ceiling(max(samplexGaze)),0.1)
-plot(samplexGazeS,ecdf(samplexGaze)(samplexGazeS),type="l",xlim=c(0.0,2.0),
-     xlab="xGaze position in %",ylab="F(samplexGaze)")
+hist(nullsPopY)
 ```
 
 ![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-104-1.png)<!-- -->
 
+###### <sup>1</sup> Note: if knowing the null distribution, one can describe the proportion of values one sees for any interval of values -&gt; define a number of times to redo the null hypothesis check; record all differences
+
+1.\[nullHypothesis\] \#1 option: how often (frequency) null values are
+bigger or not than observed values
+
 ``` r
-sampleyGazeS<- seq(floor(min(sampleyGaze)),ceiling(max(sampleyGaze)),0.1)
-plot(sampleyGazeS,ecdf(samplexGaze)(sampleyGazeS),type="l",xlim=c(0.0,2.0),
-     xlab="yGaze position in %",ylab="F(sampleyGaze)")
+sum(nullsPopX > obslongUpControlsX)/n 
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-104-2.png)<!-- -->
-
-3.\[QQ\] check whether mean agrees with pnorm,if TRUE, then the normal
-distribution is very good approximation
+    ## [1] 0.5574
 
 ``` r
-mean(samplexGaze<50)
+sum(nullsPopY > obslongUpControlsY)/n 
+```
+
+    ## [1] 0.2973
+
+1.\[nullHypothesis\] \#2 option: proportion of times the null is bigger
+than the observation
+
+``` r
+mean(nullsPopX > obslongUpControlsX)
+```
+
+    ## [1] 0.5574
+
+``` r
+mean(nullsPopY > obslongUpControlsY)
+```
+
+    ## [1] 0.2973
+
+1.\[pValue\] probability that an outcome from the null distribution is
+bigger than what one observed when the null hypothesis is true
+
+``` r
+mean(abs(nullsPopX) >obslongUpControlsX)
 ```
 
     ## [1] 1
 
 ``` r
-pnorm(50,mean(samplexGaze),sd(samplexGaze))
+mean(abs(nullsPopY) >obslongUpControlsY)
 ```
 
-    ## [1] 1
+    ## [1] 0.5764
+
+###### <sup>1</sup> Note: \#3 option: how often (frequency) it is bigger in absolute
+
+1.\[nullDistribution\] loop for 1000 times taking a random sample of 5
+gazes calculating the mean and storing it within an averages vector
 
 ``` r
-mean(sampleyGaze<50)
+head(popDfPonzoXGaze)
 ```
 
-    ## [1] 1
-
-``` r
-pnorm(50,mean(sampleyGaze),sd(sampleyGaze))
-```
-
-    ## [1] 1
-
-3.\[QQ\]
-
-``` r
-ps<- seq(0.01,0.99,0.01)
-qs<- quantile(samplexGaze,ps)
-normalQs <- qnorm(ps, mean(samplexGaze), sd(samplexGaze))
-plot(normalQs,qs,xlab = "Normal percentiles", ylab="xGaze percentiles")
-```
-
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-106-1.png)<!-- -->
-
-``` r
-qs<- quantile(sampleyGaze,ps)
-normalQs <- qnorm(ps, mean(sampleyGaze), sd(sampleyGaze))
-plot(normalQs,qs,xlab = "Normal percentiles", ylab="yGaze percentiles")
-```
-
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-106-2.png)<!-- -->
-
-3.\[QQ\] automatic
-
-``` r
-par(mfrow = c(2,2)) 
-qqnorm(samplexGaze)
-qqline(samplexGaze)
-qqnorm(sampleyGaze)
-qqline(sampleyGaze)
-```
-
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-107-1.png)<!-- -->
-
-3.\[boxplot\]use for non normally distributed data
-
-``` r
-par(mfrow = c(2,2)) 
-boxplot(samplexGaze,ylab="xGaze position",ylim=c(0,1))
-boxplot(sampleyGaze,range = 1.5,ylab="yGaze position",ylim=c(0,1))
-```
-
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-108-1.png)<!-- -->
-
-3.\[boxplot\] split
-
-``` r
-par(mfrow = c(1,1)) 
-boxplot(split(dfPonzo$xGaze,dfPonzo$stimulusNr),xlab("StimulusNr"))
-```
-
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-109-1.png)<!-- -->
-
-``` r
-boxplot(split(dfPonzo$xGaze,dfPonzo$respondentNr),xlab("RespondentNr"))
-```
-
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-109-2.png)<!-- -->
-
-``` r
-boxplot(split(dfPonzo$yGaze,dfPonzo$stimulusNr),xlab("StimulusNr"))
-```
-
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-109-3.png)<!-- -->
-
-``` r
-boxplot(split(dfPonzo$yGaze,dfPonzo$respondentNr),xlab("RespondentNr"))
-```
-
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-109-4.png)<!-- -->
-
-> library load
-
-``` r
-library(ggplot2)
-```
-
-3.\[plot\]
-
-``` r
-length(controlsXGaze)
-```
-
-    ## [1] 56
-
-``` r
-length(longUpXGaze)
-```
-
-    ## [1] 60
-
-``` r
-length(longDownXGaze)
-```
-
-    ## [1] 57
-
-``` r
-controlsXGaze<- append(controlsXGaze, c(NA,NA,NA,NA))
-controlsYGaze<- append(controlsYGaze, c(NA,NA,NA,NA))
-longDownXGaze<- append(longDownXGaze, c(NA,NA,NA))
-longDownYGaze<- append(longDownYGaze, c(NA,NA,NA))
-```
-
-``` r
-plot(controlsXGaze,longUpXGaze,xlab = "controls XGaze", ylab="longUp XGaze") 
-```
-
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-112-1.png)<!-- -->
-
-``` r
-plot(controlsXGaze,longDownXGaze,xlab = "controls XGaze", ylab="longDown XGaze") 
-```
-
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-112-2.png)<!-- -->
-
-``` r
-plot(controlsYGaze,longUpYGaze,xlab = "controls YGaze", ylab="longUp YGaze") 
-```
-
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-112-3.png)<!-- -->
-
-``` r
-plot(controlsYGaze,longDownYGaze,xlab = "controls YGaze", ylab="longDown YGaze") 
-```
-
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-112-4.png)<!-- -->
-
-2.\[sample random\]get different random sample of 12 ;random variable of
-random sample;the average of the samples is a random variable
-
-``` r
-mean(sample(stimNREqual$xGaze,2))
-```
-
-    ## [1] 0.56
-
-``` r
-mean(controlsXGaze,2)  
-```
-
-    ## [1] NA
-
-``` r
-mean(longUpXGaze,2)
-```
-
-    ## [1] 0.4755
-
-``` r
-mean(longDownXGaze,2)
-```
-
-    ## [1] NA
-
-2.\[seed\] set to always get the same sample;sets the starting number
-used to generate a sequence of random numbers
-
-``` r
-set.seed(1)
-sample<- sample(stimNREqual$xGaze,40)
-```
-
-2.\[sample\] absolute value of the difference between the average of the
-sample and the average of all the values
-
-``` r
-abs(mean(sample)-mean(stimNREqual$xGaze)) 
-```
-
-    ## [1] 0.002053571
-
-2.\[seed\] set to always get the same sample;;sets the starting number
-used to generate a sequence of random numbers
-
-``` r
-set.seed(5)
-sample<- sample(stimNREqual$xGaze,40)
-abs(mean(sample)-mean(stimNREqual$xGaze))
-```
-
-    ## [1] 0.002028571
-
-2.\[difference\] means
-
-``` r
-obsCLU<- mean(longUpXGaze) - mean(controlsXGaze)
-obsCLD<- mean(longDownXGaze) - mean(controlsXGaze)
-```
-
-2.\[population\] set
-
-``` r
-pop <- stimNREqual$xGaze
-pop<- unlist(pop)
-```
-
-2.\[nullDistibution\] proportion of 1,000 averages sampled per 5
-
-``` r
-head(pop)
-```
-
-    ## [1] 0.492 0.485 0.443 0.446 0.461 0.486
+    ## [1] 0.324 0.329 0.331 0.340 0.642 0.681
 
 ``` r
 set.seed(1)
 n<-1000
-averages5 <- vector("numeric",n)
+averagesPopX <- vector("numeric",n)
 for(i in 1:n){
-  POP <- sample(pop,5)
-  averages5[i]<- mean(POP)
+  X <- sample(popDfPonzoXGaze,5)#using a for-loop take a random sample of 5 gazes 1,000 times ; save these averages
+  averagesPopX[i]<- mean(X)
 }
 ```
 
-2.\[nullDistibution\] proportion of 1,000 averages sampled per 50
+``` r
+hist(averagesPopX)
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-109-1.png)<!-- -->
+
+1.\[nullHypothesis\] check
+
+``` r
+mean( abs( averagesPopX - mean(popDfPonzoXGaze) ) > 0.05) #What proportion of these 1,000 averages are more than 0.05%  away from the average of mean(X) ?
+```
+
+    ## [1] 0.385
+
+1.\[nullDistribution\] loop for 10000 times taking a random sample of 5
+gazes calculating the mean and storing it within an averages vector
+
+``` r
+head(popDfPonzoXGaze)
+```
+
+    ## [1] 0.324 0.329 0.331 0.340 0.642 0.681
 
 ``` r
 set.seed(1)
-n <- 1000
-averages50 <- vector("numeric",n)
+n<-10000
+averagesPopX <- vector("numeric",n)
 for(i in 1:n){
-  POP <- sample(pop,50)
-  averages50[i]<- mean(POP)
+  X <- sample(popDfPonzoXGaze,5)#using a for-loop take a random sample of 5 gazes 10000 times ; save these averages
+  averagesPopX[i]<- mean(X)
 }
 ```
 
-3.\[histogram\]
+``` r
+hist(averagesPopX)
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-112-1.png)<!-- -->
+
+1.\[nullHypothesis\] check
+
+``` r
+mean( abs( averagesPopX - mean(popDfPonzoXGaze) ) > 0.05) #What proportion of these 10000 averages are more than 0.05%  away from the average of mean(X) ?
+```
+
+    ## [1] 0.4017
+
+1.\[nullDistribution\] loop for 10000 times taking a random sample of 5
+gazes calculating the mean and storing it within an averages vector
+
+``` r
+head(popDfPonzoYGaze)
+```
+
+    ## [1] 0.324 0.329 0.331 0.340 0.642 0.681
+
+``` r
+set.seed(1)
+n<-1000
+averagesPopY <- vector("numeric",n)
+for(i in 1:n){
+  Y <- sample(popDfPonzoYGaze,5)#using a for-loop take a random sample of 5 gazes 1,000 times ; save these averages
+  averagesPopY[i]<- mean(Y)
+}
+```
+
+``` r
+hist(averagesPopY)
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-115-1.png)<!-- -->
+
+1.\[nullHypothesis\] check
+
+``` r
+mean( abs( averagesPopY - mean(popDfPonzoYGaze) ) > 0.05)#What proportion of these 1,000 averages are more than 0.05%  away from the average of mean(Y) ?
+```
+
+    ## [1] 0.385
+
+1.\[normalApproximation\] describe distribution = describe the entier
+list
+
+``` r
+head(popDfPonzoXGaze)
+```
+
+    ## [1] 0.324 0.329 0.331 0.340 0.642 0.681
+
+``` r
+mean(popDfPonzoXGaze <= 0.500)
+```
+
+    ## [1] 0.7526673
+
+``` r
+prop = function(q) {
+  mean(popDfPonzoXGaze <= q)
+}
+qs<- seq(from = min(popDfPonzoXGaze), to = max(popDfPonzoXGaze), length=20)
+props = sapply(qs,prop)
+props = sapply(qs, function(q) mean(popDfPonzoXGaze <= q))
+```
+
+1.\[normalApproximation\] plot
+
+``` r
+plot(qs, props)
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-118-1.png)<!-- -->
+
+###### <sup>1</sup> Note: \#1 option: empirical cumulative distribution function
+
+1.\[normalApproximation\] describe distribution = describe the entier
+list =&gt; empirical cumulative distribution function
+
+``` r
+plot(ecdf(popDfPonzoXGaze))
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-119-1.png)<!-- -->
+
+###### <sup>1</sup> Note: \#2 option: empirical cumulative distribution function
+
+1.\[centralLimitTheorem\]
+
+``` r
+head(popDfPonzoXGaze)
+```
+
+    ## [1] 0.324 0.329 0.331 0.340 0.642 0.681
+
+``` r
+set.seed(1)
+n<-1000
+averagesPopX5 <- vector("numeric",n)
+for(i in 1:n){
+  X <- sample(popDfPonzoXGaze,5)#using a for-loop take a random sample of 5 mice 1,000 times ; Save these averages
+  averagesPopX5[i]<- mean(X)
+}
+```
+
+``` r
+head(popDfPonzoXGaze)
+```
+
+    ## [1] 0.324 0.329 0.331 0.340 0.642 0.681
+
+``` r
+set.seed(1)
+n<-1000
+averagesPopX50 <- vector("numeric",n)
+for(i in 1:n){
+  X <- sample(popDfPonzoXGaze,50)#using a for-loop take a random sample of 5 mice 1,000 times ; Save these averages
+  averagesPopX50[i]<- mean(X)
+}
+```
 
 ``` r
 par(mfrow = c(2,1))
-hist(averages5)
-hist(averages50)
+hist(averagesPopX5)
+hist(averagesPopX50)  
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-121-1.png)<!-- -->
-
-2.\[p-value\] proportion of observations between 0.600 and 0.400 in a
-normal distribution
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-122-1.png)<!-- -->
 
 ``` r
-mu <- mean(pop) 
-sigma <- sd(pop)
+mean(averagesPopX5<0.600 & averagesPopX5>0.400)
+```
+
+    ## [1] 0.635
+
+``` r
+mean(averagesPopX50<0.600 & averagesPopX50>0.400)
+```
+
+    ## [1] 0.883
+
+###### <sup>1</sup> Note: for the last set of averages, the ones obtained from a sample size of 5 vs. 50, what proportion are between 0.400 and 0.600?
+
+``` r
+mu <- mean(averagesPopX50)
+mu
+```
+
+    ## [1] 0.4224979
+
+``` r
+sigma <- sd(averagesPopX50)
+sigma
+```
+
+    ## [1] 0.01950099
+
+1.  \[pNorm\] find proportion of observations below a cutoff x given a
+    normal distribution with mean mu and standard deviation sigma with
+    pnorm(x, mu, sigma) or pnorm( (x-mu)/sigma )
+
+``` r
 pnorm(0.600, mu, sigma) - pnorm(0.400,mu,sigma)  
 ```
 
-    ## [1] 0.986168
+    ## [1] 0.8756845
+
+###### <sup>1</sup> Note: What is the proportion of observations between 0.600 and 0.400 in a normal distribution with mu and sd?
+
+1.\[centralLimitTheorem\]
 
 ``` r
-mu <- mean(pop) 
-sigma <- sd(pop)
-pnorm(0.600, mu, sigma) - pnorm(0.300,mu,sigma)  
+popMean <- mean(popDfPonzoXGaze)
+popSD <- sd(popDfPonzoXGaze)
+propWithinOneSDX<- (popDfPonzoXGaze-popMean)/popSD
+mean(abs(propWithinOneSDX) <=1) #What proportion of xGaze% are within 1 SD away from the average Gaze%?
 ```
 
-    ## [1] 0.9975565
+    ## [1] 0.699321
 
 ``` r
-mu <- mean(pop) 
-sigma <- sd(pop)
-pnorm(0.600, mu, sigma) - pnorm(0.200,mu,sigma) 
+mean(abs(propWithinOneSDX) <=2)#What proportion of xGaze% are within 2 SD away from the average Gaze%?
 ```
 
-    ## [1] 0.9975572
+    ## [1] 0.9655674
 
 ``` r
-mu <- mean(pop) 
-sigma <- sd(pop)
-pnorm(0.700, mu, sigma) - pnorm(0.400,mu,sigma)  
+mean(abs(propWithinOneSDX) <=3) #What proportion of xGaze% are within 3 SD away from the average Gaze%?
 ```
 
-    ## [1] 0.9886108
-
-> library load
+    ## [1] 0.9883608
 
 ``` r
-library(dplyr)
+popMean <- mean(popDfPonzoYGaze)
+popSD <- sd(popDfPonzoYGaze)
+propWithinOneSDY<- (popDfPonzoYGaze-popMean)/popSD
+mean(abs(propWithinOneSDY) <=1) #What proportion of xGaze% are within 1 SD away from the average Gaze%?
 ```
+
+    ## [1] 0.699321
 
 ``` r
-controlsMXGaze<- filter(dfPonzo, respondentNr==c(8,2), stimulusNr == c(1,3,13,15,25,27))
+mean(abs(propWithinOneSDY) <=2)#What proportion of xGaze% are within 2 SD away from the average Gaze%?
 ```
 
-    ## Warning in stimulusNr == c(1, 3, 13, 15, 25, 27): longer object length is not a
-    ## multiple of shorter object length
+    ## [1] 0.9655674
 
 ``` r
-controlsMXGaze <- as.vector(controlsMXGaze$xGaze,mode = "any") 
-mcontrolsMXGaze<-mean(controlsMXGaze)
+mean(abs(propWithinOneSDY) <=3) #What proportion of xGaze% are within 3 SD away from the average Gaze%?
 ```
 
-> library load
-
-``` r
-library(rafalib)
-```
-
-``` r
-popsd(controlsMXGaze)
-```
-
-    ## [1] 0.02669449
-
-``` r
-set.seed(1) 
-XcontrolsMXGaze <- sample(controlsMXGaze,10)
-McontrolsMXGaze<-mean(XcontrolsMXGaze) 
-```
-
-> library load
-
-``` r
-library(dplyr)
-```
-
-``` r
-longUpMXGaze<- filter(dfPonzo,respondentNr==c(8,2) & stimulusNr == c(5,7,17,19,29,31)) 
-```
-
-    ## Warning in stimulusNr == c(5, 7, 17, 19, 29, 31): longer object length is not a
-    ## multiple of shorter object length
-
-``` r
-longUpMXGaze <-as.vector(longUpMXGaze$xGaze,mode = "any")
-mlongUpMXGaze<-mean(longUpMXGaze)
-```
+    ## [1] 0.9883608
 
 > library load
 
@@ -3126,19 +3521,190 @@ library(rafalib)
 ```
 
 ``` r
-popsd(longUpMXGaze)
+qqnorm(popDfPonzoXGaze)
+abline(0,1)
 ```
 
-    ## [1] 0.02419816
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-128-1.png)<!-- -->
 
 ``` r
-set.seed(1)
-YlongUpMXGaze <- sample(longUpMXGaze,10) 
-MlongUpMXGaze<-mean(YlongUpMXGaze)  
-abs( ( mlongUpMXGaze - mcontrolsMXGaze ) - ( MlongUpMXGaze - McontrolsMXGaze ) )
+qqnorm(popDfPonzoYGaze)
+abline(0,1)
 ```
 
-    ## [1] 0.003090476
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-128-2.png)<!-- -->
+
+> library load
+
+``` r
+library(dplyr)
+```
+
+``` r
+avgs <- replicate(10000, mean( sample(popDfPonzoXGaze, 25)))
+mypar(1,2)
+hist(avgs)
+qqnorm(avgs)
+qqline(avgs)
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-130-1.png)<!-- -->
+
+``` r
+mean(avgs) #What is the average of the distribution of the sample average?
+```
+
+    ## [1] 0.4221358
+
+> library load
+
+``` r
+library(rafalib)
+```
+
+``` r
+sd(avgs)#What is the standard deviation of the distribution of sample averages (use popsd())?
+```
+
+    ## [1] 0.02720529
+
+> library load
+
+``` r
+library(dplyr)
+```
+
+1.\[centralLimitTheorem\] practice
+
+###### <sup>1</sup> Note: the NUll distirbution is very well approximated by a normal distribution; checkwhether normal approximation applies
+
+``` r
+obslongUpControlsX <- mean(longUp$xGaze) - mean(controls$xGaze)
+obslongUpControlsY <- mean(longUp$yGaze) - mean(controls$yGaze)
+popDfPonzoXGaze <- unlist(dfPonzo$xGaze)
+popDfPonzoYGaze <- unlist(dfPonzo$yGaze)
+```
+
+``` r
+popDfPonzoControlsX <- sample(popDfPonzoXGaze,12)
+popDfPonzoLongUpX <- sample(popDfPonzoXGaze,12)
+mean(popDfPonzoLongUpX) - mean(popDfPonzoControlsX)#random sample;get different random sample of 12;random variable of random sample
+```
+
+    ## [1] -0.005916667
+
+``` r
+popDfPonzoControlsY <- sample(popDfPonzoYGaze,12)
+popDfPonzoLongUpY <- sample(popDfPonzoYGaze,12)
+mean(popDfPonzoLongUpY) - mean(popDfPonzoControlsY)
+```
+
+    ## [1] 0.0595
+
+###### <sup>1</sup> Note: if knowing the null distribution, one can describe the proportion of values one sees for any interval of values
+
+###### <sup>1</sup> Note: define a number of times to redo the null hypothesis check; record all differences
+
+``` r
+n<-10000
+nullsPopX <- vector("numeric",n)
+for(i in 1:n){
+  popDfPonzoControlsX <- sample(popDfPonzoXGaze,12)
+  popDfPonzoLongUpX <- sample(popDfPonzoXGaze,12)
+  nullsPopX[i]<- mean(popDfPonzoLongUpX) - mean(popDfPonzoControlsX)
+}
+max(nullsPopX)
+```
+
+    ## [1] 0.06616667
+
+``` r
+hist(nullsPopX)
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-136-1.png)<!-- -->
+
+``` r
+n<-10000
+nullsPopY <- vector("numeric",n)
+for(i in 1:n){
+  popDfPonzoControlsY <- sample(popDfPonzoYGaze,12)
+  popDfPonzoLongUpY <- sample(popDfPonzoYGaze,12)
+  nullsPopY[i]<- mean(popDfPonzoLongUpY) - mean(popDfPonzoControlsY)
+}
+max(nullsPopY)
+```
+
+    ## [1] 0.2159167
+
+``` r
+hist(nullsPopY)
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-137-1.png)<!-- -->
+
+1.\[nullHypothesis\]
+
+``` r
+sum(nullsPopX > obslongUpControlsX)/n #1 option: how often null values are bigger or not than observed values 
+```
+
+    ## [1] 0.6705
+
+``` r
+sum(nullsPopY > obslongUpControlsY)/n 
+```
+
+    ## [1] 0.2881
+
+``` r
+mean(nullsPopX >obslongUpControlsX) #2 option: proportion of times the null is bigger than the observation 
+```
+
+    ## [1] 0.6705
+
+``` r
+mean(nullsPopY >obslongUpControlsY)
+```
+
+    ## [1] 0.2881
+
+``` r
+mean(abs(nullsPopX) >obslongUpControlsX)#3 option: how often it is bigger in absolute 
+```
+
+    ## [1] 1
+
+``` r
+mean(abs(nullsPopY) >obslongUpControlsY)
+```
+
+    ## [1] 0.5749
+
+###### <sup>1</sup> Note: p value = the probability that an outcome from the null distribution is bigger than what one observed when the null hypothesis is true
+
+> library load
+
+``` r
+library(rafalib)
+```
+
+``` r
+mypar()
+qqnorm(nullsPopX)
+qqline(nullsPopX)
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-142-1.png)<!-- -->
+
+``` r
+qqnorm(nullsPopY)
+qqline(nullsPopY)
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-142-2.png)<!-- -->
+\#\#\#\#\#\# <sup>1</sup> Note: use normal approximation instead of
+accessing the population through changes of the sample
 
 ## III.
 
