@@ -3058,13 +3058,13 @@ popDfPonzoYGaze <- unlist(dfPonzo$yGaze)
 mean(sample(popDfPonzoXGaze,12))
 ```
 
-    ## [1] 0.4851667
+    ## [1] 0.4836667
 
 ``` r
 mean(sample(popDfPonzoYGaze,12))
 ```
 
-    ## [1] 0.4210833
+    ## [1] 0.4283333
 
 ``` r
 mean(popDfPonzoXGaze)
@@ -3705,6 +3705,108 @@ qqline(nullsPopY)
 ![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-142-2.png)<!-- -->
 \#\#\#\#\#\# <sup>1</sup> Note: use normal approximation instead of
 accessing the population through changes of the sample
+
+> library load
+
+``` r
+library(dplyr)
+```
+
+1.\[tTest\]
+
+``` r
+N <- length(controlsXGaze)
+se <- sqrt(var(longUpXGaze)/N+ #square root of the variance of the sample estimate of the variance divided by N=sample size
+               var(controlsXGaze)/N) #gives us standard error estimate
+tstatX <- obslongUpControlsX/se
+tstatX
+```
+
+    ##            xGaze
+    ## xGaze -0.1477098
+
+``` r
+library(dplyr)
+N <- length(controlsYGaze)
+se <- sqrt(var(longUpYGaze)/N+ 
+             var(controlsYGaze)/N) 
+tstatY <- obslongUpControlsY/se
+tstatY
+```
+
+    ##           yGaze
+    ## yGaze 0.1788333
+
+``` r
+1- pnorm(tstatX) #what proportion of normally distributed data, with means 0 and standard deviation 1,are lower than whatever value you put here
+```
+
+    ##           xGaze
+    ## xGaze 0.5587141
+
+``` r
+2*(1- pnorm(tstatX))
+```
+
+    ##          xGaze
+    ## xGaze 1.117428
+
+``` r
+1- pnorm(tstatY) 
+```
+
+    ##           yGaze
+    ## yGaze 0.4290343
+
+``` r
+2*(1- pnorm(tstatY))
+```
+
+    ##           yGaze
+    ## yGaze 0.8580686
+
+``` r
+n<-10000
+nullsPopX <- vector("numeric",n)
+for(i in 1:n){
+  popDfPonzoControlsX <- sample(popDfPonzoXGaze,12)
+  popDfPonzoLongUpX <- sample(popDfPonzoXGaze,12)
+  nullsPopX[i]<- mean(popDfPonzoLongUpX) - mean(popDfPonzoControlsX)
+}
+
+n<-10000
+nullsPopY <- vector("numeric",n)
+for(i in 1:n){
+  popDfPonzoControlsY <- sample(popDfPonzoYGaze,12)
+  popDfPonzoLongUpY <- sample(popDfPonzoYGaze,12)
+  nullsPopY[i]<- mean(popDfPonzoLongUpY) - mean(popDfPonzoControlsY)
+}
+```
+
+###### <sup>1</sup> Note: how good of an approximation this is =&gt; access the population
+
+> library load
+
+``` r
+library(rafalib)
+```
+
+``` r
+mypar()
+qqnorm(nullsPopX)
+abline(0,1)
+qqline(nullsPopX)
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-148-1.png)<!-- -->
+
+``` r
+qqnorm(nullsPopY)
+abline(0,1)
+qqline(nullsPopY)
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-148-2.png)<!-- -->
 
 ## III.
 

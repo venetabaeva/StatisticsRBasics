@@ -592,6 +592,8 @@ region <- dfAlc$region
 ranksAConsumption <- rank(dfAlc$aconsum,na.last = NA)
 i <- order(dfAlc$aconsum)
 df<- data.frame(country = abbCountry[i], suicide = suicidesPer100[i], rank = ranksAConsumption[i],urbanrate = urbanRT[i],region = region[i])
+
+View(df)
 df %>%
   ggplot(aes(urbanrate, suicide, label=country,color=rank)) + geom_label()
 ------
@@ -616,3 +618,61 @@ boxplot(aconsum~region, data=dfAlc,na.action = NULL)
 boxplot(suicidesPer100~region, data = dfAlc)
 boxplot(employrt~region, data = dfAlc)
 boxplot(urbanrt~region, data = dfAlc)
+ 
+#III
+
+------
+unique(dfAlc$employrt) #discrete numeric data can be considered ordinal -> a small number of different groups, with each group having many members
+length(unique(dfAlc$employrt))
+------
+table(dfAlc$employrt) # #compute the frequencies # of each unique value 
+prop.table(table(dfAlc$region))# proportion of each unique value = frequency table = distribution 
+sum(table(dfAlc$employrt)==1)
+------
+library(dplyr)
+dfAlc[is.na(x = dfAlc)] <- 0
+rangeForCdfFunction <- seq(min(dfAlc$employrt), max(dfAlc$employrt),length = 100) #define range of values spaning the dataset
+cdfFunction <- function(f){ # computes probability for a single values 
+  mean(dfAlc$employrt<=f)  # cdfFunction (rangeForCdfFunction) = Pr (f</=rangeForCdfFunction) 
+}
+#CDF defines proportion of data below a cutoff - rangeForCdfFunction
+cdfValuesBelow <- sapply(rangeForCdfFunction,cdfFunction) #  CDF defines proportion of data below the  cutoff rangeForCdfFunction
+plot(rangeForCdfFunction,cdfValuesBelow)
+# defines proportion of data above the  cutoff rangeForCdfFunction => 1 - cdfFunction (rangeForCdfFunction)
+cdfValuesAbove <- 1-(sapply(rangeForCdfFunction,cdfFunction))
+plot(rangeForCdfFunction,cdfValuesAbove) 
+# defines proportion of data between the  cutoff rangeForCdfFunction => 1 - cdfFunction (rangeForCdfFunction)
+rangeForCdfFunctionQ <- seq(quantile(dfAlc$employrt,0.50), quantile(dfAlc$employrt,0.75),length = 100) #define range of values spaning the dataset
+cdfFunction <- function(f){ # computes probability for a single values 
+  mean(dfAlc$employrt<=f)  # cdfFunction (rangeForCdfFunction) = Pr (f<=rangeForCdfFunction) 
+}
+#CDF defines proportion of data below a cutoff - rangeForCdfFunction
+cdfValuesBellowQ <- sapply(rangeForCdfFunctionQ,cdfFunction) - (sapply(rangeForCdfFunction,cdfFunction))# define proportion of values between rangeForCdfFunction and rangeForCdfFunctionQ
+plot(rangeForCdfFunctionQ,cdfValuesBellowQ)
+------
+# normal distribution = Gaussian distribution = bell curve = probability to have x value between value a and value b using parameters mean and standard deviation
+# why using the normal distribution -> rather than using data, the normal distribution is defined with a mathematical formula 
+# normal distribution <- 95% are within 2SD from the average 
+# => if a dataset is approximated by a normal distribution, then to describe the distribution only the average and the standard deviation are needed 
+meanDfAlcEmpRate <- sum(dfAlc$employrt)/ length(dfAlc$employrt)
+sdDfAlcEmpRate <- sqrt(sum((dfAlc$employrt-mean)^2)/ length(dfAlc$employrt))
+iEMEA <- dfAlc$region == "EMEA"
+xMHeight <- dfAlc$employrt[iEMEA]
+mEMEAEmplRt <- mean(xMHeight)
+sdEMEAEmplRt <- sd(xMHeight)
+c(mEMEAEmplRt=mEMEAEmplRt,sdEMEAEmplRt=sdEMEAEmplRt)
+------
+# standard units -> z = (x-average/sd)
+# if data is approximatley normal, then think in standard units
+# standard unit of value = how many standard deviations away from the average this values is
+# if z=0, the normal distribution is at its maximum, the mean (μ); if z=0, then the function is defined symmetric 
+# normal distirbution of z - scores is standard normal distribution μ = 0 and σ  = 1
+# z scores near 0 are average; z score > 2, or below -2 are significantly above or below the mean   
+zMHeight = scale(xMHeight) # converts a vector of approximatley normally distributed values into z-scores
+mean(abs(zMHeight)<2) # compute proportion of observations that are within 2 standard deviations of the mean 
+
+
+
+
+
+  

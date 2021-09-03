@@ -10,15 +10,23 @@ output: github_document
 
 > library load 
 
-```{r message=FALSE, warning=FALSE, paged.print=FALSE}
+```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
 library(dplyr)
 ```
+```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
 ```{r}
 library(dslabs)
 ```
-```{r message=FALSE, warning=FALSE, paged.print=FALSE}
+```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
 library(tidyverse)
 ```
+```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+library(rafalib)
+```
+```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+library(UsingR)
+```
+
 
 
 ## I.
@@ -1270,6 +1278,99 @@ qqline(nullsPopY)
 
 
 ## III.
+
+1.[vector] discrete numeric data  considered ordinal-ly 
+
+```{r}
+unique(dfAlc$employrt)
+length(unique(dfAlc$employrt))
+```
+
+1.[vector] compute the frequencies of each unique value 
+
+```{r}
+table(dfAlc$employrt)
+prop.table(table(dfAlc$region))
+```
+
+1.[vector] sum frequencies 
+
+```{r}
+sum(table(dfAlc$employrt)==1)
+```
+
+> load library
+
+```{r}
+library(dplyr)
+```
+
+1.[column] remove NAs 
+
+```{r}
+dfAlc[is.na(x = dfAlc)] <- 0
+```
+
+1.[CDF] cumulative distribution function for continuous data 
+
+```{r}
+rangeForCdfFunction <- seq(min(dfAlc$employrt), max(dfAlc$employrt),length = 100) #define range of values spanning the dataset 
+cdfFunction <- function(f){ # computes probability for a single value
+  mean(dfAlc$employrt<=f) # cdfFunction (rangeForCdfFunction) = Pr (f</=rangeForCdfFunction) 
+}
+cdfValuesBelow <- sapply(rangeForCdfFunction,cdfFunction)#  CDF defines proportion of data below the  cutoff rangeForCdfFunction
+cdfValuesAbove <- 1-(sapply(rangeForCdfFunction,cdfFunction)) # defines proportion of data above the  cutoff rangeForCdfFunction => 1 - cdfFunction (rangeForCdfFunction)
+```
+
+3.[plot] CDF 
+
+```{r}
+plot(rangeForCdfFunction,cdfValuesBelow)
+EmployeeRate <- rangeForCdfFunction
+Proportion<- cdfValuesBelow
+plot(EmployeeRate,Proportion)
+plot(rangeForCdfFunction,cdfValuesAbove) 
+```
+
+```{r}
+rangeForCdfFunctionQ <- seq(quantile(dfAlc$employrt,0.50), quantile(dfAlc$employrt,0.75),length = 100) 
+cdfFunction <- function(f){ 
+  mean(dfAlc$employrt<=f)  
+}
+cdfValuesBellowQ <- sapply(rangeForCdfFunctionQ,cdfFunction) - (sapply(rangeForCdfFunction,cdfFunction)) # define proportion of values between rangeForCdfFunction and rangeForCdfFunctionQ
+plot(rangeForCdfFunctionQ,cdfValuesBellowQ)
+
+```
+
+1.[column] mean and standard deviation 
+
+```{r}
+meanDfAlcEmpRate <- sum(dfAlc$employrt)/ length(dfAlc$employrt)
+sdDfAlcEmpRate <- sqrt(sum((dfAlc$employrt-mean)^2)/ length(dfAlc$employrt))
+```
+
+1.[column] filter; access through index; calculate mean and standard deviation 
+
+```{r}
+iEMEA <- dfAlc$region == "EMEA" 
+xMHeight <- dfAlc$employrt[iEMEA]
+mEMEAEmplRt <- mean(xMHeight)
+sdEMEAEmplRt <- sd(xMHeight)
+c(mEMEAEmplRt=mEMEAEmplRt,sdEMEAEmplRt=sdEMEAEmplRt)
+```
+
+1.[zScore] scale
+
+```{r}
+zMHeight = scale(xMHeight) # converts a vector of approximatley normally distributed values into z-scores
+```
+
+1.[zScore] check whether significantly above or below the mean  
+
+```{r}
+mean(abs(zMHeight)<2) # compute proportion of observations that are within 2 standard deviations of the mean 
+```
+
 
 ## References
 
