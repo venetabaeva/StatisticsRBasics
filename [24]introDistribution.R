@@ -59,10 +59,8 @@ plot(rangeForCdfFunctionQ,cdfValuesBellowQ)
  sd2 <- sd(xMHeight)
  c(mean1=mean1,sd1=sd1)
  #standard units = z scores 
- zMHeight = scale(xMHeight)
- mean(abs(zMHeight)<2) # count the number of z scores less than 2 and bigger than negative 2 and divide by total ; take the mean 
  #The normal distribution:
-#Is centered around one value, the mean
+ #Is centered around one value, the mean
  #Is symmetric around the mean
  #Is defined completely by its mean (μ) and standard deviation ( σ )
  #Always has the same proportion of observations within a given distance of the mean (for example, 95% within 2 σ)
@@ -74,7 +72,52 @@ plot(rangeForCdfFunctionQ,cdfValuesBellowQ)
  #Compute standard units with the scale() function.
  #Important: to calculate the proportion of values that meet a certain condition, use the mean() function on a logical vector. Because TRUE is converted to 1 and FALSE is converted to 0, taking the mean of this vector yields the proportion of TRUE.
  #The built-in R function sd() calculates the standard deviation, but it divides by length(x)-1 instead of length(x). When the length of the list is large, this difference is negligible and you can use the built-in sd() function. Otherwise, you should compute σ by hand. For this course series, assume that you should use the sd() function unless you are told not to do so.
-
-
-
-
+ zMHeight = scale(xMHeight)
+ mean(abs(zMHeight)<2) # count the number of z scores less than 2 and bigger than negative 2 and divide by total ; take the mean 
+ # 68-95-99.7 rule = probability of observing events within a certain number of standard deviations of the mean 
+ # above 68% observations will be within 1sd of the mean = |z|</= 1 (μ +/- 1σ )
+ # about 95% observations  will be within 2sd of the mean  =  |z|</= 2  (μ +/- 2σ )
+ # about 99.7% observations will be within 3sd of the mean =  |z|</= 3  (μ +/- 3σ )
+ #The normal distribution has a mathematically defined CDF which can be computed in R with the function pnorm().
+ #pnorm(a, avg, s) gives the value of the cumulative distribution function  for the normal distribution defined by average avg and standard deviation s.
+ #We say that a random quantity is normally distributed with average avg and standard deviation s if the approximation pnorm(a, avg, s) holds for all values of a.
+ #If we are willing to use the normal approximation for height, we can estimate the distribution simply from the mean and standard deviation of our values.
+ #If we treat the height data as discrete rather than categorical, we see that the data are not very useful because integer values are more common than expected due to rounding. This is called discretization.
+ # With rounded data, the normal approximation is particularly useful when computing probabilities of intervals of length 1 that include exactly one integer.
+ # when willing to use normal approximation when not entire data set is needed to answer whether the probability that a randomly selected student is taller than 70.5
+ 1 - pnorm(70.5, mean(xMHeight),sd(xMHeight))
+ 1 - pnorm(70.5, mean(heights$height),sd(heights$height))
+ #NB: the normal distribution is defined for continuous variables, not described  for discrete variables 
+ # with continuous distribution the probability of a singualr values is not even defined 
+ # no sense asking the probability  that a normally distributed value is 70, instead probabilities for intervals (69.99 and 70.1) but in case where the data is roudnded, the normal approximation is useful for approximating if an interval includes one round number (69.5 and 70.5)
+ # 1st 3 are using teh data and almost the same as 2nd 3 which using teh pnorm
+ # plot distribution of exact heights in data
+ plot(prop.table(table(xMHeight)), xlab = "a = Height in inches", ylab = "Pr(x = a)")
+ # probabilities in actual data over length 1 ranges containing an integer
+ mean(xMHeight <=68.5) -  mean(xMHeight <=67.5)
+ mean(xMHeight <=69.5) -  mean(xMHeight <=68.5)
+ mean(xMHeight <=70.5) -  mean(xMHeight <=69.5)
+ # probabilities in normal approximation match well
+ pnorm(68.5, mean(xMHeight),sd(xMHeight)) - pnorm(67.5, mean(xMHeight),sd(xMHeight)) 
+ pnorm(69.5, mean(xMHeight),sd(xMHeight)) - pnorm(68.5, mean(xMHeight),sd(xMHeight)) 
+ pnorm(70.5, mean(xMHeight),sd(xMHeight)) - pnorm(69.5, mean(xMHeight),sd(xMHeight)) 
+ #no access to data, can you approximate the proportion of the data that is between 69 and 72 inches?
+ mean(xMHeight>69 & xMHeight<=72)
+ pnorm(72, mean(xMHeight),sd(xMHeight))- pnorm(69,  mean(xMHeight),sd(xMHeight)) 
+ # approximation is not useful for intervals that not include integer (70.9 and 70.1)
+ #discretazation = although a true height distribution is continuous, the reported heights tend to be more common at discrete values (here, due to rounding)
+ # probabilities in actual data over other ranges don't match normal approx as well
+ mean(xMHeight <= 70.9) - mean(xMHeight <= 70.1)
+ pnorm(70.9, mean(xMHeight), sd(xMHeight)) - pnorm(70.1, mean(xMHeight), sd(xMHeight)) 
+ #the approximation is not always useful; example is for the more extreme values, often called the "tails" of the distribution
+ exact <- mean(xMHeight > 79 & xMHeight <= 81) # calculate the proportion of heights between 79 and 81 
+ avg <- mean(xMHeight)
+ sd <- sd(xMHeight)
+ approx <- pnorm(81, avg, sd) - pnorm(79, avg, sd)# estimate the proportion of heights between 79 and 81 
+ exact/approx # report how many times bigger the actual proportion is compared to the approximation
+ #what percent of seven footers(1 feet = 12 inches) are in the National Basketball Association (NBA);an estimate? 
+ p<- 1-pnorm(7*12,69,3)#an approximation for the proportion, call it p, of men that are 7 feet tall or taller
+ N <- round(p*10^9) #use the normal distribution to estimate how many of these 1 billion men are at least seven feet tall
+ 10/N #calculate the proportion of the world's 18 to 40 year old seven footers that are in the NBA (10)
+#Quantiles are cutoff points that divide a dataset into intervals with set probabilities. The th quantile is the value at which % of the observations are equal to or less than that value.
+ 

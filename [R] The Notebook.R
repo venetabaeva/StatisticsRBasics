@@ -657,9 +657,9 @@ plot(rangeForCdfFunctionQ,cdfValuesBellowQ)
 meanDfAlcEmpRate <- sum(dfAlc$employrt)/ length(dfAlc$employrt)
 sdDfAlcEmpRate <- sqrt(sum((dfAlc$employrt-mean)^2)/ length(dfAlc$employrt))
 iEMEA <- dfAlc$region == "EMEA"
-xMHeight <- dfAlc$employrt[iEMEA]
-mEMEAEmplRt <- mean(xMHeight)
-sdEMEAEmplRt <- sd(xMHeight)
+xEMEAEmplRt <- dfAlc$employrt[iEMEA]
+mEMEAEmplRt <- mean(xEMEAEmplRt)
+sdEMEAEmplRt <- sd(xEMEAEmplRt)
 c(mEMEAEmplRt=mEMEAEmplRt,sdEMEAEmplRt=sdEMEAEmplRt)
 ------
 # standard units -> z = (x-average/sd)
@@ -668,8 +668,30 @@ c(mEMEAEmplRt=mEMEAEmplRt,sdEMEAEmplRt=sdEMEAEmplRt)
 # if z=0, the normal distribution is at its maximum, the mean (μ); if z=0, then the function is defined symmetric 
 # normal distirbution of z - scores is standard normal distribution μ = 0 and σ  = 1
 # z scores near 0 are average; z score > 2, or below -2 are significantly above or below the mean   
-zMHeight = scale(xMHeight) # converts a vector of approximatley normally distributed values into z-scores
-mean(abs(zMHeight)<2) # compute proportion of observations that are within 2 standard deviations of the mean 
+zEMEAEmplRt = scale(xEMEAEmplRt) # converts a vector of approximatley normally distributed values into z-scores
+mean(abs(xEMEAEmplRt)<2) # compute proportion of observations that are within 2 standard deviations of the mean 
+------
+# 68-95-99.7 rule = probability of observing events within a certain number of standard deviations of the mean 
+# above 68% observations will be within 1sd of the mean = |z|</= 1 (μ +/- 1σ )
+# about 95% observations  will be within 2sd of the mean  =  |z|</= 2  (μ +/- 2σ )
+# about 99.7% observations will be within 3sd of the mean =  |z|</= 3  (μ +/- 3σ )
+------
+#The normal distribution has a mathematically defined CDF which can be computed in R with the function pnorm(a, avg, s)
+1 - pnorm(45, mean(xEMEAEmplRt),sd(xEMEAEmplRt)) #whether the probability that a randomly selected employRt is bigger than 45
+------
+plot(prop.table(table(xEMEAEmplRt)), xlab = "a = EMEAEmplRt", ylab = "Pr(xEMEAEmplRt = a)")
+------
+mean(xEMEAEmplRt>49 & xEMEAEmplRt<=52) 
+#no access to data, can you approximate the proportion of the data that is between 69 and 72 ?
+pnorm(72, mean(xEMEAEmplRt),sd(xEMEAEmplRt))- pnorm(69,  mean(xEMEAEmplRt),sd(xEMEAEmplRt)) 
+------
+#the approximation is not always useful; example is for the more extreme values, often called the "tails" of the distribution
+exact <- mean(xEMEAEmplRt > 21 & xEMEAEmplRt <= 23) # calculate the proportion of heights between 79 and 81
+avg <- mean(xEMEAEmplRt)
+sd <- sd(xEMEAEmplRt)
+approx <- pnorm(81, avg, sd) - pnorm(79, avg, sd)# estimate the proportion of heights between 79 and 81 
+exact/approx # report how many times bigger the actual proportion is compared to the approximation
+
 
 
 

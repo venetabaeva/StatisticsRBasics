@@ -1359,18 +1359,55 @@ sdEMEAEmplRt <- sd(xMHeight)
 c(mEMEAEmplRt=mEMEAEmplRt,sdEMEAEmplRt=sdEMEAEmplRt)
 ```
 
+1.[mean] within range 
+
+```{r}
+mean(xEMEAEmplRt>49 & xEMEAEmplRt<=52)
+```
+
 1.[zScore] scale
 
 ```{r}
-zMHeight = scale(xMHeight) # converts a vector of approximatley normally distributed values into z-scores
+zEMEAEmplRt = scale(xEMEAEmplRt) # converts a vector of approximatley normally distributed values into z-scores
 ```
 
 1.[zScore] check whether significantly above or below the mean  
 
 ```{r}
-mean(abs(zMHeight)<2) # compute proportion of observations that are within 2 standard deviations of the mean 
+mean(abs(xEMEAEmplRt)<2)  # compute proportion of observations that are within 2 standard deviations of the mean 
 ```
 
+1.[pnorm] approximate the proportion of the data without access to actual data 
+
+```{r}
+mean(xEMEAEmplRt>49 & xEMEAEmplRt<=52)  
+pnorm(72, mean(xEMEAEmplRt),sd(xEMEAEmplRt))- pnorm(69,  mean(xEMEAEmplRt),sd(xEMEAEmplRt)) 
+```
+
+###### ^1^ Note:the approximation calculated with the pnorm is very close to the exact calculation with the mean 
+
+1.[pnorm] approximation is not always useful  for the more extreme values - tails
+
+```{r}
+exact <- mean(xEMEAEmplRt > 21 & xEMEAEmplRt <= 23) # calculate the proportion of heights between 79 and 81
+avg <- mean(xEMEAEmplRt)
+sd <- sd(xEMEAEmplRt)
+approx <- pnorm(81, avg, sd) - pnorm(79, avg, sd)# estimate the proportion of heights between 79 and 81 
+exact/approx # report how many times bigger the actual proportion is compared to the approximation
+```
+
+
+1.[pnorm] mathematically define CDF
+
+```{r}
+1 - pnorm(45, mean(xEMEAEmplRt),sd(xEMEAEmplRt)) #whether the probability that a randomly selected employRt is bigger than 45
+```
+
+1.[plot] proportion table
+
+```{r}
+plot(prop.table(table(xEMEAEmplRt)), xlab = "a = EMEAEmplRt", ylab = "Pr(xEMEAEmplRt = a)")
+```
 
 ## References
 
