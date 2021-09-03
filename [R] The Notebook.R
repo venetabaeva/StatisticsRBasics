@@ -691,8 +691,88 @@ avg <- mean(xEMEAEmplRt)
 sd <- sd(xEMEAEmplRt)
 approx <- pnorm(81, avg, sd) - pnorm(79, avg, sd)# estimate the proportion of heights between 79 and 81 
 exact/approx # report how many times bigger the actual proportion is compared to the approximation
+------
+p <- seq(0.01, 0.99, 0.01)
+quantile(p) # quantile
+percentiles <- quantile(heights$height,p) # percentile
+percentiles[names(percentiles) == "25%"]
+percentiles[names(percentiles) == "50%"]
+percentiles[names(percentiles) == "75%"]
+------
+library(dslabs)
+data(heights)
+male <- heights$height[heights$sex=="Male"]
+female <- heights$height[heights$sex=="Female"]
+percentiles_male <- quantile(male, seq(.01, 0.99, 0.01))
+percentiles_female<- quantile(female, seq(.01, 0.99, 0.01))
+male_percentiles <- c(percentiles_male[names(percentiles_male) == "10%"],percentiles_male[names(percentiles_male) == "30%"],percentiles_male[names(percentiles_male) == "50%"],percentiles_male[names(percentiles_male) == "70%"],percentiles_male[names(percentiles_male) == "90%"])
+female_percentiles <- c(percentiles_female[names(percentiles_female) == "10%"],percentiles_female[names(percentiles_female) == "30%"],percentiles_female[names(percentiles_female) == "50%"],percentiles_female[names(percentiles_female) == "70%"],percentiles_female[names(percentiles_female) == "90%"])
+df <- data.frame(female = female_percentiles, male = male_percentiles)
+------
+summary(heights$height)# quartile
+qnorm(p, mean(heights$height), sd(heights$height))  # theoretical quantile
+pnorm(-1.96)
+qnorm(0.025)
+mean(heights$height <= 68.5)  # if p = 0.5, then q = 68.5 
+------
+p <- seq(0.01, 0.99, 0.01)
+theoreticalQuantiles <- qnorm(p, mean(heights$height), sd(heights$height)) 
+------
+library(tidyverse)
+library(dslabs)
+z <- scale(xEMEAEmplRt)
+mean(xEMEAEmplRt <= 54)# proportion of data below 68.5
+p <- seq(0.05,0.95,0.05) #Given a proportion p 
+observedQuantiles <- quantile(xEMEAEmplRt,p)
+theoreticalQuantiles <- qnorm(p, mean = mean(xEMEAEmplRt), sd = sd(xEMEAEmplRt))
+plot(theoreticalQuantiles, observedQuantiles) # QQ plot check whether distributions are well-approximated by a normal distribution
+abline(0,1)
+observedQuantiles <- quantile(z,p)# if standard units are used no need of defining the mean and the standard deviation 
+theoreticalQuantiles <- qnorm(p) 
+plot(theoreticalQuantiles, observedQuantiles)
+abline(0,1)
+summary(xEMEAEmplRt)
+------
+library(dslabs)
+iEMEA <- dfAlc$region == "EMEA"
+iAPAC <- dfAlc$region == "APAC"
+xEMEAEmplRt <- dfAlc$employrt[iEMEA]
+xAPACEmplRt <- dfAlc$employrt[iAPAC]
+percentilesEMEA <- quantile(xEMEAEmplRt, seq(.01, 0.99, 0.01))
+percentilesAPAC <- quantile(xAPACEmplRt, seq(.01, 0.99, 0.01))
+EMEApercentiles <- c(percentilesEMEA[names(percentilesEMEA) == "10%"],percentilesEMEA[names(percentilesEMEA) == "30%"],percentilesEMEA[names(percentilesEMEA) == "50%"],percentilesEMEA[names(percentilesEMEA) == "70%"],percentilesEMEA[names(percentilesEMEA) == "90%"])
+APACpercentiles <- c(percentilesAPAC[names(percentilesAPAC) == "10%"],percentilesAPAC[names(percentilesAPAC) == "30%"],percentilesAPAC[names(percentilesAPAC) == "50%"],percentilesAPAC[names(percentilesAPAC) == "70%"],percentilesAPAC[names(percentilesAPAC) == "90%"])
+theoreticalQuantilesEMEA <- qnorm(seq(.01, 0.99, 0.01), mean = mean(xAPACEmplRt), sd = sd(xAPACEmplRt))
+theoreticalQuantilesAPAC <- qnorm(seq(.01, 0.99, 0.01), mean = mean(xAPACEmplRt), sd = sd(xAPACEmplRt))
+plot(theoreticalQuantilesEMEA, percentilesEMEA)
+abline(0,1)
+plot(theoreticalQuantilesAPAC, percentilesAPAC)
+abline(0,1)
+zEMEA <- scale(xEMEAEmplRt)
+zAPAC <- scale(xAPACEmplRt)
+percentilesEMEA <- quantile(zEMEA, seq(.01, 0.99, 0.01))
+percentilesAPAC <- quantile(zAPAC, seq(.01, 0.99, 0.01))
+theoreticalQuantilesEMEA <- qnorm(seq(.01, 0.99, 0.01))
+theoreticalQuantilesAPAC <- qnorm(seq(.01, 0.99, 0.01))
+plot(theoreticalQuantilesEMEA, percentilesEMEA)
+abline(0,1)
+plot(theoreticalQuantilesAPAC, percentilesAPAC)
+abline(0,1)
+------
+# when the distribution is not normal -> boxplots 
+# range, quartiles and 25th, 50th and 75th percentiles; ignore outliers when computing the range and plot the outliers as independent points
+------
+  # error check outlier
+  error_avg <- function(k){
+    dfAlc$employrt[1]<-k
+    mean(dfAlc$employrt)
+  }
 
-
+error_avg (10000)
+error_avg (-10000)
+  
+  
+  
 
 
 

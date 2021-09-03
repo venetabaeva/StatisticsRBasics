@@ -119,5 +119,86 @@ plot(rangeForCdfFunctionQ,cdfValuesBellowQ)
  p<- 1-pnorm(7*12,69,3)#an approximation for the proportion, call it p, of men that are 7 feet tall or taller
  N <- round(p*10^9) #use the normal distribution to estimate how many of these 1 billion men are at least seven feet tall
  10/N #calculate the proportion of the world's 18 to 40 year old seven footers that are in the NBA (10)
-#Quantiles are cutoff points that divide a dataset into intervals with set probabilities. The th quantile is the value at which % of the observations are equal to or less than that value.
- 
+# Percentiles are the quantiles that divide a dataset into 100 intervals each with 1% probability
+ p <- seq(0.01, 0.99, 0.01)
+ percentiles <- quantile(heights$height, p)
+ percentiles[names(percentiles) == "25%"]
+ percentiles[names(percentiles) == "50%"]
+ percentiles[names(percentiles) == "75%"]
+ #Quartiles divide a dataset into 4 parts each with 25% probability. They are equal to the 25th, 50th and 75th percentiles. The 25th percentile is also known as the 1st quartile, the 50th percentile is also known as the median, and the 75th percentile is also known as the 3rd quartile
+ summary(heights$height)
+ # Quantiles are cutoff points that divide a dataset into intervals with set probabilities. The th quantile is the value at which % of the observations are equal to or less than that value.
+ # qnorm() function gives the theoretical value of a quantile with probability p of observing a value equal to or less than that quantile value given a normal distribution with mean mu and standard deviation sigma
+ qnorm(p, mu, sigma)
+ #By default, mu=0 and sigma=1. Therefore, calling qnorm() with no arguments gives quantiles for the standard normal distribution
+ quantile(p) #p is the probability of a random observation less than or equal to the quantile
+ #The result of pnorm() is the quantile => inverse functions
+ #pnorm() function gives the probability that a value from a standard normal distribution will be less than or equal to a z-score value z
+ pnorm(-1.96)
+ qnorm(0.025)
+ # determine the theoretical quantiles of a dataset: that is, the theoretical value of quantiles assuming that a dataset follows a normal distribution
+ p <- seq(0.01, 0.99, 0.01)
+ theoreticalQuantiles <- qnorm(p, mean(heights$height), sd(heights$height)) #qnorm() function with the desired probabilities p, mean mu and standard deviation sigma
+ # check whether a distribution is approximating a normal one 
+ # define series of proportions
+ # for each proportion  determine the value q
+ mean(heights$height <= 68.5) # 50% are below 68.5 
+ # if p = 0.5, then q = 68.5 
+ # for series of p's, if the quantiles for teh data match the quantiles for the normal distribution, then data is approximated by a normal distribution 
+ library(tidyverse)
+ library(dslabs)
+ z <- scale(heights$height)
+ # proportion of data below 69.5
+ mean(heights$height <= 68.5)
+ p <- seq(0.05,0.95,0.05)
+observedQuantiles <- quantile(heights$height,p)
+theoreticalQuantiles <- qnorm(p, mean = mean(heights$height), sd = sd(heights$height))
+plot(theoreticalQuantiles, observedQuantiles)
+abline(0,1)
+observedQuantiles <- quantile(z,p)
+theoreticalQuantiles <- qnorm(p)
+plot(theoreticalQuantiles, observedQuantiles)
+abline(0,1)
+# Percentiles are special cases of quantiles -> The percentiles are the quantiles you obtain when you define p as 0.01, 0.02, up to 0.99, 1%, 2%, 3%, et cetera
+# p = 0.25 is called the 25th percentile
+#50th percentile is also known as the median
+#quartiles are the 25th, 50th and 75th percentiles
+# when the distribution is not normal -> boxplots 
+# range, quartiles and 25th, 50th and 75th percentiles; ignore outliers when computing the range and plot the outliers as independent points
+library(dslabs)
+data(heights)
+male <- heights$height[heights$sex=="Male"]
+female <- heights$height[heights$sex=="Female"]
+percentiles_male <- quantile(male, seq(.01, 0.99, 0.01))
+percentiles_female<- quantile(female, seq(.01, 0.99, 0.01))
+male_percentiles <- c(percentiles_male[names(percentiles_male) == "10%"],percentiles_male[names(percentiles_male) == "30%"],percentiles_male[names(percentiles_male) == "50%"],percentiles_male[names(percentiles_male) == "70%"],percentiles_male[names(percentiles_male) == "90%"])
+female_percentiles <- c(percentiles_female[names(percentiles_female) == "10%"],percentiles_female[names(percentiles_female) == "30%"],percentiles_female[names(percentiles_female) == "50%"],percentiles_female[names(percentiles_female) == "70%"],percentiles_female[names(percentiles_female) == "90%"])
+df <- data.frame(female = female_percentiles, male = male_percentiles)
+plot(theoreticalQuantilesMale, percentiles_male)
+abline(0,1)
+plot(theoreticalQuantilesFemale, percentiles_female)
+abline(0,1)
+zMale <- scale(male)
+zFemale <- scale(female)
+theoreticalQuantilesMale <- quantile(zMale, seq(.01, 0.99, 0.01))
+theoreticalQuantilesFemale <- quantile(zFemale, seq(.01, 0.99, 0.01))
+theoreticalQuantilesMale <- qnorm(seq(.01, 0.99, 0.01))
+theoreticalQuantilesFemale <- qnorm(seq(.01, 0.99, 0.01))
+plot(theoreticalQuantilesMale, percentiles_male)
+abline(0,1)
+plot(theoreticalQuantilesFemale, percentiles_female)
+abline(0,1)
+mad(dfAlc$employrt) # median absolute deviation
+#error check outlier
+error_avg <- function(k){
+  dfAlc$employrt[1]<-k
+  mean(dfAlc$employrt)
+}
+
+error_avg (10000)
+error_avg (-10000)
+
+
+
+
+  
