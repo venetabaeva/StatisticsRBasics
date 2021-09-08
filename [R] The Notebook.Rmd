@@ -14,7 +14,6 @@ output: github_document
 library(dplyr)
 ```
 ```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
-```{r}
 library(dslabs)
 ```
 ```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
@@ -26,6 +25,22 @@ library(rafalib)
 ```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
 library(UsingR)
 ```
+```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+library(ggthemes)
+```
+```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+library(ggrepel)
+```
+```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+library(ggplot2)
+```
+```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+library(gridExtra)
+```
+
+
+
+
 
 
 
@@ -1554,6 +1569,7 @@ error_avg (10000)
 error_avg (-10000)
   
 ```
+
 
 
 ## References
