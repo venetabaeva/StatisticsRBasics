@@ -194,7 +194,6 @@ error_avg <- function(k){
   dfAlc$employrt[1]<-k
   mean(dfAlc$employrt)
 }
-
 error_avg (10000)
 error_avg (-10000)
 

@@ -655,7 +655,7 @@ plot(rangeForCdfFunctionQ,cdfValuesBellowQ)
 # normal distribution <- 95% are within 2SD from the average 
 # => if a dataset is approximated by a normal distribution, then to describe the distribution only the average and the standard deviation are needed 
 meanDfAlcEmpRate <- sum(dfAlc$employrt)/ length(dfAlc$employrt)
-sdDfAlcEmpRate <- sqrt(sum((dfAlc$employrt-mean)^2)/ length(dfAlc$employrt))
+sdDfAlcEmpRate <- sqrt(sum((dfAlc$employrt-meanDfAlcEmpRate)^2)/ length(dfAlc$employrt))
 iEMEA <- dfAlc$region == "EMEA"
 xEMEAEmplRt <- dfAlc$employrt[iEMEA]
 mEMEAEmplRt <- mean(xEMEAEmplRt)

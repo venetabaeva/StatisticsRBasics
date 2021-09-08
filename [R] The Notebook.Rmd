@@ -10,17 +10,17 @@ output: github_document
 
 > library load 
 
-```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
 library(dplyr)
 ```
-```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
 ```{r}
 library(dslabs)
 ```
-```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
 library(tidyverse)
 ```
-```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
 library(rafalib)
 ```
 ```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
@@ -422,7 +422,7 @@ sum(i,na.rm =TRUE)
 1.1.[vector] filter data by sub-setting row
 
 ```{r}
-filter(dfAlc, region=="EMEA")
+dplyr::filter(dfAlc, region=="EMEA")
 ```
 
 1.[vector] filter
@@ -492,21 +492,21 @@ str(dfAlc)
 1.1.[dataFrame] excluding filter value and create data frame 
 
 ```{r}
-dfNoEMEA <- data.frame(filter(dfAlc,region!="EMEA"))
+dfNoEMEA <- data.frame(dplyr::filter(dfAlc,region!="EMEA"))
 nrow(dfNoEMEA)
 ```
 
 1.1.[dataFrame] including filter value and create data frame 
 
 ```{r}
-dfEMEAAPAC <- data.frame(filter(dfAlc,region %in% c("EMEA","APAC")))
+dfEMEAAPAC <- data.frame(dplyr::filter(dfAlc,region %in% c("EMEA","APAC")))
 nrow(dfEMEAAPAC)
 ```
 
 1.1.[dataFrame] filter and select only
 
 ```{r}
-EMEAAPACAconsum10 <- filter(dfAlc,region %in% c("EMEA","APAC") & aconsum < 10)
+EMEAAPACAconsum10 <- dplyr::filter(dfAlc,region %in% c("EMEA","APAC") & aconsum < 10)
 dplyr::select(EMEAAPACAconsum10,country,aconsum,rank)
 ```
 
@@ -514,23 +514,23 @@ dplyr::select(EMEAAPACAconsum10,country,aconsum,rank)
 
 ```{r}
 newTable <- dplyr::select(dfAlc,country,region,aconsum) 
-filter(newTable,aconsum <= 10)
+dplyr::filter(newTable,aconsum <= 10)
 str(newTable)
 ```
 1.[dataFrame] pipe select and pipe filter
 
 ```{r}
-dfAlc %>% dplyr::select(country,region,aconsum) %>% filter(aconsum <= 10)
+dfAlc %>% dplyr::select(country,region,aconsum)  %>% filter(aconsum <= 10)
 ```
 
 1.[dataFrame] filter pipe select
 
 ```{r}
-filter(dfAlc, region %in% c("EMEA", "APAC") & aconsum < 10 )%>% dplyr::select(country, aconsum, rank)
+dplyr::filter(dfAlc, region %in% c("EMEA", "APAC") & aconsum < 10 )%>% dplyr::select(country, aconsum, rank)
 ```
 1.[dataFrame] pipe filter select
 ```{r}
-dfAlc %>% mutate(aconsum, rank) %>% filter(region %in% c('EMEA','APAC') & aconsum <10) %>% dplyr::select(country,aconsum,rank)
+dfAlc %>% mutate(aconsum, rank) %>% dplyr::filter(region %in% c('EMEA','APAC') & aconsum <10) %>% dplyr::select(country,aconsum,rank)
 ```
 
 1.[dataFrame]
@@ -553,7 +553,7 @@ heights <- mutate(heights, ht_cm = height*2.54)#create a new column of heights i
 head(heights)
 heights$ht_cm[18]
 mean(heights$ht_cm) 
-females <- filter(heights, sex == "Female") #females by filtering the heights2 data to contain only female individuals.
+females <- dplyr::filter(heights, sex == "Female") #females by filtering the heights2 data to contain only female individuals.
 head(females)
 nrow(females)#How many females are in the heights2 dataset?
 mean(females$ht_cm)#What is the mean height of the females in centimeters?
@@ -748,43 +748,43 @@ library(UsingR)
 1.[dataFrame]filter
 
 ```{r}
-controlsXGaze <- filter(dfPonzo, stimulusNr == c(1,3,13,15,25,27)) %>% dplyr::select(xGaze) %>% summarise(mean(xGaze))
+controlsXGaze <- dplyr::filter(dfPonzo, stimulusNr == c(1,3,13,15,25,27)) %>% dplyr::select(xGaze) %>% summarise(mean(xGaze))
 controlsXGaze
-controlsYGaze <-filter(dfPonzo, stimulusNr == c(1,3,13,15,25,27)) %>% dplyr::select(yGaze) %>% summarise(mean(yGaze))
+controlsYGaze <-dplyr::filter(dfPonzo, stimulusNr == c(1,3,13,15,25,27)) %>% dplyr::select(yGaze) %>% summarise(mean(yGaze))
 controlsYGaze
 ```
 
 1.[dataFrame] pipe filter select unlist
 
 ```{r}
-controlsXGaze <- filter(dfPonzo, stimulusNr == c(1,3,13,15,25,27)) %>% dplyr::select(xGaze) 
+controlsXGaze <- dplyr::filter(dfPonzo, stimulusNr == c(1,3,13,15,25,27)) %>% dplyr::select(xGaze) 
 mean(controlsXGaze$xGaze)
-controlsYGaze <-filter(dfPonzo, stimulusNr == c(1,3,13,15,25,27)) %>% dplyr::select(yGaze)
+controlsYGaze <-dplyr::filter(dfPonzo, stimulusNr == c(1,3,13,15,25,27)) %>% dplyr::select(yGaze)
 mean(controlsYGaze$yGaze)
-longUpXGaze  <-filter(dfPonzo, stimulusNr == c(5,7,17,19,29,31))%>% dplyr::select(xGaze)
+longUpXGaze  <-dplyr::filter(dfPonzo, stimulusNr == c(5,7,17,19,29,31))%>% dplyr::select(xGaze)
 mean(longUpXGaze$xGaze)
-longUpYGaze  <-filter(dfPonzo, stimulusNr == c(5,7,17,19,29,31))%>% dplyr::select(yGaze)
+longUpYGaze  <-dplyr::filter(dfPonzo, stimulusNr == c(5,7,17,19,29,31))%>% dplyr::select(yGaze)
 mean(longUpYGaze$yGaze)
-longDownXGaze<- filter(dfPonzo, stimulusNr == c(9,11,21,23,33,35))%>% dplyr::select(xGaze)
+longDownXGaze<- dplyr::filter(dfPonzo, stimulusNr == c(9,11,21,23,33,35))%>% dplyr::select(xGaze)
 mean(longDownXGaze$xGaze)
-longDownYGaze<- filter(dfPonzo, stimulusNr == c(9,11,21,23,33,35))%>% dplyr::select(yGaze)
+longDownYGaze<- dplyr::filter(dfPonzo, stimulusNr == c(9,11,21,23,33,35))%>% dplyr::select(yGaze)
 mean(longDownYGaze$yGaze)
 ```
 
 1.[dataFrame] filter select
 
 ```{r}
-controls <- filter(dfPonzo, stimulusNr == c(1,3,13,15,25,27)) 
+controls <- dplyr::filter(dfPonzo, stimulusNr == c(1,3,13,15,25,27)) 
 head(controls)
 View(controls)
 mean(controls$xGaze)
 mean(controls$yGaze)
-longUp  <-filter(dfPonzo, stimulusNr == c(5,7,17,19,29,31))
+longUp  <-dplyr::filter(dfPonzo, stimulusNr == c(5,7,17,19,29,31))
 head(longUp)
 View(longUp)
 mean(longUp$xGaze)
 mean(longUp$yGaze)
-longDown <- filter(dfPonzo, stimulusNr == c(9,11,21,23,33,35))
+longDown <- dplyr::filter(dfPonzo, stimulusNr == c(9,11,21,23,33,35))
 head(longDown)
 View(longDown)
 mean(longDown$xGaze)
@@ -1346,16 +1346,16 @@ plot(rangeForCdfFunctionQ,cdfValuesBellowQ)
 
 ```{r}
 meanDfAlcEmpRate <- sum(dfAlc$employrt)/ length(dfAlc$employrt)
-sdDfAlcEmpRate <- sqrt(sum((dfAlc$employrt-mean)^2)/ length(dfAlc$employrt))
+sdDfAlcEmpRate <- sqrt(sum((dfAlc$employrt-meanDfAlcEmpRate)^2)/ length(dfAlc$employrt))
 ```
 
 1.[column] filter; access through index; calculate mean and standard deviation 
 
 ```{r}
 iEMEA <- dfAlc$region == "EMEA" 
-xMHeight <- dfAlc$employrt[iEMEA]
-mEMEAEmplRt <- mean(xMHeight)
-sdEMEAEmplRt <- sd(xMHeight)
+xEMEAEmplRt <- dfAlc$employrt[iEMEA]
+mEMEAEmplRt <- mean(xEMEAEmplRt)
+sdEMEAEmplRt <- sd(xEMEAEmplRt)
 c(mEMEAEmplRt=mEMEAEmplRt,sdEMEAEmplRt=sdEMEAEmplRt)
 ```
 
@@ -1546,13 +1546,14 @@ abline(0,1)
 1.[outlier] check error 
 
 ```{r}
+     error_avg <- function(k){
     dfAlc$employrt[1]<-k
     mean(dfAlc$employrt)
   }
 error_avg (10000)
 error_avg (-10000)
+  
 ```
-
 
 
 ## References
