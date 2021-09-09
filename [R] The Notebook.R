@@ -94,6 +94,17 @@ naS <- is.na(aconsum)
 sum(naS)
 mean(aconsum[!naS])
 mean(dfAlc[,2])
+dfAlc %>%
+  filter(region == "EMEA") %>%
+  summarize(median = median(aconsum), #call only  functions that return a single value
+            minimum = min(aconsum),
+            maximum = max(aconsum))
+dfAlcEMEAMedian<- dfAlc %>%
+  filter(region == "EMEA") %>%
+  summarize(median = median(aconsum), #call only  functions that return a single value
+            minimum = min(aconsum),
+            maximum = max(aconsum))%>%
+  .$median #the dot as a placeholder for the data that is being passed through the pipe
 urbanrt <-dfAlc$urbanrt
 employrt <- dfAlc$employrt
 length(aconsum)
@@ -733,6 +744,30 @@ plot(theoreticalQuantiles, observedQuantiles)
 abline(0,1)
 summary(xEMEAEmplRt)
 ------
+  #group data frame = as many tables with the same columns but not necessarily the same rows that are stacked together into one object.
+  dfAlc %>%
+  group_by(region) %>%
+  summarize(average = mean(aconsum), standard_deviation = sd(aconsum))
+------
+  # ascend arrange
+  dfAlc %>% arrange(aconsum) %>% head()
+------
+  # descend arrange
+  dfAlc %>% arrange(desc(aconsum)) %>% head()
+------
+  # nested arrange by region alphabetically, then by alcohol consumption rate within each region
+  dfAlc %>% arrange(region, aconsum) %>% head()
+------
+  # top 10  with highest alcohol consumption rate,not ordered by rate
+  dfAlc %>% top_n(10, aconsum)
+------
+  # top 10  with highest alcohol consumption rate,ordered by rate
+  dfAlc %>% arrange(desc(aconsum)) %>% top_n(10)
+  dfAlc %>% slice_max(aconsum, n = 10) #alternative 
+  # top 10  arrange by region alphabetically, then by alcohol consumption rate within each region,ordered by rate
+  dfAlc %>% arrange(desc(region, aconsum))  %>% top_n(10) 
+------
+  
 library(dslabs)
 iEMEA <- dfAlc$region == "EMEA"
 iAPAC <- dfAlc$region == "APAC"
@@ -889,29 +924,33 @@ dfAlc %>%
   ggplot() +
   geom_point(aes(x = suicideper100, y = aconsum,size = aconsum ),show.legend = TRUE)+
   geom_text(aes(x = suicideper100, y = aconsum, label = abbrv ))
+
 # label position relative to the dots 
-dfAlc %>% ggplot() +
+dfAlc %>% 
+  ggplot() +
   geom_point(aes(x = employrt, y = aconsum ),show.legend = TRUE ,size = 0.6) +
   geom_text(aes(x = employrt, y = aconsum, label = abbrv ), nudge_x = 1 ,nudge_y = 1)
-dfAlc %>% ggplot() +
+dfAlc %>% 
+  ggplot() +
   geom_point(aes(x = urbanrt, y = aconsum ),show.legend = TRUE ,size = 0.6)+
   geom_text(aes(x = urbanrt, y = aconsum, label = abbrv ),nudge_x = 1 ,nudge_y = 1)
-dfAlc %>% ggplot() +
+dfAlc %>% 
+  ggplot() +
   geom_point(aes(x = suicideper100, y = aconsum ),show.legend = TRUE ,size = 0.6)+
   geom_text(aes(x = suicideper100, y = aconsum, label = abbrv ),nudge_x = 1 ,nudge_y = 1)
 # global aesthetic mapping 
 ggplotDfAlcAlconsumEmplRt <- dfAlc %>% ggplot(aes(employrt,aconsum,label = abbrv))
 ggplotDfAlcAlconsumEmplRt + 
-  geom_point(size=1)+
-  geom_text(nudge_x = 0.3 ,nudge_y = 0.3)
+  geom_point(size=0.6)+
+  geom_text(nudge_x = 1 ,nudge_y = 0.5)
 ggplotDfAlcAlconsumUrbanRt <- dfAlc %>% ggplot(aes(urbanrt,aconsum,label = abbrv))
 ggplotDfAlcAlconsumUrbanRt +
-  geom_point(size=1)+
-  geom_text(nudge_x = 0.3 ,nudge_y = 0.3)
+  geom_point(size=0.6)+
+  geom_text(nudge_x = 1 ,nudge_y = 0.5)
 ggplotDfAlcAlconsumSuicide100<- dfAlc %>% ggplot(aes(suicideper100,aconsum,label = abbrv))
 ggplotDfAlcAlconsumSuicide100 +
-  geom_point(size=1)+
-  geom_text(nudge_x = 0.3 ,nudge_y = 0.3)
+  geom_point(size=0.6)+
+  geom_text(nudge_x = 1 ,nudge_y = 0.5)
 # scale
 ggplotDfAlcAlconsumEmplRt + 
   geom_point(size=1)+
@@ -936,156 +975,190 @@ ggplotDfAlcAlconsumUrbanRt +
   scale_y_log10()
 # change label and add title 
 ggplotDfAlcAlconsumEmplRt + 
-  geom_point(size=1)+
-  geom_text(nudge_x = 0.3 ,nudge_y = 0.3)+
-  xlab("Alcohol Consumption Rate")+
-  ylab("Employment Rate")+
+  geom_point(size=0.6)+
+  geom_text(nudge_x = 1 ,nudge_y = 0.5)+
+  ylab("Alcohol Consumption Rate")+
+  xlab("Employment Rate")+
   ggtitle("World Alcohol Consumption")
 ggplotDfAlcAlconsumUrbanRt +
-  geom_point(size=1)+
-  geom_text(nudge_x = 0.3 ,nudge_y = 0.3)+
-  xlab("Alcohol Consumption Rate")+
-  ylab("Urban Rate")+
+  geom_point(size=0.6)+
+  geom_text(nudge_x = 1 ,nudge_y = 0.5)+
+  ylab("Alcohol Consumption Rate")+
+  xlab("Urban Rate")+
   ggtitle("World Alcohol Consumption")
 ggplotDfAlcAlconsumSuicide100 +
-  geom_point(size=1)+
-  geom_text(nudge_x = 0.3 ,nudge_y = 0.3)+
-  xlab("Alcohol Consumption Rate")+
-  ylab("Suicide per 100 people")+
+  geom_point(size=0.6)+
+  geom_text(nudge_x = 1 ,nudge_y = 0.5)+
+  ylab("Alcohol Consumption Rate")+
+  xlab("Suicide/100 People")+
   ggtitle("World Alcohol Consumption")
 # color
 ggplotDfAlcAlconsumEmplRt + 
-  geom_point(size=1,color ="blue")+
-  geom_text(nudge_x = 0.3 ,nudge_y = 0.3)+
-  xlab("Alcohol Consumption Rate")+
-  ylab("Employment Rate")+
+  geom_point(size=0.6,color ="red3")+
+  geom_text(nudge_x = 1 ,nudge_y = 0.5)+
+  ylab("Alcohol Consumption Rate")+
+  xlab("Employment Rate")+
   ggtitle("World Alcohol Consumption")
 ggplotDfAlcAlconsumUrbanRt +
-  geom_point(size=1,color ="blue")+
-  geom_text(nudge_x = 0.3 ,nudge_y = 0.3)+
-  xlab("Alcohol Consumption Rate")+
-  ylab("Urban Rate")+
+  geom_point(size=0.6,color ="royalblue1")+
+  geom_text(nudge_x = 1 ,nudge_y = 0.5)+
+  ylab("Alcohol Consumption Rate")+
+  xlab("Urban Rate")+
   ggtitle("World Alcohol Consumption")
 ggplotDfAlcAlconsumSuicide100 +
-  geom_point(size=1,color ="blue")+
-  geom_text(nudge_x = 0.3 ,nudge_y = 0.3)+
-  xlab("Alcohol Consumption Rate")+
-  ylab("Suicide per 100 people")+
+  geom_point(size=0.6,color ="limegreen")+
+  geom_text(nudge_x = 1 ,nudge_y = 0.5)+
+  ylab("Alcohol Consumption Rate")+
+  xlab("Suicide/ 100 People")+
   ggtitle("World Alcohol Consumption")
 # color to category 
 ggplotDfAlcAlconsumEmplRt + 
-  geom_point(aes(col=region),size=1)+
-  geom_text(nudge_x = 0.3 ,nudge_y = 0.3)+
-  xlab("Alcohol Consumption Rate")+
-  ylab("Employment Rate")+
+  geom_point(aes(col=region),size=0.6)+
+  geom_text(nudge_x = 1 ,nudge_y = 0.5)+
+  ylab("Alcohol Consumption Rate")+
+  xlab("Employment Rate")+
   ggtitle("World Alcohol Consumption")
 ggplotDfAlcAlconsumUrbanRt +
-  geom_point(aes(col=region),size=1)+
-  geom_text(nudge_x = 0.3 ,nudge_y = 0.3)+
-  xlab("Alcohol Consumption Rate")+
-  ylab("Urban Rate")+
+  geom_point(aes(col=region),size=0.6)+
+  geom_text(nudge_x = 1 ,nudge_y = 0.5)+
+  ylab("Alcohol Consumption Rate")+
+  xlab("Urban Rate")+
   ggtitle("World Alcohol Consumption")
 ggplotDfAlcAlconsumSuicide100 +
-  geom_point(aes(col=region),size=1)+
-  geom_text(nudge_x = 0.3 ,nudge_y = 0.3)+
-  xlab("Alcohol Consumption Rate")+
-  ylab("Suicide per 100 people")+
+  geom_point(aes(col=region),size=0.6)+
+  geom_text(nudge_x = 1 ,nudge_y = 0.5)+
+  ylab("Alcohol Consumption Rate")+
+  xlab("Suicide/ 100 People")+
   ggtitle("World Alcohol Consumption")
 # color to category 
 dfAlc %>% 
-  ggplot(aes(x = aconsum, y = employrt, label = abbrv, color = region )) +
-  geom_label()
+  ggplot(aes(x = employrt, y = aconsum, label = abbrv, color = region )) +
+  geom_label() +
+  geom_text(check_overlap = TRUE)
 dfAlc %>% 
-  ggplot(aes(x = aconsum, y = urbanrt, label = abbrv, color = region )) +
-  geom_label()
+  ggplot(aes(x = urbanrt, y = aconsum, label = abbrv, color = region )) +
+  geom_label() +
+  geom_text(check_overlap = TRUE)
 dfAlc %>% 
-  ggplot(aes(x = aconsum, y = suicideper100, label = abbrv,color = region )) +
-  geom_label()
+  ggplot(aes(x = suicideper100, y = aconsum, label = abbrv,color = region )) +
+  geom_label()+
+  geom_text(check_overlap = TRUE)
+  
 # line representing the average 
 
 summary(lm(dfAlc$employrt ~ dfAlc$aconsum))# intercept extraction 
 summary(lm(dfAlc$urbanrt ~ dfAlc$aconsum)) # intercept extraction 
 summary(lm(dfAlc$suicideper100 ~ dfAlc$aconsum)) # intercept extraction 
+plot(lm(dfAlc$aconsum ~ dfAlc$employrt ))
+plot(lm(dfAlc$aconsum ~ dfAlc$urbanrt ))
+plot(lm(dfAlc$aconsum ~ dfAlc$suicideper100 ))
 
 ggplotDfAlcAlconsumEmplRt + 
-  geom_point(aes(col=region),size=1)+
-  geom_text(nudge_x = 0.3 ,nudge_y = 0.3)+
-  xlab("Alcohol Consumption Rate")+
-  ylab("Employment Rate")+
+  geom_point(aes(col=region),size=0.6)+
+  geom_text(nudge_x = 1 ,nudge_y = 0.5)+
+  ylab("Alcohol Consumption Rate")+
+  xlab("Employment Rate")+
   ggtitle("World Alcohol Consumption")+
-  geom_abline(na.rm = TRUE,intercept= 45.8582 )
+  geom_abline(na.rm = TRUE, intercept= 4.66578)
 ggplotDfAlcAlconsumUrbanRt +
-  geom_point(aes(col=region),size=1)+
-  geom_text(nudge_x = 0.3 ,nudge_y = 0.3)+
-  xlab("Alcohol Consumption Rate")+
-  ylab("Urban Rate")+
+  geom_point(aes(col=region),size=0.6)+
+  geom_text(nudge_x = 1 ,nudge_y = 0.5)+
+  ylab("Alcohol Consumption Rate")+
+  xlab("Urban Rate")+
   ggtitle("World Alcohol Consumption")+
-  geom_abline(na.rm = TRUE, intercept= 48.1974)
+  geom_abline(na.rm = TRUE, intercept = 3.83616)
 ggplotDfAlcAlconsumSuicide100 +
-  geom_point(aes(col=region),size=1)+
-  geom_text(nudge_x = 0.3 ,nudge_y = 0.3)+
-  xlab("Alcohol Consumption Rate")+
-  ylab("Suicide per 100 people")+
+  geom_point(aes(col=region),size=0.6)+
+  geom_text(nudge_x = 1 ,nudge_y = 0.5)+
+  ylab("Alcohol Consumption Rate")+
+  xlab("Suicide/ 100 People")+
   ggtitle("World Alcohol Consumption")+
-  geom_abline(na.rm = TRUE, intercept= 5.35692)
+  geom_abline(na.rm = TRUE, intercept = 3.05709)
 
 # line representing the average color 
 
 ggplotDfAlcAlconsumEmplRt + 
-  geom_point(aes(col=region),size=1)+
-  geom_text(nudge_x = 0.3 ,nudge_y = 0.3)+
-  xlab("Alcohol Consumption Rate")+
-  ylab("Employment Rate")+
+  geom_point(aes(col=region),size=0.6)+
+  geom_text(nudge_x = 1 ,nudge_y = 0.5)+
+  ylab("Alcohol Consumption Rate")+
+  xlab("Employment Rate")+
   ggtitle("World Alcohol Consumption")+
-  geom_abline(na.rm = TRUE,intercept= 45.8582,lty = 2, color = "red" )
+  geom_abline(na.rm = TRUE, intercept= 4.66578,lty = 1, color = "red" )
 ggplotDfAlcAlconsumUrbanRt +
-  geom_point(aes(col=region),size=1)+
-  geom_text(nudge_x = 0.3 ,nudge_y = 0.3)+
-  xlab("Alcohol Consumption Rate")+
-  ylab("Urban Rate")+
+  geom_point(aes(col=region),size=0.6)+
+  geom_text(nudge_x = 1 ,nudge_y = 0.5)+
+  ylab("Alcohol Consumption Rate")+
+  xlab("Urban Rate")+
   ggtitle("World Alcohol Consumption")+
-  geom_abline(na.rm = TRUE, intercept= 48.1974,lty = 2, color = "red")
+  geom_abline(na.rm = TRUE, intercept = 3.83616,lty =2 , color = "red" )
 ggplotDfAlcAlconsumSuicide100 +
-  geom_point(aes(col=region),size=1)+
-  geom_text(nudge_x = 0.3 ,nudge_y = 0.3)+
-  xlab("Alcohol Consumption Rate")+
-  ylab("Suicide per 100 people")+
+  geom_point(aes(col=region),size=0.6)+
+  geom_text(nudge_x = 1 ,nudge_y = 0.5)+
+  ylab("Alcohol Consumption Rate")+
+  xlab("Suicide/ 100 People")+
   ggtitle("World Alcohol Consumption")+
-  geom_abline(na.rm = TRUE, intercept= 5.35692,lty = 2, color = "red")
-# add- on packages 
+  geom_abline(na.rm = TRUE, intercept = 3.05709,lty = 3, color = "red" )
+# add - on packages 
 # ggthemes
-library(dslabs)
-ds_theme_set()
-ggplotDfAlcAlconsumEmplRt + 
+
+?ds_theme_set()
+?ggthemes
+
+ggplotDfAlcAlconsumSuicide100 +
   ggthemes::theme_economist()+
-  geom_point(aes(col=region),size=1)+
-  geom_text(nudge_x = 0.3 ,nudge_y = 0.3)+
-  xlab("Alcohol Consumption Rate")+
-  ylab("Employment Rate")+
+  geom_point(aes(col=region),size=0.6)+
+  geom_text(nudge_x = 1 ,nudge_y = 0.5)+
+  ylab("Alcohol Consumption Rate")+
+  xlab("Suicide/ 100 People")+
   ggtitle("World Alcohol Consumption")+
-  geom_abline(na.rm = TRUE,intercept= 45.8582,lty = 2, color = "red" )
+  geom_abline(na.rm = TRUE, intercept = 3.05709,lty = 3, color = "red" )
 
-ggplotDfAlcAlconsumEmplRt + 
+ggplotDfAlcAlconsumSuicide100 +
   ggthemes::theme_fivethirtyeight()+
-  geom_point(aes(col=region),size=1)+
-  geom_text(nudge_x = 0.3 ,nudge_y = 0.3)+
-  xlab("Alcohol Consumption Rate")+
-  ylab("Employment Rate")+
+  geom_point(aes(col=region),size=0.6)+
+  geom_text(nudge_x = 1 ,nudge_y = 0.5)+
+  ylab("Alcohol Consumption Rate")+
+  xlab("Suicide/ 100 People")+
   ggtitle("World Alcohol Consumption")+
-  geom_abline(na.rm = TRUE,intercept= 45.8582,lty = 2, color = "red" )
-
+  geom_abline(na.rm = TRUE, intercept = 3.05709,lty = 3, color = "red" )
 
 # ggrepel
 #includes a geometry that adds labels ensuring that they don't fall on top of each other.
-
-ggplotDfAlcAlconsumEmplRt + 
-  ggthemes::theme_economist()+
+ggplotDfAlcAlconsumSuicide100 +
+  ggthemes::theme_fivethirtyeight()+
   geom_point(aes(col=region),size=1)+
-  ggrepel::geom_text_repel()+
-  xlab("Alcohol Consumption Rate")+
-  ylab("Employment Rate")+
+  ggrepel::geom_text_repel(
+    nudge_x = .15,
+    box.padding = 0.5,
+    nudge_y = 1,
+    segment.curvature = -0.1,
+    segment.ncp = 3,
+    segment.angle = 30,
+    max.overlaps = 100) + 
+  theme_bw() + 
+  theme(legend.position = 'none')+
+  ylab("Alcohol Consumption Rate")+
+  xlab("Suicide/ 100 People")+
   ggtitle("World Alcohol Consumption")+
-  geom_abline(na.rm = TRUE,intercept= 45.8582,lty = 2, color = "red" )
+  geom_abline(na.rm = TRUE, intercept = 3.05709,lty = 3, color = "red" )
+
+ggplotDfAlcAlconsumSuicide100 +
+  ggthemes::theme_fivethirtyeight()+
+  geom_point(aes(col=region,size = aconsum ))+
+  ggrepel::geom_text_repel(
+    nudge_x = .15,
+    box.padding = 0.5,
+    nudge_y = 1,
+    segment.curvature = -0.1,
+    segment.ncp = 3,
+    segment.angle = 30,
+    max.overlaps = 100) + 
+  theme_bw() + 
+  theme(legend.position = 'none')+
+  ylab("Alcohol Consumption Rate")+
+  xlab("Suicide/ 100 People")+
+  ggtitle("World Alcohol Consumption")+
+  geom_abline(na.rm = TRUE, intercept = 3.05709,lty = 3, color = "red" )
 ------ 
 # geom_histogram 
 dfAlcEMEA <- dfAlc %>%

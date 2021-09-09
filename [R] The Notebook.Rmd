@@ -362,6 +362,29 @@ mean(aconsum[!naS])
 mean(dfAlc[,2])
 ```
 
+1.[dataFrame] filter, summarize
+
+```{r}
+dfAlc %>%
+  filter(region == "EMEA") %>%
+  summarize(median = median(aconsum), #call only  functions that return a single value
+            minimum = min(aconsum),
+            maximum = max(aconsum)) 
+```
+
+1.[dataFrame] filter, summarize, access  summarized numeric value
+
+```{r}
+dfAlcEMEAMedian<- dfAlc %>%
+  filter(region == "EMEA") %>%
+  summarize(median = median(aconsum), 
+            minimum = min(aconsum),
+            maximum = max(aconsum))%>%
+  .$median #the dot as a placeholder for the data that is being passed through the pipe
+```
+
+###### ^1^ Note: most of the dplyr functions, including summarize, always return data frames; if to be used the result with a function that requires a numeric value,  won't be able to do it
+###### ^1^ Note:  .$median is equivalent to dfAlcEMEAMedian$median
 
 1.[object] define length
 
@@ -1507,6 +1530,54 @@ xEMEAEmplRt <- dfAlc$employrt[iEMEA]
 xAPACEmplRt <- dfAlc$employrt[iAPAC]
 ```
 
+1.[dataFrame] filter, group by, summarize
+
+```{r}
+  dfAlc %>%
+  group_by(region) %>%
+  dplyr::summarize(average = mean(aconsum), standard_deviation = sd(aconsum))
+```
+
+###### ^1^ Note: group data frame = as many tables with the same columns but not necessarily the same rows that are stacked together into one object
+###### ^1^ Note: group_by() function from dplyr  converts a data frame to a grouped data frame, creating groups using one or more variables
+
+1.[dataFrame] arrange by ascend 
+
+```{r}
+  dfAlc %>% arrange(aconsum) %>% head()
+```
+
+1.[dataFrame] arrange by descend 
+
+```{r}
+ dfAlc %>% arrange(desc(aconsum)) %>% head()
+```
+
+1.[dataFrame] nested arrange  
+
+```{r}
+ dfAlc %>% arrange(region, aconsum) %>% head()
+```
+
+1.[dataFrame] top 10, not ordered by 
+
+```{r}
+ dfAlc %>% top_n(10, aconsum)
+```
+
+1.[dataFrame] top 10,ordered by 
+
+```{r}
+dfAlc %>% arrange(desc(aconsum)) %>% top_n(10)
+dfAlc %>% slice_max(aconsum, n = 10) #alternative 
+```
+
+1.[dataFrame]  top 10 nested arrange by region ,ordered by 
+
+```{r}
+dfAlc %>% arrange(desc(region, aconsum))  %>% top_n(10) 
+```
+
 1.[quantile] observed and theoretical calculate
 
 ```{r}
@@ -1964,9 +2035,10 @@ dfAlcEMEA +
 
 ```{r}
 dfAlcEMEA + 
-  geom_histogram(binwidth = 1, fill = "cyan3", col = "cyan4") +
-  xlab("EMEA Alcohol Consumption") +
+  geom_histogram(binwidth = 1, fill = "cyan3", col = "cyan4")+
+  xlab("EMEA Alcohol Consumption")+
   ggtitle("Histogram")
+ 
 ```
 
 1.[geomHistogrma] put together
@@ -1994,7 +2066,7 @@ dfAlcEMEA +
 
 ```{r}
 dfAlcEMEA + 
-  geom_density(fill = "bisque2", col = "bisque3") 
+  geom_density(fill = "bisque2", col = "bisque3") +
   xlab("EMEA Alcohol Consumption") +
   ggtitle("Density Plot")
 ```
@@ -2051,7 +2123,7 @@ dfAlcEMEA +
 ```{r}
 params <- dfAlc %>%
   filter(region == "EMEA") %>%
-  summarize(mean = mean(aconsum), sd = sd(aconsum))
+  dplyr::summarize(mean = mean(aconsum), sd = sd(aconsum))
 dfAlcEMEA +
   geom_qq(dparams = params, fill = "darkgoldenrod2", col = "darkgoldenrod3") +
   geom_qq_line(col = "darkgray") + 
