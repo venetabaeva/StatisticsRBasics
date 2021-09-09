@@ -9,15 +9,7 @@
 > library load
 
 ``` r
-library(dplyr)
-```
-
-``` r
 library(dslabs)
-```
-
-``` r
-library(tidyverse)
 ```
 
 ## I.
@@ -960,7 +952,7 @@ sum(i,na.rm =TRUE)
 1.1.\[vector\] filter data by sub-setting row
 
 ``` r
-filter(dfAlc, region=="EMEA")
+dplyr::filter(dfAlc, region=="EMEA")
 ```
 
     ##                    country abbrv aconsum incomeper1 suicideper100 employrt
@@ -1345,7 +1337,7 @@ checkAbbrv[i]
 1.1.\[dataFrame\] mutate data frame
 
 ``` r
-dfAlc <- mutate(dfAlc,rank=rank(-dfAlc$aconsum))
+dfAlc <- dplyr::mutate(dfAlc,rank=rank(-dfAlc$aconsum))
 str(dfAlc)
 ```
 
@@ -1365,7 +1357,7 @@ str(dfAlc)
 1.1.\[dataFrame\] excluding filter value and create data frame
 
 ``` r
-dfNoEMEA <- data.frame(filter(dfAlc,region!="EMEA"))
+dfNoEMEA <- data.frame(dplyr::filter(dfAlc,region!="EMEA"))
 nrow(dfNoEMEA)
 ```
 
@@ -1374,7 +1366,7 @@ nrow(dfNoEMEA)
 1.1.\[dataFrame\] including filter value and create data frame
 
 ``` r
-dfEMEAAPAC <- data.frame(filter(dfAlc,region %in% c("EMEA","APAC")))
+dfEMEAAPAC <- data.frame(dplyr::filter(dfAlc,region %in% c("EMEA","APAC")))
 nrow(dfEMEAAPAC)
 ```
 
@@ -1383,7 +1375,7 @@ nrow(dfEMEAAPAC)
 1.1.\[dataFrame\] filter and select only
 
 ``` r
-EMEAAPACAconsum10 <- filter(dfAlc,region %in% c("EMEA","APAC") & aconsum < 10)
+EMEAAPACAconsum10 <- dplyr::filter(dfAlc,region %in% c("EMEA","APAC") & aconsum < 10)
 dplyr::select(EMEAAPACAconsum10,country,aconsum,rank)
 ```
 
@@ -1496,7 +1488,7 @@ dplyr::select(EMEAAPACAconsum10,country,aconsum,rank)
 
 ``` r
 newTable <- dplyr::select(dfAlc,country,region,aconsum) 
-filter(newTable,aconsum <= 10)
+dplyr::filter(newTable,aconsum <= 10)
 ```
 
     ##                              country region aconsum
@@ -1661,7 +1653,7 @@ str(newTable)
 1.\[dataFrame\] pipe select and pipe filter
 
 ``` r
-dfAlc %>% dplyr::select(country,region,aconsum) %>% filter(aconsum <= 10)
+dfAlc %>% dplyr::select(country,region,aconsum)  %>% filter(aconsum <= 10)
 ```
 
     ##                              country region aconsum
@@ -1817,7 +1809,7 @@ dfAlc %>% dplyr::select(country,region,aconsum) %>% filter(aconsum <= 10)
 1.\[dataFrame\] filter pipe select
 
 ``` r
-filter(dfAlc, region %in% c("EMEA", "APAC") & aconsum < 10 )%>% dplyr::select(country, aconsum, rank)
+dplyr::filter(dfAlc, region %in% c("EMEA", "APAC") & aconsum < 10 )%>% dplyr::select(country, aconsum, rank)
 ```
 
     ##                   country aconsum  rank
@@ -1928,7 +1920,7 @@ filter(dfAlc, region %in% c("EMEA", "APAC") & aconsum < 10 )%>% dplyr::select(co
 1.\[dataFrame\] pipe filter select
 
 ``` r
-dfAlc %>% mutate(aconsum, rank) %>% filter(region %in% c('EMEA','APAC') & aconsum <10) %>% dplyr::select(country,aconsum,rank)
+dfAlc %>% mutate(aconsum, rank) %>% dplyr::filter(region %in% c('EMEA','APAC') & aconsum <10) %>% dplyr::select(country,aconsum,rank)
 ```
 
     ##                   country aconsum  rank
@@ -2109,7 +2101,7 @@ mean(heights$ht_cm)
     ## [1] 173.5405
 
 ``` r
-females <- filter(heights, sex == "Female") #females by filtering the heights2 data to contain only female individuals.
+females <- dplyr::filter(heights, sex == "Female") #females by filtering the heights2 data to contain only female individuals.
 head(females)
 ```
 
@@ -2294,7 +2286,7 @@ plot(n,s_n)
 lines(n,n*(n+1)/2)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-82-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-85-1.png)<!-- -->
 
 3.\[forloop\]
 
@@ -2321,7 +2313,7 @@ df %>%
   ggplot(aes(urbanrate, suicide, label=country,color=rank)) + geom_label()
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-84-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-87-1.png)<!-- -->
 
 2.\[ggplot\]
 
@@ -2330,7 +2322,7 @@ dfAlc %>%
   ggplot(aes(urbanrt, employrt, label=abbrv, color=region)) + geom_label()
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-85-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-88-1.png)<!-- -->
 
 2.\[ggplot\]
 
@@ -2339,7 +2331,7 @@ dfAlc %>%
   ggplot(aes(urbanrt, employrt, label=abbrv, color=region)) + geom_label()
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-86-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-89-1.png)<!-- -->
 
 2.\[scatterPlot\]
 
@@ -2347,19 +2339,19 @@ dfAlc %>%
 plot(dfAlc$suicideper100,dfAlc$aconsum, xlab = "suicides/100 people", ylab="alcohol consumption")
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-87-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-90-1.png)<!-- -->
 
 ``` r
 plot(dfAlc$employrt,dfAlc$aconsum, xlab = "employee rate", ylab="alcohol consumption")
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-87-2.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-90-2.png)<!-- -->
 
 ``` r
 plot(dfAlc$urbanrt,dfAlc$aconsum, xlab = "urban rate", ylab="alcohol consumption")
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-87-3.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-90-3.png)<!-- -->
 
 2.\[scatterPlot\] in logs
 
@@ -2369,7 +2361,7 @@ log10Aconsum <- log10(dfAlc$aconsum)
 plot(log10IncomePer1,log10Aconsum)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-88-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-91-1.png)<!-- -->
 
 2.\[histogram\]
 
@@ -2377,7 +2369,7 @@ plot(log10IncomePer1,log10Aconsum)
 hist(dfAlc$aconsum,xlab = "alcohol consumption") 
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-89-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-92-1.png)<!-- -->
 
 ``` r
 dfAlc$country[which.max(dfAlc$aconsum)]
@@ -2391,25 +2383,25 @@ dfAlc$country[which.max(dfAlc$aconsum)]
 boxplot(aconsum~region, data = dfAlc,na.action = NULL) 
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-90-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-93-1.png)<!-- -->
 
 ``` r
 boxplot(suicidesPer100~region, data = dfAlc)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-90-2.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-93-2.png)<!-- -->
 
 ``` r
 boxplot(employrt~region, data = dfAlc)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-90-3.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-93-3.png)<!-- -->
 
 ``` r
 boxplot(urbanrt~region, data = dfAlc)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-90-4.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-93-4.png)<!-- -->
 
 ## II.
 
@@ -2461,7 +2453,7 @@ library(UsingR)
 1.\[dataFrame\]filter
 
 ``` r
-controlsXGaze <- filter(dfPonzo, stimulusNr == c(1,3,13,15,25,27)) %>% dplyr::select(xGaze) %>% summarise(mean(xGaze))
+controlsXGaze <- dplyr::filter(dfPonzo, stimulusNr == c(1,3,13,15,25,27)) %>% dplyr::select(xGaze) %>% summarise(mean(xGaze))
 ```
 
     ## Warning in stimulusNr == c(1, 3, 13, 15, 25, 27): longer object length is not a
@@ -2475,7 +2467,7 @@ controlsXGaze
     ## 1   0.4894464
 
 ``` r
-controlsYGaze <-filter(dfPonzo, stimulusNr == c(1,3,13,15,25,27)) %>% dplyr::select(yGaze) %>% summarise(mean(yGaze))
+controlsYGaze <-dplyr::filter(dfPonzo, stimulusNr == c(1,3,13,15,25,27)) %>% dplyr::select(yGaze) %>% summarise(mean(yGaze))
 ```
 
     ## Warning in stimulusNr == c(1, 3, 13, 15, 25, 27): longer object length is not a
@@ -2491,7 +2483,7 @@ controlsYGaze
 1.\[dataFrame\] pipe filter select unlist
 
 ``` r
-controlsXGaze <- filter(dfPonzo, stimulusNr == c(1,3,13,15,25,27)) %>% dplyr::select(xGaze) 
+controlsXGaze <- dplyr::filter(dfPonzo, stimulusNr == c(1,3,13,15,25,27)) %>% dplyr::select(xGaze) 
 ```
 
     ## Warning in stimulusNr == c(1, 3, 13, 15, 25, 27): longer object length is not a
@@ -2504,7 +2496,7 @@ mean(controlsXGaze$xGaze)
     ## [1] 0.4894464
 
 ``` r
-controlsYGaze <-filter(dfPonzo, stimulusNr == c(1,3,13,15,25,27)) %>% dplyr::select(yGaze)
+controlsYGaze <-dplyr::filter(dfPonzo, stimulusNr == c(1,3,13,15,25,27)) %>% dplyr::select(yGaze)
 ```
 
     ## Warning in stimulusNr == c(1, 3, 13, 15, 25, 27): longer object length is not a
@@ -2517,7 +2509,7 @@ mean(controlsYGaze$yGaze)
     ## [1] 0.39975
 
 ``` r
-longUpXGaze  <-filter(dfPonzo, stimulusNr == c(5,7,17,19,29,31))%>% dplyr::select(xGaze)
+longUpXGaze  <-dplyr::filter(dfPonzo, stimulusNr == c(5,7,17,19,29,31))%>% dplyr::select(xGaze)
 ```
 
     ## Warning in stimulusNr == c(5, 7, 17, 19, 29, 31): longer object length is not a
@@ -2530,7 +2522,7 @@ mean(longUpXGaze$xGaze)
     ## [1] 0.4817167
 
 ``` r
-longUpYGaze  <-filter(dfPonzo, stimulusNr == c(5,7,17,19,29,31))%>% dplyr::select(yGaze)
+longUpYGaze  <-dplyr::filter(dfPonzo, stimulusNr == c(5,7,17,19,29,31))%>% dplyr::select(yGaze)
 ```
 
     ## Warning in stimulusNr == c(5, 7, 17, 19, 29, 31): longer object length is not a
@@ -2543,7 +2535,7 @@ mean(longUpYGaze$yGaze)
     ## [1] 0.43095
 
 ``` r
-longDownXGaze<- filter(dfPonzo, stimulusNr == c(9,11,21,23,33,35))%>% dplyr::select(xGaze)
+longDownXGaze<- dplyr::filter(dfPonzo, stimulusNr == c(9,11,21,23,33,35))%>% dplyr::select(xGaze)
 ```
 
     ## Warning in stimulusNr == c(9, 11, 21, 23, 33, 35): longer object length is not a
@@ -2556,7 +2548,7 @@ mean(longDownXGaze$xGaze)
     ## [1] 0.494
 
 ``` r
-longDownYGaze<- filter(dfPonzo, stimulusNr == c(9,11,21,23,33,35))%>% dplyr::select(yGaze)
+longDownYGaze<- dplyr::filter(dfPonzo, stimulusNr == c(9,11,21,23,33,35))%>% dplyr::select(yGaze)
 ```
 
     ## Warning in stimulusNr == c(9, 11, 21, 23, 33, 35): longer object length is not a
@@ -2571,7 +2563,7 @@ mean(longDownYGaze$yGaze)
 1.\[dataFrame\] filter select
 
 ``` r
-controls <- filter(dfPonzo, stimulusNr == c(1,3,13,15,25,27)) 
+controls <- dplyr::filter(dfPonzo, stimulusNr == c(1,3,13,15,25,27)) 
 ```
 
     ## Warning in stimulusNr == c(1, 3, 13, 15, 25, 27): longer object length is not a
@@ -2603,7 +2595,7 @@ mean(controls$yGaze)
     ## [1] 0.39975
 
 ``` r
-longUp  <-filter(dfPonzo, stimulusNr == c(5,7,17,19,29,31))
+longUp  <-dplyr::filter(dfPonzo, stimulusNr == c(5,7,17,19,29,31))
 ```
 
     ## Warning in stimulusNr == c(5, 7, 17, 19, 29, 31): longer object length is not a
@@ -2635,7 +2627,7 @@ mean(longUp$yGaze)
     ## [1] 0.43095
 
 ``` r
-longDown <- filter(dfPonzo, stimulusNr == c(9,11,21,23,33,35))
+longDown <- dplyr::filter(dfPonzo, stimulusNr == c(9,11,21,23,33,35))
 ```
 
     ## Warning in stimulusNr == c(9, 11, 21, 23, 33, 35): longer object length is not a
@@ -3035,19 +3027,19 @@ unlist(longDown)
 plot(controls$xGaze,controls$yGaze,xlab = "controlsXGaze", ylab="controlsYGaze") 
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-96-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-99-1.png)<!-- -->
 
 ``` r
 plot(longUp$xGaze,longUp$yGaze,xlab = "longUpXGaze", ylab="longUpYGaze") 
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-96-2.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-99-2.png)<!-- -->
 
 ``` r
 plot(longDown$xGaze,longDown$yGaze,xlab = "longDownXGaze", ylab="longDownYGaze") 
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-96-3.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-99-3.png)<!-- -->
 
 1.\[population\]get different random sample of 12;random variable of
 random sample
@@ -3058,13 +3050,13 @@ popDfPonzoYGaze <- unlist(dfPonzo$yGaze)
 mean(sample(popDfPonzoXGaze,12))
 ```
 
-    ## [1] 0.4836667
+    ## [1] 0.482
 
 ``` r
 mean(sample(popDfPonzoYGaze,12))
 ```
 
-    ## [1] 0.4283333
+    ## [1] 0.4058333
 
 ``` r
 mean(popDfPonzoXGaze)
@@ -3174,7 +3166,7 @@ max(nullsPopX)
 hist(nullsPopX)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-103-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-106-1.png)<!-- -->
 
 ``` r
 n<-10000
@@ -3193,7 +3185,7 @@ max(nullsPopY)
 hist(nullsPopY)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-104-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-107-1.png)<!-- -->
 
 ###### <sup>1</sup> Note: if knowing the null distribution, one can describe the proportion of values one sees for any interval of values -&gt; define a number of times to redo the null hypothesis check; record all differences
 
@@ -3267,7 +3259,7 @@ for(i in 1:n){
 hist(averagesPopX)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-109-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-112-1.png)<!-- -->
 
 1.\[nullHypothesis\] check
 
@@ -3300,7 +3292,7 @@ for(i in 1:n){
 hist(averagesPopX)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-112-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-115-1.png)<!-- -->
 
 1.\[nullHypothesis\] check
 
@@ -3333,7 +3325,7 @@ for(i in 1:n){
 hist(averagesPopY)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-115-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-118-1.png)<!-- -->
 
 1.\[nullHypothesis\] check
 
@@ -3373,7 +3365,7 @@ props = sapply(qs, function(q) mean(popDfPonzoXGaze <= q))
 plot(qs, props)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-118-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-121-1.png)<!-- -->
 
 ###### <sup>1</sup> Note: \#1 option: empirical cumulative distribution function
 
@@ -3384,7 +3376,7 @@ list =&gt; empirical cumulative distribution function
 plot(ecdf(popDfPonzoXGaze))
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-119-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-122-1.png)<!-- -->
 
 ###### <sup>1</sup> Note: \#2 option: empirical cumulative distribution function
 
@@ -3428,7 +3420,7 @@ hist(averagesPopX5)
 hist(averagesPopX50)  
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-122-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-125-1.png)<!-- -->
 
 ``` r
 mean(averagesPopX5<0.600 & averagesPopX5>0.400)
@@ -3525,14 +3517,14 @@ qqnorm(popDfPonzoXGaze)
 abline(0,1)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-128-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-131-1.png)<!-- -->
 
 ``` r
 qqnorm(popDfPonzoYGaze)
 abline(0,1)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-128-2.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-131-2.png)<!-- -->
 
 > library load
 
@@ -3548,7 +3540,7 @@ qqnorm(avgs)
 qqline(avgs)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-130-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-133-1.png)<!-- -->
 
 ``` r
 mean(avgs) #What is the average of the distribution of the sample average?
@@ -3622,7 +3614,7 @@ max(nullsPopX)
 hist(nullsPopX)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-136-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-139-1.png)<!-- -->
 
 ``` r
 n<-10000
@@ -3641,7 +3633,7 @@ max(nullsPopY)
 hist(nullsPopY)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-137-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-140-1.png)<!-- -->
 
 1.\[nullHypothesis\]
 
@@ -3695,14 +3687,14 @@ qqnorm(nullsPopX)
 qqline(nullsPopX)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-142-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-145-1.png)<!-- -->
 
 ``` r
 qqnorm(nullsPopY)
 qqline(nullsPopY)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-142-2.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-145-2.png)<!-- -->
 \#\#\#\#\#\# <sup>1</sup> Note: use normal approximation instead of
 accessing the population through changes of the sample
 
@@ -3798,7 +3790,7 @@ abline(0,1)
 qqline(nullsPopX)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-148-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-151-1.png)<!-- -->
 
 ``` r
 qqnorm(nullsPopY)
@@ -3806,8 +3798,422 @@ abline(0,1)
 qqline(nullsPopY)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-148-2.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-151-2.png)<!-- -->
 
 ## III.
+
+1.\[vector\] discrete numeric data considered ordinal-ly
+
+``` r
+unique(dfAlc$employrt)
+```
+
+    ##  [1] 56 51  0 76 58 40 62 57 61 67 60 68 53 49 72 70 41 46 65 64 47 81 83 79 59
+    ## [26] 71 69 73 63 66 42 54 50 43 82 74 55 48 37 39 78 35 44 52 77 75 80 45 32
+
+``` r
+length(unique(dfAlc$employrt))
+```
+
+    ## [1] 49
+
+1.\[vector\] compute the frequencies of each unique value
+
+``` r
+table(dfAlc$employrt)
+```
+
+    ## 
+    ##  0 32 35 37 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 
+    ## 35  1  1  1  2  1  2  4  3  2  2  5  6  1  4  2 10  1  5  4  5 10  7  8 12  7 
+    ## 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 
+    ##  6  7  3  8  7  6  4  3  1  2  2  4  3  1  2  2  1  2  1  1  2  1  3
+
+``` r
+prop.table(table(dfAlc$region))
+```
+
+    ## 
+    ##                  APAC       EMEA      LATAM 
+    ## 0.01877934 0.19718310 0.61502347 0.16901408
+
+1.\[vector\] sum frequencies
+
+``` r
+sum(table(dfAlc$employrt)==1)
+```
+
+    ## [1] 12
+
+> load library
+
+``` r
+library(dplyr)
+```
+
+1.\[column\] remove NAs
+
+``` r
+dfAlc[is.na(x = dfAlc)] <- 0
+```
+
+1.\[CDF\] cumulative distribution function for continuous data
+
+``` r
+rangeForCdfFunction <- seq(min(dfAlc$employrt), max(dfAlc$employrt),length = 100) #define range of values spanning the dataset 
+cdfFunction <- function(f){ # computes probability for a single value
+  mean(dfAlc$employrt<=f) # cdfFunction (rangeForCdfFunction) = Pr (f</=rangeForCdfFunction) 
+}
+cdfValuesBelow <- sapply(rangeForCdfFunction,cdfFunction)#  CDF defines proportion of data below the  cutoff rangeForCdfFunction
+cdfValuesAbove <- 1-(sapply(rangeForCdfFunction,cdfFunction)) # defines proportion of data above the  cutoff rangeForCdfFunction => 1 - cdfFunction (rangeForCdfFunction)
+```
+
+3.\[plot\] CDF
+
+``` r
+plot(rangeForCdfFunction,cdfValuesBelow)
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-158-1.png)<!-- -->
+
+``` r
+EmployeeRate <- rangeForCdfFunction
+Proportion<- cdfValuesBelow
+plot(EmployeeRate,Proportion)
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-158-2.png)<!-- -->
+
+``` r
+plot(rangeForCdfFunction,cdfValuesAbove) 
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-158-3.png)<!-- -->
+
+``` r
+rangeForCdfFunctionQ <- seq(quantile(dfAlc$employrt,0.50), quantile(dfAlc$employrt,0.75),length = 100) 
+cdfFunction <- function(f){ 
+  mean(dfAlc$employrt<=f)  
+}
+cdfValuesBellowQ <- sapply(rangeForCdfFunctionQ,cdfFunction) - (sapply(rangeForCdfFunction,cdfFunction)) # define proportion of values between rangeForCdfFunction and rangeForCdfFunctionQ
+plot(rangeForCdfFunctionQ,cdfValuesBellowQ)
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-159-1.png)<!-- -->
+
+1.\[column\] mean and standard deviation
+
+``` r
+meanDfAlcEmpRate <- sum(dfAlc$employrt)/ length(dfAlc$employrt)
+sdDfAlcEmpRate <- sqrt(sum((dfAlc$employrt-meanDfAlcEmpRate)^2)/ length(dfAlc$employrt))
+```
+
+1.\[column\] filter; access through index; calculate mean and standard
+deviation
+
+``` r
+iEMEA <- dfAlc$region == "EMEA" 
+xEMEAEmplRt <- dfAlc$employrt[iEMEA]
+mEMEAEmplRt <- mean(xEMEAEmplRt)
+sdEMEAEmplRt <- sd(xEMEAEmplRt)
+c(mEMEAEmplRt=mEMEAEmplRt,sdEMEAEmplRt=sdEMEAEmplRt)
+```
+
+    ##  mEMEAEmplRt sdEMEAEmplRt 
+    ##     50.71756     21.38018
+
+1.\[mean\] within range
+
+``` r
+mean(xEMEAEmplRt>49 & xEMEAEmplRt<=52)
+```
+
+    ## [1] 0.07633588
+
+1.\[zScore\] scale
+
+``` r
+zEMEAEmplRt = scale(xEMEAEmplRt) # converts a vector of approximatley normally distributed values into z-scores
+```
+
+1.\[zScore\] check whether significantly above or below the mean
+
+``` r
+mean(abs(zEMEAEmplRt)<2)  # compute proportion of observations that are within 2 standard deviations of the mean 
+```
+
+    ## [1] 0.8854962
+
+``` r
+mean(abs(xEMEAEmplRt)<2) 
+```
+
+    ## [1] 0.1145038
+
+1\[median\] absolute deviation
+
+``` r
+mad(xEMEAEmplRt) # median absolute deviation
+```
+
+    ## [1] 14.826
+
+1.\[pnorm\] approximate the proportion of the data without access to
+actual data
+
+``` r
+mean(xEMEAEmplRt>49 & xEMEAEmplRt<=52)  
+```
+
+    ## [1] 0.07633588
+
+``` r
+pnorm(72, mean(xEMEAEmplRt),sd(xEMEAEmplRt))- pnorm(69,  mean(xEMEAEmplRt),sd(xEMEAEmplRt)) 
+```
+
+    ## [1] 0.03648072
+
+###### <sup>1</sup> Note:the approximation calculated with the pnorm is very close to the exact calculation with the mean
+
+1.\[pnorm\] approximation is not always useful for the more extreme
+values - tails
+
+``` r
+exact <- mean(xEMEAEmplRt > 21 & xEMEAEmplRt <= 23) # calculate the proportion of heights between 79 and 81
+avg <- mean(xEMEAEmplRt)
+sd <- sd(xEMEAEmplRt)
+approx <- pnorm(81, avg, sd) - pnorm(79, avg, sd)# estimate the proportion of heights between 79 and 81 
+exact/approx # report how many times bigger the actual proportion is compared to the approximation
+```
+
+    ## [1] 0
+
+1.\[pnorm\] mathematically define CDF
+
+``` r
+1 - pnorm(45, mean(xEMEAEmplRt),sd(xEMEAEmplRt)) #whether the probability that a randomly selected employRt is bigger than 45
+```
+
+    ## [1] 0.6054284
+
+1.\[plot\] proportion table
+
+``` r
+plot(prop.table(table(xEMEAEmplRt)), xlab = "a = EMEAEmplRt", ylab = "Pr(xEMEAEmplRt = a)")
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-169-1.png)<!-- -->
+
+1.\[vector\] quantile
+
+``` r
+p <- seq(0.01, 0.99, 0.01)
+quantile(p)
+```
+
+    ##    0%   25%   50%   75%  100% 
+    ## 0.010 0.255 0.500 0.745 0.990
+
+1.\[vector\] percentiles
+
+``` r
+percentiles <- quantile(xEMEAEmplRt,p)
+percentiles[names(percentiles) == "25%"]
+```
+
+    ## 25% 
+    ##  46
+
+``` r
+percentiles[names(percentiles) == "50%"]
+```
+
+    ## 50% 
+    ##  54
+
+``` r
+percentiles[names(percentiles) == "75%"]
+```
+
+    ## 75% 
+    ##  64
+
+1.\[vector\] quartile
+
+``` r
+summary(xEMEAEmplRt)
+```
+
+    ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+    ##    0.00   46.00   54.00   50.72   64.00   83.00
+
+1.\[vector\] theoretical quantile
+
+``` r
+p <- seq(0.01, 0.99, 0.01)
+qnorm(p, mean(xEMEAEmplRt), sd(xEMEAEmplRt))
+```
+
+    ##  [1]   0.9798306   6.8080444  10.5058591  13.2875812  15.5502974  17.4762244
+    ##  [7]  19.1648855  20.6768802  22.0519788  23.3177594  24.4941703  25.5961330
+    ## [13]  26.6351168  27.6201398  28.5584291  29.4558728  30.3173363  31.1468907
+    ## [19]  31.9479801  32.7235473  33.4761292  34.2079305  34.9208817  35.6166842
+    ## [25]  36.2968478  36.9627193  37.6155077  38.2563033  38.8860946  39.5057821
+    ## [31]  40.1161896  40.7180747  41.3121364  41.8990230  42.4793379  43.0536452
+    ## [37]  43.6224743  44.1863243  44.7456672  45.3009516  45.8526056  46.4010392
+    ## [43]  46.9466466  47.4898089  48.0308956  48.5702666  49.1082744  49.6452648
+    ## [49]  50.1815796  50.7175573  51.2535349  51.7898497  52.3268401  52.8648479
+    ## [55]  53.4042189  53.9453056  54.4884679  55.0340753  55.5825089  56.1341629
+    ## [61]  56.6894473  57.2487902  57.8126402  58.3814693  58.9557766  59.5360915
+    ## [67]  60.1229781  60.7170398  61.3189249  61.9293324  62.5490199  63.1788112
+    ## [73]  63.8196068  64.4723952  65.1382667  65.8184303  66.5142328  67.2271840
+    ## [79]  67.9589853  68.7115672  69.4871344  70.2882238  71.1177782  71.9792417
+    ## [85]  72.8766854  73.8149748  74.7999977  75.8389815  76.9409442  78.1173551
+    ## [91]  79.3831357  80.7582343  82.2702290  83.9588901  85.8848171  88.1475333
+    ## [97]  90.9292554  94.6270701 100.4552839
+
+1.\[vector\] observed and theoretical quantile
+
+``` r
+summary(xEMEAEmplRt)
+```
+
+    ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+    ##    0.00   46.00   54.00   50.72   64.00   83.00
+
+``` r
+mean(xEMEAEmplRt <= 54)# proportion of data below 68.5
+```
+
+    ## [1] 0.5038168
+
+``` r
+p <- seq(0.05,0.95,0.05)
+observedQuantiles <- quantile(xEMEAEmplRt,p)
+theoreticalQuantiles <- qnorm(p, mean = mean(xEMEAEmplRt), sd = sd(xEMEAEmplRt))
+```
+
+1.\[plot\] observed and theoretical quantile
+
+``` r
+plot(theoreticalQuantiles, observedQuantiles)
+abline(0,1)
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-175-1.png)<!-- -->
+
+1.\[vector\] observed and theoretical quantile
+
+``` r
+z <- scale(xEMEAEmplRt)
+observedQuantiles <- quantile(z,p)# if standard units are used no need of defining the mean and the standard deviation 
+theoreticalQuantiles <- qnorm(p) 
+```
+
+1.\[plot\] observed and theoretical quantile
+
+``` r
+plot(theoreticalQuantiles, observedQuantiles)
+abline(0,1)
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-177-1.png)<!-- -->
+
+> load library
+
+``` r
+library(dslabs)
+```
+
+1.\[vector\] filter
+
+``` r
+iEMEA <- dfAlc$region == "EMEA"
+iAPAC <- dfAlc$region == "APAC"
+xEMEAEmplRt <- dfAlc$employrt[iEMEA]
+xAPACEmplRt <- dfAlc$employrt[iAPAC]
+```
+
+1.\[quantile\] observed and theoretical calculate
+
+``` r
+percentilesEMEA <- quantile(xEMEAEmplRt, seq(.01, 0.99, 0.01))
+percentilesAPAC <- quantile(xAPACEmplRt, seq(.01, 0.99, 0.01))
+theoreticalQuantilesEMEA <- qnorm(seq(.01, 0.99, 0.01), mean = mean(xAPACEmplRt), sd = sd(xAPACEmplRt))
+theoreticalQuantilesAPAC <- qnorm(seq(.01, 0.99, 0.01), mean = mean(xAPACEmplRt), sd = sd(xAPACEmplRt))
+```
+
+1.\[percentile\] calculate
+
+``` r
+EMEApercentiles <- c(percentilesEMEA[names(percentilesEMEA) == "10%"],percentilesEMEA[names(percentilesEMEA) == "30%"],percentilesEMEA[names(percentilesEMEA) == "50%"],percentilesEMEA[names(percentilesEMEA) == "70%"],percentilesEMEA[names(percentilesEMEA) == "90%"])
+APACpercentiles <- c(percentilesAPAC[names(percentilesAPAC) == "10%"],percentilesAPAC[names(percentilesAPAC) == "30%"],percentilesAPAC[names(percentilesAPAC) == "50%"],percentilesAPAC[names(percentilesAPAC) == "70%"],percentilesAPAC[names(percentilesAPAC) == "90%"])
+```
+
+3.\[plot\] observed and theoretical quantiles calculate
+
+``` r
+plot(theoreticalQuantilesEMEA, percentilesEMEA)
+abline(0,1)
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-182-1.png)<!-- -->
+
+``` r
+plot(theoreticalQuantilesAPAC, percentilesAPAC)
+abline(0,1)
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-182-2.png)<!-- -->
+
+1.\[zScore\] scale
+
+``` r
+zEMEA <- scale(xEMEAEmplRt)
+zAPAC <- scale(xAPACEmplRt)
+```
+
+1.\[quantile\] observed and theoretical calculate
+
+``` r
+percentilesEMEA <- quantile(zEMEA, seq(.01, 0.99, 0.01))
+percentilesAPAC <- quantile(zAPAC, seq(.01, 0.99, 0.01))
+theoreticalQuantilesEMEA <- qnorm(seq(.01, 0.99, 0.01))
+theoreticalQuantilesAPAC <- qnorm(seq(.01, 0.99, 0.01))
+```
+
+3.\[plot\] observed and theoretical quantiles calculate
+
+``` r
+plot(theoreticalQuantilesEMEA, percentilesEMEA)
+abline(0,1)
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-185-1.png)<!-- -->
+
+``` r
+plot(theoreticalQuantilesAPAC, percentilesAPAC)
+abline(0,1)
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-185-2.png)<!-- -->
+
+1.\[outlier\] check error
+
+``` r
+     error_avg <- function(k){
+    dfAlc$employrt[1]<-k
+    mean(dfAlc$employrt)
+  }
+error_avg (10000)
+```
+
+    ## [1] 95.73239
+
+``` r
+error_avg (-10000)
+```
+
+    ## [1] 1.835681
 
 ## References
