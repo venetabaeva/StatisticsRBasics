@@ -1571,6 +1571,141 @@ error_avg (-10000)
 ```
 
 
+1.[ggplot] define
+
+```{r}
+dfAlc %>% ggplot
+ggplotdfAlc <- ggplot(data=dfAlc) 
+class(ggplotdfAlc)
+print(ggplotdfAlc)
+```
+
+1.[ggplot] define variables and observations 
+
+```{r}
+head(dfAlc)
+dfAlc %>% 
+  ggplot() +
+  geom_point(aes(x = employrt, y = aconsum ),show.legend = TRUE)
+dfAlc %>% 
+  ggplot() +
+  geom_point(aes(x = urbanrt, y = aconsum ),show.legend = TRUE)
+dfAlc %>% 
+  ggplot() +
+  geom_point(aes(x = suicideper100, y = aconsum ),show.legend = TRUE)
+```
+
+1.[ggplot] plot defined
+
+```{r}
+gridExtra::grid.arrange(dfAlc %>% 
+                          ggplot() +
+                          geom_point(aes(x = employrt, y = aconsum ),show.legend = TRUE),
+                        dfAlc %>% 
+                          ggplot() +
+                          geom_point(aes(x = urbanrt, y = aconsum ),show.legend = TRUE),
+                        dfAlc %>% 
+                          ggplot() +
+                          geom_point(aes(x = suicideper100, y = aconsum ),show.legend = TRUE),
+                        ncol = 3)
+```
+
+1.[ggplot] label text
+
+```{r}
+dfAlc %>% 
+  ggplot() +
+  geom_point(aes(x = employrt, y = aconsum ),show.legend = TRUE) +
+  geom_text(aes(x = employrt, y = aconsum, label = abbrv ))
+dfAlc %>% 
+  ggplot() +
+  geom_point(aes(x = urbanrt, y = aconsum ),show.legend = TRUE)+
+  geom_text(aes(x = urbanrt, y = aconsum, label = abbrv ))
+dfAlc %>% 
+  ggplot() +
+  geom_point(aes(x = suicideper100, y = aconsum ),show.legend = TRUE)+
+  geom_text(aes(x = suicideper100, y = aconsum, label = abbrv ))
+```
+
+1.[ggplot] plot label text
+
+```{r}
+dfAlc %>% 
+  ggplot(aes(x = employrt, y = aconsum, label = abbrv )) +
+  geom_label()
+dfAlc %>% 
+  ggplot(aes(x = urbanrt, y = aconsum, label = abbrv )) +
+  geom_label()
+dfAlc %>% 
+  ggplot(aes(x = suicideper100, y = aconsum, label = abbrv )) +
+  geom_label()
+```
+
+1.[ggplot] change point size 
+
+```{r}
+dfAlc %>% 
+  ggplot() +
+  geom_point(aes(x = employrt, y = aconsum ),show.legend = TRUE ,size = 0.6) +
+  geom_text(aes(x = employrt, y = aconsum, label = abbrv ))
+dfAlc %>% 
+  ggplot() +
+  geom_point(aes(x = urbanrt, y = aconsum ),show.legend = TRUE,size = 0.6)+
+  geom_text(aes(x = urbanrt, y = aconsum, label = abbrv ))
+dfAlc %>% 
+  ggplot() +
+  geom_point(aes(x = suicideper100, y = aconsum ),show.legend = TRUE,size = 0.6)+
+  geom_text(aes(x = suicideper100, y = aconsum, label = abbrv ))
+```
+
+1.[ggplot] change point size relative to the frequency of the observations 
+
+```{r}
+dfAlc %>% 
+  ggplot() +
+  geom_point(aes(x = employrt, y = aconsum,size = aconsum ),show.legend = TRUE) +
+  geom_text(aes(x = employrt, y = aconsum, label = abbrv ))
+dfAlc %>% 
+  ggplot() +
+  geom_point(aes(x = urbanrt, y = aconsum,size = aconsum ),show.legend = TRUE)+
+  geom_text(aes(x = urbanrt, y = aconsum, label = abbrv ))
+dfAlc %>% 
+  ggplot() +
+  geom_point(aes(x = suicideper100, y = aconsum,size = aconsum ),show.legend = TRUE)+
+  geom_text(aes(x = suicideper100, y = aconsum, label = abbrv ))
+```
+1.[ggplot] label position relative to point 
+
+```{r}
+dfAlc %>% ggplot() +
+  geom_point(aes(x = employrt, y = aconsum ),show.legend = TRUE ,size = 0.6) +
+  geom_text(aes(x = employrt, y = aconsum, label = abbrv ), nudge_x = 1 ,nudge_y = 0.5)
+dfAlc %>% ggplot() +
+  geom_point(aes(x = urbanrt, y = aconsum ),show.legend = TRUE ,size = 0.6)+
+  geom_text(aes(x = urbanrt, y = aconsum, label = abbrv ),nudge_x = 1 ,nudge_y = 0.5)
+dfAlc %>% ggplot() +
+  geom_point(aes(x = suicideper100, y = aconsum ),show.legend = TRUE ,size = 0.6)+
+  geom_text(aes(x = suicideper100, y = aconsum, label = abbrv ),nudge_x = 1 ,nudge_y = 0.5)
+```
+1.[ggplot] global aesthetic mapping 
+
+```{r}
+ggplotDfAlcAlconsumEmplRt <- dfAlc %>% ggplot(aes(employrt,aconsum,label = abbrv))
+ggplotDfAlcAlconsumEmplRt + 
+  geom_point(size=0.6)+
+  geom_text(nudge_x = 1 ,nudge_y = 0.5)
+ggplotDfAlcAlconsumUrbanRt <- dfAlc %>% ggplot(aes(urbanrt,aconsum,label = abbrv))
+ggplotDfAlcAlconsumUrbanRt +
+  geom_point(size=0.6)+
+  geom_text(nudge_x = 1 ,nudge_y = 0.5)
+ggplotDfAlcAlconsumSuicide100<- dfAlc %>% ggplot(aes(suicideper100,aconsum,label = abbrv))
+ggplotDfAlcAlconsumSuicide100 +
+  geom_point(size=0.6)+
+  geom_text(nudge_x = 1 ,nudge_y = 0.5)
+```
+
+
+
 
 ## References
 
