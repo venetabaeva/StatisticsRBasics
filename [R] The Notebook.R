@@ -832,46 +832,58 @@ print(ggplotdfAlc)
 # aes = aesthetic mapping -> the outcome of this function is often used as the argument of a geometry function
 head(dfAlc)
 dfAlc %>% 
+  filter(region == "EMEA")%>% 
   ggplot() +
   geom_point(aes(x = employrt, y = aconsum ))
 dfAlc %>% 
+  filter(region == "EMEA")%>% 
   ggplot() +
   geom_point(aes(x = urbanrt, y = aconsum ))
 dfAlc %>% 
+  filter(region == "EMEA")%>% 
   ggplot() +
   geom_point(aes(x = suicideper100, y = aconsum ))
 gridExtra::grid.arrange(dfAlc %>% 
+                          filter(region == "EMEA")%>% 
                           ggplot() +
                           geom_point(aes(x = employrt, y = aconsum ),show.legend = TRUE),
                         dfAlc %>% 
+                          filter(region == "EMEA")%>% 
                           ggplot() +
                           geom_point(aes(x = urbanrt, y = aconsum ),show.legend = TRUE),
                         dfAlc %>% 
+                          filter(region == "EMEA")%>% 
                           ggplot() +
                           geom_point(aes(x = suicideper100, y = aconsum ),show.legend = TRUE),
                         ncol = 3)
 #label text
 dfAlc %>% 
+  filter(region == "EMEA")%>% 
   ggplot() +
   geom_point(aes(x = employrt, y = aconsum ),show.legend = TRUE) +
   geom_text(aes(x = employrt, y = aconsum, label = abbrv ))
 dfAlc %>% 
+  filter(region == "EMEA")%>% 
   ggplot() +
   geom_point(aes(x = urbanrt, y = aconsum ),show.legend = TRUE)+
   geom_text(aes(x = urbanrt, y = aconsum, label = abbrv ))
 dfAlc %>% 
+  filter(region == "EMEA")%>% 
   ggplot() +
   geom_point(aes(x = suicideper100, y = aconsum ),show.legend = TRUE)+
   geom_text(aes(x = suicideper100, y = aconsum, label = abbrv ))
 gridExtra::grid.arrange(dfAlc %>% 
+                          filter(region == "EMEA")%>% 
                           ggplot() +
                           geom_point(aes(x = employrt, y = aconsum),show.legend = TRUE)+
                           geom_text(aes(x = employrt, y = aconsum, label = abbrv )),
                         dfAlc %>% 
+                          filter(region == "EMEA")%>% 
                           ggplot() +
                           geom_point(aes(x = urbanrt, y = aconsum ),show.legend = TRUE)+
                           geom_text(aes(x = urbanrt, y = aconsum, label = abbrv )),
                         dfAlc %>% 
+                          filter(region == "EMEA")%>% 
                           ggplot() +
                           geom_point(aes(x = suicideper100, y = aconsum),show.legend = TRUE)+
                           geom_text(aes(x = suicideper100, y = aconsum, label = abbrv )),
@@ -879,75 +891,105 @@ gridExtra::grid.arrange(dfAlc %>%
   
 #label text
 dfAlc %>% 
+  filter(region == "EMEA")%>% 
   ggplot(aes(x = employrt, y = aconsum, label = abbrv )) +
   geom_label()
 dfAlc %>% 
+  filter(region = "EMEA")%>% 
   ggplot(aes(x = urbanrt, y = aconsum, label = abbrv )) +
   geom_label()
 dfAlc %>% 
+  filter(region = "EMEA")%>% 
   ggplot(aes(x = suicideper100, y = aconsum, label = abbrv )) +
   geom_label()
 gridExtra::grid.arrange(dfAlc %>%
+                          filter(region = "EMEA")%>% 
                           ggplot(aes(x = employrt, y = aconsum, label = abbrv )) +
                           geom_label(),
                         dfAlc %>% 
+                          filter(region = "EMEA")%>% 
                           ggplot(aes(x = urbanrt, y = aconsum, label = abbrv )) +
                           geom_label(),
                         dfAlc %>%
+                          filter(region = "EMEA")%>% 
                           ggplot(aes(x = suicideper100, y = aconsum, label = abbrv )) +
                           geom_label(),
                         ncol = 3)
 # dot size 
 dfAlc %>% 
+  filter(region == "EMEA")%>% 
   ggplot() +
   geom_point(aes(x = employrt, y = aconsum ),show.legend = TRUE ,size = 0.6) +
   geom_text(aes(x = employrt, y = aconsum, label = abbrv ))
 dfAlc %>% 
+  filter(region == "EMEA")%>% 
   ggplot() +
   geom_point(aes(x = urbanrt, y = aconsum ),show.legend = TRUE,size = 0.6)+
   geom_text(aes(x = urbanrt, y = aconsum, label = abbrv ))
 dfAlc %>% 
+  filter(region == "EMEA")%>% 
   ggplot() +
   geom_point(aes(x = suicideper100, y = aconsum ),show.legend = TRUE,size = 0.6)+
   geom_text(aes(x = suicideper100, y = aconsum, label = abbrv ))
 
 # dot size 
 dfAlc %>% 
+  filter(region == "EMEA")%>% 
   ggplot() +
   geom_point(aes(x = employrt, y = aconsum,size = aconsum ),show.legend = TRUE) +
   geom_text(aes(x = employrt, y = aconsum, label = abbrv ))
 dfAlc %>% 
+  filter(region == "EMEA")%>% 
   ggplot() +
   geom_point(aes(x = urbanrt, y = aconsum,size = aconsum ),show.legend = TRUE)+
   geom_text(aes(x = urbanrt, y = aconsum, label = abbrv ))
 dfAlc %>% 
+  filter(region == "EMEA")%>% 
   ggplot() +
   geom_point(aes(x = suicideper100, y = aconsum,size = aconsum ),show.legend = TRUE)+
   geom_text(aes(x = suicideper100, y = aconsum, label = abbrv ))
 
 # label position relative to the dots 
 dfAlc %>% 
+  filter(region == "EMEA")%>% 
   ggplot() +
   geom_point(aes(x = employrt, y = aconsum ),show.legend = TRUE ,size = 0.6) +
   geom_text(aes(x = employrt, y = aconsum, label = abbrv ), nudge_x = 1 ,nudge_y = 1)
 dfAlc %>% 
+  filter(region == "EMEA")%>% 
   ggplot() +
   geom_point(aes(x = urbanrt, y = aconsum ),show.legend = TRUE ,size = 0.6)+
   geom_text(aes(x = urbanrt, y = aconsum, label = abbrv ),nudge_x = 1 ,nudge_y = 1)
 dfAlc %>% 
+  filter(region == "EMEA")%>% 
   ggplot() +
   geom_point(aes(x = suicideper100, y = aconsum ),show.legend = TRUE ,size = 0.6)+
   geom_text(aes(x = suicideper100, y = aconsum, label = abbrv ),nudge_x = 1 ,nudge_y = 1)
+# bubblechart
+dfAlc %>% 
+  filter(region == "EMEA")%>% 
+  ggplot() +
+  geom_point(aes(x = employrt, y = aconsum,size = urbanrt,color = suicideper100 ),alpha=0.5) +
+  scale_size(range = c(.5, 20), name="urbanrt")+
+  ggrepel::geom_text_repel(
+    aes(x = employrt, y = aconsum, label = abbrv, point.size = suicideper100), 
+    size = 4, # font size in the text labels
+    point.padding = 0, #  padding around each point
+    min.segment.length = 0, # draw all line segments
+    box.padding = 0.7, #padding around each text label
+    max.overlaps = 100
+  ) + 
+  theme(legend.position = "right")
 # global aesthetic mapping 
-ggplotDfAlcAlconsumEmplRt <- dfAlc %>% ggplot(aes(employrt,aconsum,label = abbrv))
+ggplotDfAlcAlconsumEmplRt <- dfAlc %>%  filter(region == "EMEA")%>% ggplot(aes(employrt,aconsum,label = abbrv))
 ggplotDfAlcAlconsumEmplRt + 
   geom_point(size=0.6)+
   geom_text(nudge_x = 1 ,nudge_y = 0.5)
-ggplotDfAlcAlconsumUrbanRt <- dfAlc %>% ggplot(aes(urbanrt,aconsum,label = abbrv))
+ggplotDfAlcAlconsumUrbanRt <- dfAlc %>%  filter(region == "EMEA")%>% ggplot(aes(urbanrt,aconsum,label = abbrv))
 ggplotDfAlcAlconsumUrbanRt +
   geom_point(size=0.6)+
   geom_text(nudge_x = 1 ,nudge_y = 0.5)
-ggplotDfAlcAlconsumSuicide100<- dfAlc %>% ggplot(aes(suicideper100,aconsum,label = abbrv))
+ggplotDfAlcAlconsumSuicide100<- dfAlc %>%  filter(region == "EMEA")%>% ggplot(aes(suicideper100,aconsum,label = abbrv))
 ggplotDfAlcAlconsumSuicide100 +
   geom_point(size=0.6)+
   geom_text(nudge_x = 1 ,nudge_y = 0.5)
@@ -955,100 +997,135 @@ ggplotDfAlcAlconsumSuicide100 +
 ggplotDfAlcAlconsumEmplRt + 
   geom_point(size=1)+
   geom_text(nudge_x = 0.3 ,nudge_y = 0.3) +
-  scale_x_continuous(trans = "log10")+
-  scale_y_continuous(trans = "log10")
-ggplotDfAlcAlconsumUrbanRt +
-  geom_point(size=1)+
-  geom_text(nudge_x = 0.3 ,nudge_y = 0.3)+
-  scale_x_continuous(trans = "log10")+
-  scale_y_continuous(trans = "log10")
+  scale_x_continuous(trans = "log2")+
+  scale_y_continuous(trans = "log2")
 # scale
 ggplotDfAlcAlconsumEmplRt + 
   geom_point(size=1)+
   geom_text(nudge_x = 0.3 ,nudge_y = 0.3) +
   scale_x_log10()+
   scale_y_log10()
-ggplotDfAlcAlconsumUrbanRt +
-  geom_point(size=1)+
-  geom_text(nudge_x = 0.3 ,nudge_y = 0.3)+
-  scale_x_log10()+
-  scale_y_log10()
+# scale before plotting ; If we log the data, we can more easily interpret intermediate values in the scale.
+# Using base 2 for, example, means that every time a value doubles,the log transformation increases by one.
+# Log transformations change multiplicative changes into additive ones
+dfAlc %>%
+  filter(region == "EMEA")%>% 
+  ggplot(aes(log2(aconsum))) +
+  geom_histogram(binwidth = 1, fill ="lemonchiffon3" ,color = "lemonchiffon") 
+dfAlc %>%
+  filter(region == "EMEA")%>% 
+  ggplot(aes(log2(employrt))) +
+  geom_histogram(binwidth = 1, fill ="lightpink3" ,color = "lightpink") 
+dfAlc %>%
+  filter(region == "EMEA")%>% 
+  ggplot(aes(log2(urbanrt))) +
+  geom_histogram(binwidth = 1, fill = "lightgoldenrod3",color = "lightgoldenrod")
+dfAlc %>%
+  filter(region == "EMEA")%>% 
+  ggplot(aes(log2(suicideper100))) +
+  geom_histogram(binwidth = 1, fill = "lightblue3",color = "lightblue")
+# scale after plotting ; make plots where the scales have been log transformed
+dfAlc %>%
+  filter(region == "EMEA")%>% 
+  ggplot(aes(aconsum)) +
+  geom_histogram(binwidth = 1, fill ="lemonchiffon3" ,color = "lemonchiffon") +
+ scale_x_continuous(trans = "log2")
+dfAlc %>%
+  filter(region == "EMEA")%>% 
+  ggplot(aes(employrt)) +
+  geom_histogram(binwidth = 1, fill ="lightpink3" ,color = "lightpink") +
+  scale_x_continuous(trans = "log2")
+dfAlc %>%
+  filter(region == "EMEA")%>% 
+  ggplot(aes(urbanrt)) +
+  geom_histogram(binwidth = 1, fill = "lightgoldenrod3",color = "lightgoldenrod")+
+  scale_x_continuous(trans = "log2")
+dfAlc %>%
+  filter(region == "EMEA")%>% 
+  ggplot(aes(suicideper100)) +
+  geom_histogram(binwidth = 1, fill = "lightblue3",color = "lightblue")+
+  scale_x_continuous(trans = "log2")
 # change label and add title 
 ggplotDfAlcAlconsumEmplRt + 
   geom_point(size=0.6)+
   geom_text(nudge_x = 1 ,nudge_y = 0.5)+
   ylab("Alcohol Consumption Rate")+
   xlab("Employment Rate")+
-  ggtitle("World Alcohol Consumption")
+  ggtitle("EMEA Alcohol Consumption")
 ggplotDfAlcAlconsumUrbanRt +
   geom_point(size=0.6)+
   geom_text(nudge_x = 1 ,nudge_y = 0.5)+
   ylab("Alcohol Consumption Rate")+
   xlab("Urban Rate")+
-  ggtitle("World Alcohol Consumption")
+  ggtitle("EMEA Alcohol Consumption")
 ggplotDfAlcAlconsumSuicide100 +
   geom_point(size=0.6)+
   geom_text(nudge_x = 1 ,nudge_y = 0.5)+
   ylab("Alcohol Consumption Rate")+
   xlab("Suicide/100 People")+
-  ggtitle("World Alcohol Consumption")
+  ggtitle("EMEA Alcohol Consumption")
 # color
 ggplotDfAlcAlconsumEmplRt + 
   geom_point(size=0.6,color ="red3")+
   geom_text(nudge_x = 1 ,nudge_y = 0.5)+
   ylab("Alcohol Consumption Rate")+
   xlab("Employment Rate")+
-  ggtitle("World Alcohol Consumption")
+  ggtitle("EMEA Alcohol Consumption")
 ggplotDfAlcAlconsumUrbanRt +
   geom_point(size=0.6,color ="royalblue1")+
   geom_text(nudge_x = 1 ,nudge_y = 0.5)+
   ylab("Alcohol Consumption Rate")+
   xlab("Urban Rate")+
-  ggtitle("World Alcohol Consumption")
+  ggtitle("EMEA Alcohol Consumption")
 ggplotDfAlcAlconsumSuicide100 +
   geom_point(size=0.6,color ="limegreen")+
   geom_text(nudge_x = 1 ,nudge_y = 0.5)+
   ylab("Alcohol Consumption Rate")+
   xlab("Suicide/ 100 People")+
-  ggtitle("World Alcohol Consumption")
+  ggtitle("EMEA Alcohol Consumption")
 # color to category 
 ggplotDfAlcAlconsumEmplRt + 
   geom_point(aes(col=region),size=0.6)+
   geom_text(nudge_x = 1 ,nudge_y = 0.5)+
   ylab("Alcohol Consumption Rate")+
   xlab("Employment Rate")+
-  ggtitle("World Alcohol Consumption")
+  ggtitle("EMEA Alcohol Consumption")
 ggplotDfAlcAlconsumUrbanRt +
   geom_point(aes(col=region),size=0.6)+
   geom_text(nudge_x = 1 ,nudge_y = 0.5)+
   ylab("Alcohol Consumption Rate")+
   xlab("Urban Rate")+
-  ggtitle("World Alcohol Consumption")
+  ggtitle("EMEA Alcohol Consumption")
 ggplotDfAlcAlconsumSuicide100 +
   geom_point(aes(col=region),size=0.6)+
   geom_text(nudge_x = 1 ,nudge_y = 0.5)+
   ylab("Alcohol Consumption Rate")+
   xlab("Suicide/ 100 People")+
-  ggtitle("World Alcohol Consumption")
+  ggtitle("EMEA Alcohol Consumption")
 # color to category 
 dfAlc %>% 
+  filter(region == "EMEA")%>% 
   ggplot(aes(x = employrt, y = aconsum, label = abbrv, color = region )) +
   geom_label() +
   geom_text(check_overlap = TRUE)
 dfAlc %>% 
+  filter(region == "EMEA")%>% 
   ggplot(aes(x = urbanrt, y = aconsum, label = abbrv, color = region )) +
   geom_label() +
   geom_text(check_overlap = TRUE)
 dfAlc %>% 
+  filter(region == "EMEA")%>% 
   ggplot(aes(x = suicideper100, y = aconsum, label = abbrv,color = region )) +
   geom_label()+
   geom_text(check_overlap = TRUE)
   
 # line representing the average 
 
-summary(lm(dfAlc$employrt ~ dfAlc$aconsum))# intercept extraction 
-summary(lm(dfAlc$urbanrt ~ dfAlc$aconsum)) # intercept extraction 
-summary(lm(dfAlc$suicideper100 ~ dfAlc$aconsum)) # intercept extraction 
+
+dfAlcEMEA <- dfAlc %>% filter(region == "EMEA")
+lm.rAcEmp <- summary(lm(dfAlcEMEA$aconsum ~ dfAlcEMEA$employrt ))# intercept extraction 
+lm.rAcUrb <- summary(lm(dfAlcEMEA$aconsum  ~ dfAlcEMEA$urbanrt)) # intercept extraction 
+lm.rAcSu <- summary(lm(dfAlcEMEA$aconsum  ~ dfAlcEMEA$suicideper100)) # intercept extraction 
 plot(lm(dfAlc$aconsum ~ dfAlc$employrt ))
 plot(lm(dfAlc$aconsum ~ dfAlc$urbanrt ))
 plot(lm(dfAlc$aconsum ~ dfAlc$suicideper100 ))
@@ -1057,23 +1134,23 @@ ggplotDfAlcAlconsumEmplRt +
   geom_point(aes(col=region),size=0.6)+
   geom_text(nudge_x = 1 ,nudge_y = 0.5)+
   ylab("Alcohol Consumption Rate")+
-  xlab("Employment Rate")+
+  xlab("Employment Rate")+ 
   ggtitle("World Alcohol Consumption")+
-  geom_abline(na.rm = TRUE, intercept= 4.66578)
+  geom_abline(na.rm = TRUE, intercept = 4.84388)
 ggplotDfAlcAlconsumUrbanRt +
   geom_point(aes(col=region),size=0.6)+
   geom_text(nudge_x = 1 ,nudge_y = 0.5)+
   ylab("Alcohol Consumption Rate")+
   xlab("Urban Rate")+
   ggtitle("World Alcohol Consumption")+
-  geom_abline(na.rm = TRUE, intercept = 3.83616)
+  geom_abline(na.rm = TRUE, intercept = 3.85179)
 ggplotDfAlcAlconsumSuicide100 +
   geom_point(aes(col=region),size=0.6)+
   geom_text(nudge_x = 1 ,nudge_y = 0.5)+
   ylab("Alcohol Consumption Rate")+
   xlab("Suicide/ 100 People")+
   ggtitle("World Alcohol Consumption")+
-  geom_abline(na.rm = TRUE, intercept = 3.05709)
+  geom_abline(na.rm = TRUE, intercept = 2.04562)
 
 # line representing the average color 
 
@@ -1082,22 +1159,23 @@ ggplotDfAlcAlconsumEmplRt +
   geom_text(nudge_x = 1 ,nudge_y = 0.5)+
   ylab("Alcohol Consumption Rate")+
   xlab("Employment Rate")+
-  ggtitle("World Alcohol Consumption")+
-  geom_abline(na.rm = TRUE, intercept= 4.66578,lty = 1, color = "red" )
+  ggtitle("EMEA Alcohol Consumption")+
+  geom_abline(na.rm = TRUE, intercept= 4.84388,lty = 1, color = "red" )
 ggplotDfAlcAlconsumUrbanRt +
   geom_point(aes(col=region),size=0.6)+
   geom_text(nudge_x = 1 ,nudge_y = 0.5)+
   ylab("Alcohol Consumption Rate")+
   xlab("Urban Rate")+
-  ggtitle("World Alcohol Consumption")+
-  geom_abline(na.rm = TRUE, intercept = 3.83616,lty =2 , color = "red" )
+  ggtitle("EMEA Alcohol Consumption")+
+  geom_abline(na.rm = TRUE, intercept = 3.85179,lty =2 , color = "red" )
 ggplotDfAlcAlconsumSuicide100 +
   geom_point(aes(col=region),size=0.6)+
   geom_text(nudge_x = 1 ,nudge_y = 0.5)+
   ylab("Alcohol Consumption Rate")+
   xlab("Suicide/ 100 People")+
-  ggtitle("World Alcohol Consumption")+
-  geom_abline(na.rm = TRUE, intercept = 3.05709,lty = 3, color = "red" )
+  ggtitle("EMEA Alcohol Consumption")+
+  geom_abline(na.rm = TRUE, intercept = 2.04562,lty = 3, color = "red" )
+
 # add - on packages 
 # ggthemes
 
@@ -1110,8 +1188,8 @@ ggplotDfAlcAlconsumSuicide100 +
   geom_text(nudge_x = 1 ,nudge_y = 0.5)+
   ylab("Alcohol Consumption Rate")+
   xlab("Suicide/ 100 People")+
-  ggtitle("World Alcohol Consumption")+
-  geom_abline(na.rm = TRUE, intercept = 3.05709,lty = 3, color = "red" )
+  ggtitle("EMEA Alcohol Consumption")+
+  geom_abline(na.rm = TRUE, intercept = 2.04562,lty = 3, color = "red" )
 
 ggplotDfAlcAlconsumSuicide100 +
   ggthemes::theme_fivethirtyeight()+
@@ -1119,8 +1197,8 @@ ggplotDfAlcAlconsumSuicide100 +
   geom_text(nudge_x = 1 ,nudge_y = 0.5)+
   ylab("Alcohol Consumption Rate")+
   xlab("Suicide/ 100 People")+
-  ggtitle("World Alcohol Consumption")+
-  geom_abline(na.rm = TRUE, intercept = 3.05709,lty = 3, color = "red" )
+  ggtitle("EMEA Alcohol Consumption")+
+  geom_abline(na.rm = TRUE, intercept = 2.04562,lty = 3, color = "red" )
 
 # ggrepel
 #includes a geometry that adds labels ensuring that they don't fall on top of each other.
@@ -1139,8 +1217,8 @@ ggplotDfAlcAlconsumSuicide100 +
   theme(legend.position = 'none')+
   ylab("Alcohol Consumption Rate")+
   xlab("Suicide/ 100 People")+
-  ggtitle("World Alcohol Consumption")+
-  geom_abline(na.rm = TRUE, intercept = 3.05709,lty = 3, color = "red" )
+  ggtitle("EMEA Alcohol Consumption")+
+  geom_abline(na.rm = TRUE, intercept = 2.04562,lty = 3, color = "red" )
 
 ggplotDfAlcAlconsumSuicide100 +
   ggthemes::theme_fivethirtyeight()+
@@ -1157,8 +1235,8 @@ ggplotDfAlcAlconsumSuicide100 +
   theme(legend.position = 'none')+
   ylab("Alcohol Consumption Rate")+
   xlab("Suicide/ 100 People")+
-  ggtitle("World Alcohol Consumption")+
-  geom_abline(na.rm = TRUE, intercept = 3.05709,lty = 3, color = "red" )
+  ggtitle("EMEA Alcohol Consumption")+
+  geom_abline(na.rm = TRUE, intercept = 2.04562,lty = 3, color = "red" )
 ------ 
 # geom_histogram 
 dfAlcEMEA <- dfAlc %>%
@@ -1241,4 +1319,3 @@ dfAlc %>%
 dfAlc %>%
   ggplot(aes(aconsum, fill = region))+
   geom_density(alpha = 0.2)
-  

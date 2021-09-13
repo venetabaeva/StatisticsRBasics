@@ -8,10 +8,6 @@
 
 > library load
 
-``` r
-library(dslabs)
-```
-
 ## I.
 
 1.\[dataFrame\] create
@@ -780,6 +776,34 @@ mean(dfAlc[,2])
     ## returning NA
 
     ## [1] NA
+
+1.\[dataFrame\] filter, summarize
+
+``` r
+dfAlc %>%
+  filter(region == "EMEA") %>%
+  summarize(median = median(aconsum), #call only  functions that return a single value
+            minimum = min(aconsum),
+            maximum = max(aconsum)) 
+```
+
+    ##   median minimum maximum
+    ## 1     NA      NA      NA
+
+1.\[dataFrame\] filter, summarize, access summarized numeric value
+
+``` r
+dfAlcEMEAMedian<- dfAlc %>%
+  filter(region == "EMEA") %>%
+  summarize(median = median(aconsum), 
+            minimum = min(aconsum),
+            maximum = max(aconsum))%>%
+  .$median #the dot as a placeholder for the data that is being passed through the pipe
+```
+
+###### <sup>1</sup> Note: most of the dplyr functions, including summarize, always return data frames; if to be used the result with a function that requires a numeric value, won’t be able to do it
+
+###### <sup>1</sup> Note: .*m**e**d**i**a**n**i**s**e**q**u**i**v**a**l**e**n**t**t**o**d**f**A**l**c**E**M**E**A**M**e**d**i**a**n*median
 
 1.\[object\] define length
 
@@ -2286,7 +2310,7 @@ plot(n,s_n)
 lines(n,n*(n+1)/2)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-85-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-90-1.png)<!-- -->
 
 3.\[forloop\]
 
@@ -2313,7 +2337,7 @@ df %>%
   ggplot(aes(urbanrate, suicide, label=country,color=rank)) + geom_label()
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-87-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-92-1.png)<!-- -->
 
 2.\[ggplot\]
 
@@ -2322,7 +2346,7 @@ dfAlc %>%
   ggplot(aes(urbanrt, employrt, label=abbrv, color=region)) + geom_label()
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-88-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-93-1.png)<!-- -->
 
 2.\[ggplot\]
 
@@ -2331,7 +2355,7 @@ dfAlc %>%
   ggplot(aes(urbanrt, employrt, label=abbrv, color=region)) + geom_label()
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-89-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-94-1.png)<!-- -->
 
 2.\[scatterPlot\]
 
@@ -2339,19 +2363,19 @@ dfAlc %>%
 plot(dfAlc$suicideper100,dfAlc$aconsum, xlab = "suicides/100 people", ylab="alcohol consumption")
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-90-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-95-1.png)<!-- -->
 
 ``` r
 plot(dfAlc$employrt,dfAlc$aconsum, xlab = "employee rate", ylab="alcohol consumption")
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-90-2.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-95-2.png)<!-- -->
 
 ``` r
 plot(dfAlc$urbanrt,dfAlc$aconsum, xlab = "urban rate", ylab="alcohol consumption")
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-90-3.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-95-3.png)<!-- -->
 
 2.\[scatterPlot\] in logs
 
@@ -2361,7 +2385,7 @@ log10Aconsum <- log10(dfAlc$aconsum)
 plot(log10IncomePer1,log10Aconsum)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-91-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-96-1.png)<!-- -->
 
 2.\[histogram\]
 
@@ -2369,7 +2393,7 @@ plot(log10IncomePer1,log10Aconsum)
 hist(dfAlc$aconsum,xlab = "alcohol consumption") 
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-92-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-97-1.png)<!-- -->
 
 ``` r
 dfAlc$country[which.max(dfAlc$aconsum)]
@@ -2383,25 +2407,25 @@ dfAlc$country[which.max(dfAlc$aconsum)]
 boxplot(aconsum~region, data = dfAlc,na.action = NULL) 
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-93-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-98-1.png)<!-- -->
 
 ``` r
 boxplot(suicidesPer100~region, data = dfAlc)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-93-2.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-98-2.png)<!-- -->
 
 ``` r
 boxplot(employrt~region, data = dfAlc)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-93-3.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-98-3.png)<!-- -->
 
 ``` r
 boxplot(urbanrt~region, data = dfAlc)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-93-4.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-98-4.png)<!-- -->
 
 ## II.
 
@@ -3027,19 +3051,19 @@ unlist(longDown)
 plot(controls$xGaze,controls$yGaze,xlab = "controlsXGaze", ylab="controlsYGaze") 
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-99-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-104-1.png)<!-- -->
 
 ``` r
 plot(longUp$xGaze,longUp$yGaze,xlab = "longUpXGaze", ylab="longUpYGaze") 
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-99-2.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-104-2.png)<!-- -->
 
 ``` r
 plot(longDown$xGaze,longDown$yGaze,xlab = "longDownXGaze", ylab="longDownYGaze") 
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-99-3.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-104-3.png)<!-- -->
 
 1.\[population\]get different random sample of 12;random variable of
 random sample
@@ -3050,13 +3074,13 @@ popDfPonzoYGaze <- unlist(dfPonzo$yGaze)
 mean(sample(popDfPonzoXGaze,12))
 ```
 
-    ## [1] 0.482
+    ## [1] 0.4789167
 
 ``` r
 mean(sample(popDfPonzoYGaze,12))
 ```
 
-    ## [1] 0.4058333
+    ## [1] 0.4189167
 
 ``` r
 mean(popDfPonzoXGaze)
@@ -3166,7 +3190,7 @@ max(nullsPopX)
 hist(nullsPopX)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-106-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-111-1.png)<!-- -->
 
 ``` r
 n<-10000
@@ -3185,7 +3209,7 @@ max(nullsPopY)
 hist(nullsPopY)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-107-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-112-1.png)<!-- -->
 
 ###### <sup>1</sup> Note: if knowing the null distribution, one can describe the proportion of values one sees for any interval of values -&gt; define a number of times to redo the null hypothesis check; record all differences
 
@@ -3259,7 +3283,7 @@ for(i in 1:n){
 hist(averagesPopX)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-112-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-117-1.png)<!-- -->
 
 1.\[nullHypothesis\] check
 
@@ -3292,7 +3316,7 @@ for(i in 1:n){
 hist(averagesPopX)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-115-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-120-1.png)<!-- -->
 
 1.\[nullHypothesis\] check
 
@@ -3325,7 +3349,7 @@ for(i in 1:n){
 hist(averagesPopY)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-118-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-123-1.png)<!-- -->
 
 1.\[nullHypothesis\] check
 
@@ -3365,7 +3389,7 @@ props = sapply(qs, function(q) mean(popDfPonzoXGaze <= q))
 plot(qs, props)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-121-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-126-1.png)<!-- -->
 
 ###### <sup>1</sup> Note: \#1 option: empirical cumulative distribution function
 
@@ -3376,7 +3400,7 @@ list =&gt; empirical cumulative distribution function
 plot(ecdf(popDfPonzoXGaze))
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-122-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-127-1.png)<!-- -->
 
 ###### <sup>1</sup> Note: \#2 option: empirical cumulative distribution function
 
@@ -3420,7 +3444,7 @@ hist(averagesPopX5)
 hist(averagesPopX50)  
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-125-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-130-1.png)<!-- -->
 
 ``` r
 mean(averagesPopX5<0.600 & averagesPopX5>0.400)
@@ -3517,14 +3541,14 @@ qqnorm(popDfPonzoXGaze)
 abline(0,1)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-131-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-136-1.png)<!-- -->
 
 ``` r
 qqnorm(popDfPonzoYGaze)
 abline(0,1)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-131-2.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-136-2.png)<!-- -->
 
 > library load
 
@@ -3540,7 +3564,7 @@ qqnorm(avgs)
 qqline(avgs)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-133-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-138-1.png)<!-- -->
 
 ``` r
 mean(avgs) #What is the average of the distribution of the sample average?
@@ -3614,7 +3638,7 @@ max(nullsPopX)
 hist(nullsPopX)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-139-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-144-1.png)<!-- -->
 
 ``` r
 n<-10000
@@ -3633,7 +3657,7 @@ max(nullsPopY)
 hist(nullsPopY)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-140-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-145-1.png)<!-- -->
 
 1.\[nullHypothesis\]
 
@@ -3687,14 +3711,14 @@ qqnorm(nullsPopX)
 qqline(nullsPopX)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-145-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-150-1.png)<!-- -->
 
 ``` r
 qqnorm(nullsPopY)
 qqline(nullsPopY)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-145-2.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-150-2.png)<!-- -->
 \#\#\#\#\#\# <sup>1</sup> Note: use normal approximation instead of
 accessing the population through changes of the sample
 
@@ -3790,7 +3814,7 @@ abline(0,1)
 qqline(nullsPopX)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-151-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-156-1.png)<!-- -->
 
 ``` r
 qqnorm(nullsPopY)
@@ -3798,7 +3822,7 @@ abline(0,1)
 qqline(nullsPopY)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-151-2.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-156-2.png)<!-- -->
 
 ## III.
 
@@ -3874,7 +3898,7 @@ cdfValuesAbove <- 1-(sapply(rangeForCdfFunction,cdfFunction)) # defines proporti
 plot(rangeForCdfFunction,cdfValuesBelow)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-158-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-163-1.png)<!-- -->
 
 ``` r
 EmployeeRate <- rangeForCdfFunction
@@ -3882,13 +3906,13 @@ Proportion<- cdfValuesBelow
 plot(EmployeeRate,Proportion)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-158-2.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-163-2.png)<!-- -->
 
 ``` r
 plot(rangeForCdfFunction,cdfValuesAbove) 
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-158-3.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-163-3.png)<!-- -->
 
 ``` r
 rangeForCdfFunctionQ <- seq(quantile(dfAlc$employrt,0.50), quantile(dfAlc$employrt,0.75),length = 100) 
@@ -3899,7 +3923,7 @@ cdfValuesBellowQ <- sapply(rangeForCdfFunctionQ,cdfFunction) - (sapply(rangeForC
 plot(rangeForCdfFunctionQ,cdfValuesBellowQ)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-159-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-164-1.png)<!-- -->
 
 1.\[column\] mean and standard deviation
 
@@ -4002,7 +4026,7 @@ exact/approx # report how many times bigger the actual proportion is compared to
 plot(prop.table(table(xEMEAEmplRt)), xlab = "a = EMEAEmplRt", ylab = "Pr(xEMEAEmplRt = a)")
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-169-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-174-1.png)<!-- -->
 
 1.\[vector\] quantile
 
@@ -4100,7 +4124,7 @@ plot(theoreticalQuantiles, observedQuantiles)
 abline(0,1)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-175-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-180-1.png)<!-- -->
 
 1.\[vector\] observed and theoretical quantile
 
@@ -4117,7 +4141,7 @@ plot(theoreticalQuantiles, observedQuantiles)
 abline(0,1)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-177-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-182-1.png)<!-- -->
 
 > load library
 
@@ -4133,6 +4157,211 @@ iAPAC <- dfAlc$region == "APAC"
 xEMEAEmplRt <- dfAlc$employrt[iEMEA]
 xAPACEmplRt <- dfAlc$employrt[iAPAC]
 ```
+
+1.\[dataFrame\] filter, group by, summarize
+
+``` r
+  dfAlc %>%
+  group_by(region) %>%
+  dplyr::summarize(average = mean(aconsum), standard_deviation = sd(aconsum))
+```
+
+    ## # A tibble: 4 × 3
+    ##   region  average standard_deviation
+    ##   <chr>     <dbl>              <dbl>
+    ## 1 ""         6.25               4.79
+    ## 2 "APAC"     3.62               3.93
+    ## 3 "EMEA"     6.40               5.63
+    ## 4 "LATAM"    6.5                2.99
+
+###### <sup>1</sup> Note: group data frame = as many tables with the same columns but not necessarily the same rows that are stacked together into one object
+
+###### <sup>1</sup> Note: group\_by() function from dplyr converts a data frame to a grouped data frame, creating groups using one or more variables
+
+1.\[dataFrame\] arrange by ascend
+
+``` r
+  dfAlc %>% arrange(aconsum) %>% head()
+```
+
+    ##          country abbrv aconsum incomeper1 suicideper100 employrt urbanrt region
+    ## 1    Afghanistan    AF       0          0             7       56      24   EMEA
+    ## 2          Aruba    AW       0          0             0        0      47  LATAM
+    ## 3     Bangladesh    BU       0        558            15       68      27   APAC
+    ## 4        Bermuda    BM       0      62682             0        0     100  LATAM
+    ## 5 Cayman Islands    KY       0          0             0        0     100  LATAM
+    ## 6        Comoros    KM       0        336             5       68      28   EMEA
+    ##    rank
+    ## 1 181.5
+    ## 2 188.0
+    ## 3 181.5
+    ## 4 189.0
+    ## 5 190.0
+    ## 6 181.5
+
+1.\[dataFrame\] arrange by descend
+
+``` r
+ dfAlc %>% arrange(desc(aconsum)) %>% head()
+```
+
+    ##       country abbrv aconsum incomeper1 suicideper100 employrt urbanrt region
+    ## 1     Moldova    MD      23        596            16       44      42   EMEA
+    ## 2     Belarus    BY      19       2738            27       53      73   EMEA
+    ## 3 Korea, Rep,    KR      19      16372            22       59      81   APAC
+    ## 4     Estonia    EE      17       6239            17       57      69   EMEA
+    ## 5     Ukraine    UA      17       1037            19       54      68   EMEA
+    ## 6  Czech Rep,    CZ      16       7381            12       56      74   EMEA
+    ##   rank
+    ## 1  1.0
+    ## 2  2.5
+    ## 3  2.5
+    ## 4  4.5
+    ## 5  4.5
+    ## 6  8.5
+
+1.\[dataFrame\] nested arrange
+
+``` r
+ dfAlc %>% arrange(region, aconsum) %>% head()
+```
+
+    ##          country abbrv aconsum incomeper1 suicideper100 employrt urbanrt region
+    ## 1 Faeroe Islands    FO       0          0             0        0      41       
+    ## 2     Cape Verde    CV       5       1960             6       56      60       
+    ## 3         Canada    CA      10      25575            10       64      80       
+    ## 4  United States    US      10      37491            10       62      82       
+    ## 5     Bangladesh    BU       0        558            15       68      27   APAC
+    ## 6           Guam    GT       0          0             0        0      93   APAC
+    ##    rank
+    ## 1 191.0
+    ## 2 107.5
+    ## 3  47.0
+    ## 4  47.0
+    ## 5 181.5
+    ## 6 196.0
+
+1.\[dataFrame\] top 10, not ordered by
+
+``` r
+ dfAlc %>% top_n(10, aconsum)
+```
+
+    ##        country abbrv aconsum incomeper1 suicideper100 employrt urbanrt region
+    ## 1      Belarus    BY      19       2738            27       53      73   EMEA
+    ## 2   Czech Rep,    CZ      16       7381            12       56      74   EMEA
+    ## 3      Estonia    EE      17       6239            17       57      69   EMEA
+    ## 4      Hungary    HU      16       5634            20       47      68   EMEA
+    ## 5  Korea, Rep,    KR      19      16372            22       59      81   APAC
+    ## 6    Lithuania    LT      16       5332            33       53      67   EMEA
+    ## 7      Moldova    MD      23        596            16       44      42   EMEA
+    ## 8      Romania    RO      16       2637            10       50      54   EMEA
+    ## 9       Russia    RU      16       2923            28       59      73   EMEA
+    ## 10      Uganda    UG      16        377            12       83      13   EMEA
+    ## 11     Ukraine    UA      17       1037            19       54      68   EMEA
+    ##    rank
+    ## 1   2.5
+    ## 2   8.5
+    ## 3   4.5
+    ## 4   8.5
+    ## 5   2.5
+    ## 6   8.5
+    ## 7   1.0
+    ## 8   8.5
+    ## 9   8.5
+    ## 10  8.5
+    ## 11  4.5
+
+1.\[dataFrame\] top 10,ordered by
+
+``` r
+dfAlc %>% arrange(desc(aconsum)) %>% top_n(10)
+```
+
+    ## Selecting by rank
+
+    ##                  country abbrv aconsum incomeper1 suicideper100 employrt
+    ## 1                 Monaco    MC       0     105147            11        0
+    ## 2             Montenegro    ME       0       2222             0        0
+    ## 3   Netherlands Antilles    NL       0          0             0       54
+    ## 4          New Caledonia    NC       0          0             0        0
+    ## 5            Puerto Rico    PR       0      15822             0       42
+    ## 6                Reunion    RE       0          0             0       44
+    ## 7             San Marino    SM       0      31993             6        0
+    ## 8  Serbia and Montenegro    ME       0          0            14       49
+    ## 9                 Taiwan    TW       0          0             0       55
+    ## 10    West Bank and Gaza    EH       0          0             0       32
+    ##    urbanrt region rank
+    ## 1      100   EMEA  204
+    ## 2       60   EMEA  205
+    ## 3       93   EMEA  206
+    ## 4       65   EMEA  207
+    ## 5       98  LATAM  208
+    ## 6        0   EMEA  209
+    ## 7       94   EMEA  210
+    ## 8        0   EMEA  211
+    ## 9        0   APAC  212
+    ## 10      72   EMEA  213
+
+``` r
+dfAlc %>% slice_max(aconsum, n = 10) #alternative 
+```
+
+    ##        country abbrv aconsum incomeper1 suicideper100 employrt urbanrt region
+    ## 1      Moldova    MD      23        596            16       44      42   EMEA
+    ## 2      Belarus    BY      19       2738            27       53      73   EMEA
+    ## 3  Korea, Rep,    KR      19      16372            22       59      81   APAC
+    ## 4      Estonia    EE      17       6239            17       57      69   EMEA
+    ## 5      Ukraine    UA      17       1037            19       54      68   EMEA
+    ## 6   Czech Rep,    CZ      16       7381            12       56      74   EMEA
+    ## 7      Hungary    HU      16       5634            20       47      68   EMEA
+    ## 8    Lithuania    LT      16       5332            33       53      67   EMEA
+    ## 9      Romania    RO      16       2637            10       50      54   EMEA
+    ## 10      Russia    RU      16       2923            28       59      73   EMEA
+    ## 11      Uganda    UG      16        377            12       83      13   EMEA
+    ##    rank
+    ## 1   1.0
+    ## 2   2.5
+    ## 3   2.5
+    ## 4   4.5
+    ## 5   4.5
+    ## 6   8.5
+    ## 7   8.5
+    ## 8   8.5
+    ## 9   8.5
+    ## 10  8.5
+    ## 11  8.5
+
+1.\[dataFrame\] top 10 nested arrange by region ,ordered by
+
+``` r
+dfAlc %>% arrange(desc(region, aconsum))  %>% top_n(10) 
+```
+
+    ## Selecting by rank
+
+    ##                  country abbrv aconsum incomeper1 suicideper100 employrt
+    ## 1            Puerto Rico    PR       0      15822             0       42
+    ## 2                 Monaco    MC       0     105147            11        0
+    ## 3             Montenegro    ME       0       2222             0        0
+    ## 4   Netherlands Antilles    NL       0          0             0       54
+    ## 5          New Caledonia    NC       0          0             0        0
+    ## 6                Reunion    RE       0          0             0       44
+    ## 7             San Marino    SM       0      31993             6        0
+    ## 8  Serbia and Montenegro    ME       0          0            14       49
+    ## 9     West Bank and Gaza    EH       0          0             0       32
+    ## 10                Taiwan    TW       0          0             0       55
+    ##    urbanrt region rank
+    ## 1       98  LATAM  208
+    ## 2      100   EMEA  204
+    ## 3       60   EMEA  205
+    ## 4       93   EMEA  206
+    ## 5       65   EMEA  207
+    ## 6        0   EMEA  209
+    ## 7       94   EMEA  210
+    ## 8        0   EMEA  211
+    ## 9       72   EMEA  213
+    ## 10       0   APAC  212
 
 1.\[quantile\] observed and theoretical calculate
 
@@ -4157,14 +4386,14 @@ plot(theoreticalQuantilesEMEA, percentilesEMEA)
 abline(0,1)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-182-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-194-1.png)<!-- -->
 
 ``` r
 plot(theoreticalQuantilesAPAC, percentilesAPAC)
 abline(0,1)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-182-2.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-194-2.png)<!-- -->
 
 1.\[zScore\] scale
 
@@ -4189,14 +4418,14 @@ plot(theoreticalQuantilesEMEA, percentilesEMEA)
 abline(0,1)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-185-1.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-197-1.png)<!-- -->
 
 ``` r
 plot(theoreticalQuantilesAPAC, percentilesAPAC)
 abline(0,1)
 ```
 
-![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-185-2.png)<!-- -->
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-197-2.png)<!-- -->
 
 1.\[outlier\] check error
 
@@ -4215,5 +4444,746 @@ error_avg (-10000)
 ```
 
     ## [1] 1.835681
+
+1.\[ggplot\] define
+
+``` r
+dfAlc %>% ggplot
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-199-1.png)<!-- -->
+
+``` r
+ggplotdfAlc <- ggplot(data=dfAlc) 
+class(ggplotdfAlc)
+```
+
+    ## [1] "gg"     "ggplot"
+
+``` r
+print(ggplotdfAlc)
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-199-2.png)<!-- -->
+
+1.\[ggplot\] define variables and observations
+
+``` r
+head(dfAlc)
+```
+
+    ##               country abbrv aconsum incomeper1 suicideper100 employrt urbanrt
+    ## 1         Afghanistan    AF       0          0             7       56      24
+    ## 2             Albania    Al       7       1915             8       51      47
+    ## 3             Algeria    DZ       1       2232             5       51      65
+    ## 4             Andorra    AD      10      21943             5        0      89
+    ## 5              Angola    AO       6       1381            15       76      57
+    ## 6 Antigua and Barbuda    AG       8      11894             2        0      30
+    ##   region  rank
+    ## 1   EMEA 181.5
+    ## 2   EMEA  81.5
+    ## 3   EMEA 164.0
+    ## 4   EMEA  47.0
+    ## 5   EMEA  94.0
+    ## 6  LATAM  71.5
+
+``` r
+dfAlc %>% 
+  ggplot() +
+  geom_point(aes(x = employrt, y = aconsum ),show.legend = TRUE)
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-200-1.png)<!-- -->
+
+``` r
+dfAlc %>% 
+  ggplot() +
+  geom_point(aes(x = urbanrt, y = aconsum ),show.legend = TRUE)
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-200-2.png)<!-- -->
+
+``` r
+dfAlc %>% 
+  ggplot() +
+  geom_point(aes(x = suicideper100, y = aconsum ),show.legend = TRUE)
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-200-3.png)<!-- -->
+
+1.\[ggplot\] plot defined
+
+``` r
+gridExtra::grid.arrange(dfAlc %>% 
+                          ggplot() +
+                          geom_point(aes(x = employrt, y = aconsum ),show.legend = TRUE),
+                        dfAlc %>% 
+                          ggplot() +
+                          geom_point(aes(x = urbanrt, y = aconsum ),show.legend = TRUE),
+                        dfAlc %>% 
+                          ggplot() +
+                          geom_point(aes(x = suicideper100, y = aconsum ),show.legend = TRUE),
+                        ncol = 3)
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-201-1.png)<!-- -->
+
+1.\[ggplot\] label text
+
+``` r
+dfAlc %>% 
+  ggplot() +
+  geom_point(aes(x = employrt, y = aconsum ),show.legend = TRUE) +
+  geom_text(aes(x = employrt, y = aconsum, label = abbrv ))
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-202-1.png)<!-- -->
+
+``` r
+dfAlc %>% 
+  ggplot() +
+  geom_point(aes(x = urbanrt, y = aconsum ),show.legend = TRUE)+
+  geom_text(aes(x = urbanrt, y = aconsum, label = abbrv ))
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-202-2.png)<!-- -->
+
+``` r
+dfAlc %>% 
+  ggplot() +
+  geom_point(aes(x = suicideper100, y = aconsum ),show.legend = TRUE)+
+  geom_text(aes(x = suicideper100, y = aconsum, label = abbrv ))
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-202-3.png)<!-- -->
+
+1.\[ggplot\] plot label text
+
+``` r
+dfAlc %>% 
+  ggplot(aes(x = employrt, y = aconsum, label = abbrv )) +
+  geom_label()
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-203-1.png)<!-- -->
+
+``` r
+dfAlc %>% 
+  ggplot(aes(x = urbanrt, y = aconsum, label = abbrv )) +
+  geom_label()
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-203-2.png)<!-- -->
+
+``` r
+dfAlc %>% 
+  ggplot(aes(x = suicideper100, y = aconsum, label = abbrv )) +
+  geom_label()
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-203-3.png)<!-- -->
+
+1.\[ggplot\] change point size
+
+``` r
+dfAlc %>% 
+  ggplot() +
+  geom_point(aes(x = employrt, y = aconsum ),show.legend = TRUE ,size = 0.6) +
+  geom_text(aes(x = employrt, y = aconsum, label = abbrv ))
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-204-1.png)<!-- -->
+
+``` r
+dfAlc %>% 
+  ggplot() +
+  geom_point(aes(x = urbanrt, y = aconsum ),show.legend = TRUE,size = 0.6)+
+  geom_text(aes(x = urbanrt, y = aconsum, label = abbrv ))
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-204-2.png)<!-- -->
+
+``` r
+dfAlc %>% 
+  ggplot() +
+  geom_point(aes(x = suicideper100, y = aconsum ),show.legend = TRUE,size = 0.6)+
+  geom_text(aes(x = suicideper100, y = aconsum, label = abbrv ))
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-204-3.png)<!-- -->
+
+1.\[ggplot\] change point size relative to the frequency of the
+observations
+
+``` r
+dfAlc %>% 
+  ggplot() +
+  geom_point(aes(x = employrt, y = aconsum,size = aconsum ),show.legend = TRUE) +
+  geom_text(aes(x = employrt, y = aconsum, label = abbrv ))
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-205-1.png)<!-- -->
+
+``` r
+dfAlc %>% 
+  ggplot() +
+  geom_point(aes(x = urbanrt, y = aconsum,size = aconsum ),show.legend = TRUE)+
+  geom_text(aes(x = urbanrt, y = aconsum, label = abbrv ))
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-205-2.png)<!-- -->
+
+``` r
+dfAlc %>% 
+  ggplot() +
+  geom_point(aes(x = suicideper100, y = aconsum,size = aconsum ),show.legend = TRUE)+
+  geom_text(aes(x = suicideper100, y = aconsum, label = abbrv ))
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-205-3.png)<!-- -->
+1.\[ggplot\] label position relative to point
+
+``` r
+dfAlc %>% 
+  ggplot() +
+  geom_point(aes(x = employrt, y = aconsum ),show.legend = TRUE ,size = 0.6) +
+  geom_text(aes(x = employrt, y = aconsum, label = abbrv ), nudge_x = 1 ,nudge_y = 0.5)
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-206-1.png)<!-- -->
+
+``` r
+dfAlc %>% 
+  ggplot() +
+  geom_point(aes(x = urbanrt, y = aconsum ),show.legend = TRUE ,size = 0.6)+
+  geom_text(aes(x = urbanrt, y = aconsum, label = abbrv ),nudge_x = 1 ,nudge_y = 0.5)
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-206-2.png)<!-- -->
+
+``` r
+dfAlc %>% 
+  ggplot() +
+  geom_point(aes(x = suicideper100, y = aconsum ),show.legend = TRUE ,size = 0.6)+
+  geom_text(aes(x = suicideper100, y = aconsum, label = abbrv ),nudge_x = 1 ,nudge_y = 0.5)
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-206-3.png)<!-- -->
+1.\[ggplot\] global aesthetic mapping
+
+``` r
+ggplotDfAlcAlconsumEmplRt <- dfAlc %>% ggplot(aes(employrt,aconsum,label = abbrv))
+ggplotDfAlcAlconsumEmplRt + 
+  geom_point(size=0.6)+
+  geom_text(nudge_x = 1 ,nudge_y = 0.5)
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-207-1.png)<!-- -->
+
+``` r
+ggplotDfAlcAlconsumUrbanRt <- dfAlc %>% ggplot(aes(urbanrt,aconsum,label = abbrv))
+ggplotDfAlcAlconsumUrbanRt +
+  geom_point(size=0.6)+
+  geom_text(nudge_x = 1 ,nudge_y = 0.5)
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-207-2.png)<!-- -->
+
+``` r
+ggplotDfAlcAlconsumSuicide100<- dfAlc %>% ggplot(aes(suicideper100,aconsum,label = abbrv))
+ggplotDfAlcAlconsumSuicide100 +
+  geom_point(size=0.6)+
+  geom_text(nudge_x = 1 ,nudge_y = 0.5)
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-207-3.png)<!-- -->
+
+1.\[ggplot\] change legend text and add title text
+
+``` r
+ggplotDfAlcAlconsumEmplRt + 
+  geom_point(size=0.6)+
+  geom_text(nudge_x = 1 ,nudge_y = 0.5)+
+  ylab("Alcohol Consumption Rate")+
+  xlab("Employment Rate")+
+  ggtitle("World Alcohol Consumption")
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-208-1.png)<!-- -->
+
+``` r
+ggplotDfAlcAlconsumUrbanRt +
+  geom_point(size=0.6)+
+  geom_text(nudge_x = 1 ,nudge_y = 0.5)+
+  ylab("Alcohol Consumption Rate")+
+  xlab("Urban Rate")+
+  ggtitle("World Alcohol Consumption")
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-208-2.png)<!-- -->
+
+``` r
+ggplotDfAlcAlconsumSuicide100 +
+  geom_point(size=0.6)+
+  geom_text(nudge_x = 1 ,nudge_y = 0.5)+
+  ylab("Alcohol Consumption Rate")+
+  xlab("Suicide/100 People")+
+  ggtitle("World Alcohol Consumption")
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-208-3.png)<!-- -->
+
+1.\[ggplot\] color
+
+``` r
+ggplotDfAlcAlconsumEmplRt + 
+  geom_point(size=0.6,color ="red3")+
+  geom_text(nudge_x = 1 ,nudge_y = 0.5)+
+  ylab("Alcohol Consumption Rate")+
+  xlab("Employment Rate")+
+  ggtitle("World Alcohol Consumption")
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-209-1.png)<!-- -->
+
+``` r
+ggplotDfAlcAlconsumUrbanRt +
+  geom_point(size=0.6,color ="royalblue1")+
+  geom_text(nudge_x = 1 ,nudge_y = 0.5)+
+  ylab("Alcohol Consumption Rate")+
+  xlab("Urban Rate")+
+  ggtitle("World Alcohol Consumption")
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-209-2.png)<!-- -->
+
+``` r
+ggplotDfAlcAlconsumSuicide100 +
+  geom_point(size=0.6,color ="limegreen")+
+  geom_text(nudge_x = 1 ,nudge_y = 0.5)+
+  ylab("Alcohol Consumption Rate")+
+  xlab("Suicide/ 100 People")+
+  ggtitle("World Alcohol Consumption")
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-209-3.png)<!-- -->
+1.\[ggplot\] color to category
+
+``` r
+ggplotDfAlcAlconsumEmplRt + 
+  geom_point(aes(col=region),size=0.6)+
+  geom_text(nudge_x = 1 ,nudge_y = 0.5)+
+  ylab("Alcohol Consumption Rate")+
+  xlab("Employment Rate")+
+  ggtitle("World Alcohol Consumption")
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-210-1.png)<!-- -->
+
+``` r
+ggplotDfAlcAlconsumUrbanRt +
+  geom_point(aes(col=region),size=0.6)+
+  geom_text(nudge_x = 1 ,nudge_y = 0.5)+
+  ylab("Alcohol Consumption Rate")+
+  xlab("Urban Rate")+
+  ggtitle("World Alcohol Consumption")
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-210-2.png)<!-- -->
+
+``` r
+ggplotDfAlcAlconsumSuicide100 +
+  geom_point(aes(col=region),size=0.6)+
+  geom_text(nudge_x = 1 ,nudge_y = 0.5)+
+  ylab("Alcohol Consumption Rate")+
+  xlab("Suicide/ 100 People")+
+  ggtitle("World Alcohol Consumption")
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-210-3.png)<!-- -->
+1.\[ggplot\] color to category
+
+``` r
+dfAlc %>% 
+  ggplot(aes(x = employrt, y = aconsum, label = abbrv, color = region )) +
+  geom_label() +
+  geom_text(check_overlap = TRUE)
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-211-1.png)<!-- -->
+
+``` r
+dfAlc %>% 
+  ggplot(aes(x = urbanrt, y = aconsum, label = abbrv, color = region )) +
+  geom_label() +
+  geom_text(check_overlap = TRUE)
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-211-2.png)<!-- -->
+
+``` r
+dfAlc %>% 
+  ggplot(aes(x = suicideper100, y = aconsum, label = abbrv,color = region )) +
+  geom_label()+
+  geom_text(check_overlap = TRUE)
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-211-3.png)<!-- -->
+
+1.\[ggplot\] intercept extraction
+
+``` r
+lm.rAcEmp <- summary(lm(dfAlc$aconsum ~ dfAlc$employrt ))# intercept extraction 
+lm.rAcUrb <- summary(lm(dfAlc$aconsum ~ dfAlc$urbanrt)) # intercept extraction 
+lm.rAcSu <- summary(lm(dfAlc$aconsum ~ dfAlc$suicideper100)) # intercept extraction 
+```
+
+1.\[plot\] linear
+
+``` r
+plot(lm(dfAlc$aconsum ~ dfAlc$employrt ))
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-213-1.png)<!-- -->![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-213-2.png)<!-- -->![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-213-3.png)<!-- -->![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-213-4.png)<!-- -->
+
+``` r
+plot(lm(dfAlc$aconsum ~ dfAlc$urbanrt ))
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-213-5.png)<!-- -->![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-213-6.png)<!-- -->![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-213-7.png)<!-- -->![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-213-8.png)<!-- -->
+
+``` r
+plot(lm(dfAlc$aconsum ~ dfAlc$suicideper100 ))
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-213-9.png)<!-- -->![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-213-10.png)<!-- -->![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-213-11.png)<!-- -->![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-213-12.png)<!-- -->
+
+1.\[ggplot\] line representing the intercept
+
+``` r
+ggplotDfAlcAlconsumEmplRt + 
+  geom_point(aes(col=region),size=0.6)+
+  geom_text(nudge_x = 1 ,nudge_y = 0.5)+
+  ylab("Alcohol Consumption Rate")+
+  xlab("Employment Rate")+
+  ggtitle("World Alcohol Consumption")+
+  geom_abline(na.rm = TRUE, intercept= 4.66578)
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-214-1.png)<!-- -->
+
+``` r
+ggplotDfAlcAlconsumUrbanRt +
+  geom_point(aes(col=region),size=0.6)+
+  geom_text(nudge_x = 1 ,nudge_y = 0.5)+
+  ylab("Alcohol Consumption Rate")+
+  xlab("Urban Rate")+
+  ggtitle("World Alcohol Consumption")+
+  geom_abline(na.rm = TRUE, intercept = 3.83616)
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-214-2.png)<!-- -->
+
+``` r
+ggplotDfAlcAlconsumSuicide100 +
+  geom_point(aes(col=region),size=0.6)+
+  geom_text(nudge_x = 1 ,nudge_y = 0.5)+
+  ylab("Alcohol Consumption Rate")+
+  xlab("Suicide/ 100 People")+
+  ggtitle("World Alcohol Consumption")+
+  geom_abline(na.rm = TRUE, intercept = 3.05709)
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-214-3.png)<!-- -->
+1.\[ggplot\] color line
+
+``` r
+ggplotDfAlcAlconsumEmplRt + 
+  geom_point(aes(col=region),size=0.6)+
+  geom_text(nudge_x = 1 ,nudge_y = 0.5)+
+  ylab("Alcohol Consumption Rate")+
+  xlab("Employment Rate")+
+  ggtitle("World Alcohol Consumption")+
+  geom_abline(na.rm = TRUE, intercept= 4.66578,lty = 1, color = "red" )
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-215-1.png)<!-- -->
+
+``` r
+ggplotDfAlcAlconsumUrbanRt +
+  geom_point(aes(col=region),size=0.6)+
+  geom_text(nudge_x = 1 ,nudge_y = 0.5)+
+  ylab("Alcohol Consumption Rate")+
+  xlab("Urban Rate")+
+  ggtitle("World Alcohol Consumption")+
+  geom_abline(na.rm = TRUE, intercept = 3.83616,lty =2 , color = "red" )
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-215-2.png)<!-- -->
+
+``` r
+ggplotDfAlcAlconsumSuicide100 +
+  geom_point(aes(col=region),size=0.6)+
+  geom_text(nudge_x = 1 ,nudge_y = 0.5)+
+  ylab("Alcohol Consumption Rate")+
+  xlab("Suicide/ 100 People")+
+  ggtitle("World Alcohol Consumption")+
+  geom_abline(na.rm = TRUE, intercept = 3.05709,lty = 3, color = "red" )
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-215-3.png)<!-- -->
+&gt;load library
+
+``` r
+library(dslabs)
+```
+
+1.\[ggthemes\] themes
+
+``` r
+ggplotDfAlcAlconsumSuicide100 +
+  ggthemes::theme_economist()+
+  geom_point(aes(col=region),size=0.6)+
+  geom_text(nudge_x = 1 ,nudge_y = 0.5)+
+  ylab("Alcohol Consumption Rate")+
+  xlab("Suicide/ 100 People")+
+  ggtitle("World Alcohol Consumption")+
+  geom_abline(na.rm = TRUE, intercept = 3.05709,lty = 3, color = "red" )
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-217-1.png)<!-- -->
+
+``` r
+ggplotDfAlcAlconsumSuicide100 +
+  ggthemes::theme_fivethirtyeight()+
+  geom_point(aes(col=region),size=0.6)+
+  geom_text(nudge_x = 1 ,nudge_y = 0.5)+
+  ylab("Alcohol Consumption Rate")+
+  xlab("Suicide/ 100 People")+
+  ggtitle("World Alcohol Consumption")+
+  geom_abline(na.rm = TRUE, intercept = 3.05709,lty = 3, color = "red" )
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-217-2.png)<!-- -->
+
+1.\[ggrepel\] includes a geometry that adds labels ensuring that they
+don’t fall on top of each other
+
+``` r
+ggplotDfAlcAlconsumSuicide100 +
+  ggthemes::theme_fivethirtyeight()+
+  geom_point(aes(col=region),size=1)+
+  ggrepel::geom_text_repel(
+    nudge_x = .15,
+    box.padding = 0.5,
+    nudge_y = 1,
+    segment.curvature = -0.1,
+    segment.ncp = 3,
+    segment.angle = 30,
+    max.overlaps = 100) + 
+    theme_bw() + 
+    theme(legend.position = 'none')+
+  ylab("Alcohol Consumption Rate")+
+  xlab("Suicide/ 100 People")+
+  ggtitle("World Alcohol Consumption")+
+  geom_abline(na.rm = TRUE, intercept = 3.05709,lty = 3, color = "red" )
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-218-1.png)<!-- -->
+
+1.\[ggrepel\] includes a geometry that adds labels ensuring that they
+don’t fall on top of each other
+
+``` r
+ggplotDfAlcAlconsumSuicide100 +
+  ggthemes::theme_fivethirtyeight()+
+  geom_point(aes(col=region,size = aconsum ))+
+  ggrepel::geom_text_repel(
+    nudge_x = .15,
+    box.padding = 0.5,
+    nudge_y = 1,
+    segment.curvature = -0.1,
+    segment.ncp = 3,
+    segment.angle = 30,
+    max.overlaps = 100) + 
+  theme_bw() + 
+  theme(legend.position = 'none')+
+  ylab("Alcohol Consumption Rate")+
+  xlab("Suicide/ 100 People")+
+  ggtitle("World Alcohol Consumption")+
+  geom_abline(na.rm = TRUE, intercept = 3.05709,lty = 3, color = "red" )
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-219-1.png)<!-- -->
+
+1.\[geomHistogrma\] plot geom\_histogram
+
+``` r
+dfAlcEMEA <- dfAlc %>%
+filter(region == "EMEA") %>%
+ggplot(aes(x = aconsum))
+dfAlcEMEA + 
+  geom_histogram()
+```
+
+    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-220-1.png)<!-- -->
+
+1.\[geomHistogrma\] add bin width
+
+``` r
+dfAlcEMEA + 
+  geom_histogram(binwidth = 1)
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-221-1.png)<!-- -->
+
+1.\[geomHistogrma\] color
+
+``` r
+dfAlcEMEA + 
+  geom_histogram(binwidth = 1, fill = "cyan3", col = "cyan4") 
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-222-1.png)<!-- -->
+
+1.\[geomHistogrma\] add legend and title
+
+``` r
+dfAlcEMEA + 
+  geom_histogram(binwidth = 1, fill = "cyan3", col = "cyan4")+
+  xlab("EMEA Alcohol Consumption")+
+  ggtitle("Histogram")
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-223-1.png)<!-- -->
+
+1.\[geomHistogrma\] put together
+
+``` r
+dfAlcEMEA <- dfAlc %>%
+  filter(region == "EMEA") %>%
+  ggplot(aes(x = aconsum))
+dfAlcAPAC <- dfAlc %>%
+  filter(region == "APAC") %>%
+  ggplot(aes(x = aconsum))
+histEMEA <- dfAlcEMEA + geom_histogram(binwidth = 1, fill = "aquamarine2", col = "aquamarine4")
+histAPAC <- dfAlcAPAC + geom_histogram(binwidth = 1, fill = "aquamarine4", col = "aquamarine2")
+gridExtra::grid.arrange(histEMEA, histAPAC, ncol = 2)
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-224-1.png)<!-- -->
+
+1.\[geomDensity\] plot geom\_density
+
+``` r
+dfAlcEMEA + 
+  geom_density()
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-225-1.png)<!-- -->
+
+1.\[geomDensity\] color
+
+``` r
+dfAlcEMEA + 
+  geom_density(fill = "bisque2", col = "bisque3") +
+  xlab("EMEA Alcohol Consumption") +
+  ggtitle("Density Plot")
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-226-1.png)<!-- -->
+
+1.\[geomDensity\] group by category
+
+``` r
+dfAlc %>%
+  ggplot(aes(aconsum, group = region))+
+  geom_density()
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-227-1.png)<!-- -->
+
+1.\[geomDensity\] color by category
+
+``` r
+dfAlc %>%
+  ggplot(aes(aconsum, color = region))+
+  geom_density()
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-228-1.png)<!-- -->
+
+1.\[geomDensity\] fill by category
+
+``` r
+dfAlc %>%
+  ggplot(aes(aconsum, fill = region))+
+  geom_density()
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-229-1.png)<!-- -->
+
+1.\[geomDensity\] alpha by category
+
+``` r
+dfAlc %>%
+  ggplot(aes(aconsum, fill = region))+
+  geom_density(alpha = 0.2)
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-230-1.png)<!-- -->
+
+1.\[geomQQ\] geom\_qq plot
+
+``` r
+dfAlcEMEA <- dfAlc %>%
+filter(region == "EMEA") %>%
+ggplot(aes(sample = aconsum))
+dfAlcEMEA + 
+  geom_qq(fill = "darkgoldenrod2", col = "darkgoldenrod3") +
+  geom_qq_line(col = "darkgray") +
+  xlab("EMEA Alcohol Consumption") +
+  ggtitle("QQ Plot")
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-231-1.png)<!-- -->
+
+###### <sup>1</sup> Note: By default, the Q-Q plot is compared to the normal distribution with avrg = 0 and sd = 1
+
+1.\[geomQQ\] geom\_qq plot
+
+``` r
+params <- dfAlc %>%
+  filter(region == "EMEA") %>%
+  dplyr::summarize(mean = mean(aconsum), sd = sd(aconsum))
+dfAlcEMEA +
+  geom_qq(dparams = params, fill = "darkgoldenrod2", col = "darkgoldenrod3") +
+  geom_qq_line(col = "darkgray") + 
+  geom_abline(col = "brown3")+ #how well the normal approximation works #the points fall roughly on the line. This is because this data is approximately normal.
+  xlab("EMEA Alcohol Consumption") +
+  ggtitle("QQ Plot")
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-232-1.png)<!-- -->
+
+###### <sup>1</sup> Note: the Q-Q plot is compared against a normal distribution with same mean/sd as data
+
+1.\[geomQQ\] geom\_qq plot
+
+``` r
+dfAlc %>%
+filter(region == "EMEA") %>%
+  ggplot(aes(sample = scale(aconsum))) +
+  geom_qq(fill = "darkgoldenrod2", col = "darkgoldenrod3") +
+  geom_abline(col = "cornflowerblue")+
+  xlab("EMEA Alcohol Consumption") +
+  ggtitle("QQ Plot")
+```
+
+![](%5BR%5D-The-Notebook_files/figure-gfm/unnamed-chunk-233-1.png)<!-- -->
+
+###### <sup>1</sup> Note: the Q-Q plot is compared against a standard normal distribution with same mean/sd as data
 
 ## References
