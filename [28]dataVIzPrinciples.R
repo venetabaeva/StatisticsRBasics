@@ -306,7 +306,182 @@ titanic %>%
 titanic %>%
   ggplot(aes(Age, fill = Survived, y = ..count..)) +
   geom_density(alpha = 0.2) +
-  facet_grid(Pclass~ Sex)
+  facet_grid(Pclass~ Sex) 
 #The largest group of passengers was third-class males.
 #Most first-class and second-class females survived.
 #Almost all second-class males did not survive, with the exception of children.
+#Properties of starts exercise 
+#analyze some actual astronomical data to inspect properties of stars, their absolute magnitude (which relates to a star's luminosity, or brightness), temperature and type (spectral class)
+library(tidiverse)
+library(dslabs)
+data(stars)
+options(digits = 3)# report 3 significant digits
+head(stars)
+mean(stars$magnitude)
+sd(stars$magnitude)
+#  density plot of the magnitude for peaks number check 
+stars %>%
+  ggplot(aes(magnitude)) +
+  geom_density(alpha = 0.2) # two
+# distribution of star temperature
+stars %>% 
+  ggplot(aes(temp)) +
+  geom_histogram()# The majority of stars have a low temperature.
+#  a scatter plot: temperature x-axis/ magnitude  y-axis/  examine the relationship  Note:  lower magnitude means a more luminous (brighter) star
+stars %>% 
+  ggplot(aes(temp, magnitude)) +
+  geom_point() #decreasing exponential
+#astronomers usually transform values of star luminosity and temperature before plotting
+stars %>% 
+  ggplot(aes(temp, magnitude)) +
+  scale_y_reverse()+
+  scale_x_continuous(trans = "log10")+
+  scale_x_reverse()+
+  geom_point()#The brighest, highest temperature stars are in the upper left corner of the plot; For main sequence stars, hotter stars have higher luminosity
+#estimate the average temperature of a giant.
+estimateGigants<- stars%>%
+  filter(temp <10000)
+mean(estimateGigants$temp)
+# label
+stars %>% 
+  ggplot(aes(temp, magnitude,label = star)) +
+  scale_y_reverse()+
+  scale_x_continuous(trans = "log10")+
+  scale_x_reverse()+
+  geom_label(size = 3, show.legend = TRUE) 
+# color point
+head(stars)
+stars %>%  
+  ggplot(aes(temp, magnitude, color = type)) +
+  scale_y_reverse()+
+  scale_x_continuous(trans = "log10")+
+  scale_x_reverse()+
+  geom_point()
+# Climate Change Exercises
+library(tidyverse)
+library(dslabs)
+data(temp_carbon)
+data(greenhouse_gases)
+data(historic_co2)
+head(temp_carbon)
+# Which of these code blocks return the latest year for which carbon emissions are reported?
+temp_carbon %>%
+  filter(!is.na(carbon_emissions)) %>%
+  pull(year) %>%
+  max()
+#
+temp_carbon %>%
+  filter(!is.na(carbon_emissions)) %>%
+  .$year %>%
+  max()
+#
+temp_carbon %>%
+  filter(!is.na(carbon_emissions)) %>%
+  select(year) %>%
+  max()
+# What is the first year for which carbon emissions (carbon_emissions) data are available?
+temp_carbon %>%
+  filter(!is.na(carbon_emissions)) %>%
+  pull(year) %>%
+  min()
+#How many times larger were carbon emissions in the last year relative to the first year?
+lastYear <- temp_carbon %>%
+  filter(year == 2014)
+firstYear <- temp_carbon %>%
+  filter(year == 1751)
+proportion<- lastYear$carbon_emissions/firstYear$carbon_emissions
+#What is the first year for which global temperature anomaly (temp_anomaly) data are available?
+temp_carbon %>%
+  filter(!is.na(temp_anomaly)) %>%
+  pull(year) %>%
+  min()
+#What is the last year for which global temperature anomaly data are available?
+temp_carbon %>%
+  filter(!is.na(temp_anomaly)) %>%
+  pull(year) %>%
+  max()
+#How many degrees Celsius has temperature increased over the date range? Compare the temperatures in the most recent year versus the oldest year.
+lastYear <- temp_carbon %>%
+  filter(year == 2018)
+firstYear <- temp_carbon %>%
+  filter(year == 1880)
+difference<- lastYear$temp_anomaly - firstYear$temp_anomaly
+# 20th century mean temperature
+twCentury <- temp_carbon %>%
+  filter(!is.na(temp_anomaly) & year %in% c(1901:2000))
+#Create a time series line plot of the temperature anomaly. Only include years where temperatures are reported. Save this plot to the object p
+p <- twCentury%>%
+  filter(!is.na(temp_anomaly)) %>%
+  ggplot(aes(year, temp_anomaly)) +
+  geom_line()
+p <- p + geom_hline(aes(yintercept = 0), col = "blue") #command adds a blue horizontal line indicating the 20th century mean temperature?
+twCentury %>%
+  ggplot(aes(year,temp_anomaly)) +
+  geom_line() +
+  geom_hline(yintercept = 0, col="blue") +
+  ylab("Temperature anomaly (degrees C)") +
+  ggtitle("Temperature anomaly relative to 20th century mean, 1880-2018") +
+  geom_text(aes(x = 2000, y = 0.05, label = "20th century mean"), col = "blue") +
+  geom_vline(aes(xintercept=1939),col="red") +
+  geom_vline(aes(xintercept=1976),col="orange") +
+  geom_text(aes(x=1936,y=0.05,label="1939"),col="red") +
+  geom_text(aes(x=1978,y=0.05,label="1976"),col="orange")
+#   line plot
+  temp_carbon%>%
+    filter(year %in% c(1880:2020)) %>%
+    filter(!is.na(temp_anomaly)) %>%
+    filter(!is.na(ocean_anomaly))%>%
+    filter(!is.na(land_anomaly))%>%
+    ggplot() +
+    geom_line(aes(x = year,y=temp_anomaly), col = "black")+
+    geom_line(aes(x = year,y=ocean_anomaly), col = "blue")+
+    geom_line(aes(x = year,y=land_anomaly), col = "green")+ 
+    ylab("anomaly")+
+    geom_hline(yintercept = 0, col="black",alpha=0.5) +
+    geom_vline(xintercept = 2018, col="black",alpha=0.5)
+ #line plot
+  greenhouse_gases %>%
+    ggplot(aes(x= year,y = concentration)) +
+    geom_line() +
+    facet_grid(gas ~., scales = "free") +
+    geom_vline(xintercept = 1850)+ #Add a vertical line with an x-intercept at the year 1850, noting the unofficial start of the industrial revolution and widespread fossil fuel consumption
+    ylab("Concentration (ch4/n2o ppb, co2 ppm)") +
+    ggtitle("Atmospheric greenhouse gas concentration by year, 0-2000")
+  #line plot : a time series line plot of carbon emissions
+  temp_carbon%>%
+    filter(!is.na(carbon_emissions)) %>%
+    ggplot() +
+    geom_line(aes(x = year,y=carbon_emissions), col = "black")+
+    ylab("carbon emissions")
+  #a line plot of co2 concentration over time (year), coloring by the measurement source (source)
+  co2_time <- historic_co2 %>%
+    ggplot(aes(year,co2,color = source))+
+    geom_line()
+  co2_time_recent <- historic_co2 %>%
+    filter(year>1500) %>%
+    ggplot(aes(year,co2,color=source)) +
+    geom_line()
+  #x-axis limits to -800,000 and -775,000. About how many years did it take for co2 to rise from 200 ppmv to its peak near 275 ppmv?
+  historic_co2 %>%
+    ggplot(aes(year,co2,color=source)) +
+    geom_line() +
+    xlim(-800000,-775000)
+  #Change the x-axis limits to -375,000 and -330,000. About how many years did it take for co2 to rise from the minimum of 180 ppm to its peak of 300 ppmv?
+  historic_co2 %>%
+    ggplot(aes(year,co2,color=source)) +
+    geom_line() +
+    xlim(-375000 ,-330000)
+  #Change the x-axis limits to -140,000 and -120,000. About how many years did it take for co2 to rise from 200 ppmv to its peak near 280 ppmv?
+  historic_co2 %>%
+    ggplot(aes(year,co2,color=source)) +
+    geom_line() +
+    xlim(-140000 ,-120000)
+  #Change the x-axis limits to -3000 and 2018 to investigate modern changes in co2. About how many years did it take for co2 to rise from its stable level around 275 ppmv to the current level of over 400 ppmv?
+  historic_co2 %>%
+    ggplot(aes(year,co2,color=source)) +
+    geom_line() +
+    xlim(1700,2018)
+  
+  
+  
+  
