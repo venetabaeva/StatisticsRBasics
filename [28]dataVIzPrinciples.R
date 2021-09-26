@@ -25,24 +25,34 @@
 # Show the Data
 # Note: We now shift our attention to displaying data with a focus on comparing groups
 # dot plot showing the data instead of bar plot 
-heights %>% ggplot(aes(sex, height)) + geom_point()# issue: And many points are plotted above each other -> solution: the distribution is much more informative
+heights %>%
+  ggplot(aes(sex, height)) + 
+  geom_point()# issue: And many points are plotted above each other -> solution: the distribution is much more informative
 # jittered, alpha blended point plot
-heights %>% ggplot(aes(sex, height)) + geom_jitter(width = 0.1, alpha = 0.2) #Jitter is adding a small random shift to each point
+heights %>% 
+  ggplot(aes(sex, height)) + 
+  geom_jitter(width = 0.1, alpha = 0.2) #Jitter is adding a small random shift to each point 
 # distribution Ease Comparisons: Use Common Axes
 # histogram ->  keep the axes the same when comparing data across plots
 # histogram -> and it's to align plots vertical to see horizontal changes, and horizontally to see vertical changes.
-heights %>% ggplot(aes(sex, height)) + geom_jitter(width = 0.1, alpha = 0.2)+ geom_boxplot(alpha= 0.5) #Jitter is adding a small random shift to each point
+heights %>% 
+  ggplot(aes(sex, height)) + 
+  geom_jitter(width = 0.1, alpha = 0.2)+ 
+  geom_boxplot(alpha= 0.5) #Jitter is adding a small random shift to each point
 #Note: Bar plots are useful for showing one number,but not very useful when wanting to describe distributions
 # Consider Transformations
 ## We have motivated the use of the log transformation in cases where the changes are multiplicative
 ## consider are the logistic transformation-- useful to better see fold changes in odds--and the square root transformation, useful for count data
-#Ease Comparisons: Compared Visual Cues Should Be Adjacent
-##reorder
+# Ease Comparisons: Compared Visual Cues Should Be Adjacent
+
+##reorder 
 library(dplyr)
 library(ggplot2)
 library(dslabs)
-dat <- us_contagious_diseases %>%
-  filter(year == 1967 & disease=="Measles" & !is.na(population)) %>% mutate(rate = count / population * 10000 * 52 / weeks_reporting)
+usContDiseasesMeasles <- us_contagious_diseases %>%
+  filter(year == 1967 & disease=="Measles" & 
+           !is.na(population)) %>% 
+  mutate(rate = count / population * 10000 * 52 / weeks_reporting)
 state <- dat$state 
 rate <- dat$count/(dat$population/10000)*(52/dat$weeks_reporting)
 state <- reorder(state,rate, FUN = mean)
@@ -52,33 +62,34 @@ library(dplyr)
 library(ggplot2)
 library(dslabs)
 data(us_contagious_diseases)
-dat <- us_contagious_diseases %>% filter(year == 1967 & disease=="Measles" & count>0 & !is.na(population)) %>%
+usContDiseasesMeasles <- us_contagious_diseases %>% 
+  filter(year == 1967 & disease=="Measles" & count>0 & !is.na(population)) %>%
   mutate(rate = count / population * 10000 * 52 / weeks_reporting)
-dat %>% mutate(state = reorder(state, rate, FUN = mean)) %>% ggplot(aes(state, rate)) +
+usContDiseasesMeasles %>% 
+  mutate(state = reorder(state, rate, FUN = mean)) %>% 
+  ggplot(aes(state, rate)) +
   geom_bar(stat="identity") +
   coord_flip()
-#
+# numeric order  
 library(dplyr)
 library(ggplot2)
 library(dslabs)
 data("murders")
-murders %>% mutate(rate = total/population*100000) %>%
+murders %>% 
+  mutate(rate = total/population*100000) %>%
   mutate(region = reorder(region, rate, FUN = median)) %>% 
-  ggplot(aes(region,rate)) +
+  ggplot(aes(region,rate)) + 
   geom_boxplot() + 
-  geom_point()
-#slope chart 
+  geom_point() 
+# slope chart 
 # when comparing variables of the same type; at different time points;  for a relatively small number of comparison
 library(tidyverse)
-library(dslabs)
+library(dslabs) 
 data(gapminder)
-
 west <- c("Western Europe", "Northern Europe", "Southern Europe", "Northern America", "Australia and New Zealand")
-
-dat <- gapminder %>%
+gapminder20002015Slope <- gapminder %>%
   filter(year %in% c(2010, 2015) & region %in% west & !is.na(life_expectancy) & population > 10^7)
-
-dat %>%
+gapminder20002015Slope %>%
   mutate(location = ifelse(year == 2010, 1, 2),
          location = ifelse(year == 2015 & country %in% c("United Kingdom", "Portugal"),
                            location + 0.22, location),
@@ -92,7 +103,7 @@ dat %>%
 #The Bland-Altman plot = Tukey Mean Different plot
 library(ggrepel)
 head(dat)
-dat %>%
+gapminder20002015Slope %>%
   mutate(year = paste0("life_expectancy_", year)) %>%
   select(country, year, life_expectancy) %>% spread(year, life_expectancy) %>%
   mutate(average = (life_expectancy_2015 + life_expectancy_2010)/2,
@@ -104,30 +115,29 @@ dat %>%
   xlab("Average of 2010 and 2015") +
   ylab("Difference between 2015 and 2010")
 # Encoding a Third Variable
-#tile plot
-#The geom_tile() geometry creates a grid of colored tiles
+# tile plot
+# The geom_tile() geometry creates a grid of colored tiles
 # import data and inspect
 library(tidyverse)
 library(dslabs)
 data(us_contagious_diseases)
 str(us_contagious_diseases)
-
 # assign dat to the per 10,000 rate of measles, removing Alaska and Hawaii and adjusting for weeks reporting
 the_disease <- "Measles"
-dat <- us_contagious_diseases %>%
+usContDisMeasles <- us_contagious_diseases %>%
   filter(!state %in% c("Hawaii", "Alaska") & disease == the_disease) %>%
   mutate(rate = count / population * 10000 * 52/weeks_reporting) %>%
   mutate(state = reorder(state, rate))
-
 # plot disease rates per year in California
-dat %>% filter(state == "California" & !is.na(rate)) %>%
+usContDisMeasles %>% 
+  filter(state == "California" & !is.na(rate)) %>%
   ggplot(aes(year, rate)) +
   geom_line() +
   ylab("Cases per 10,000") +
-  geom_vline(xintercept=1963, col = "blue")
-
+  geom_vline(xintercept=1963, col = "blue") 
 # tile plot of disease rate by state and year
-dat %>% ggplot(aes(year, state, fill=rate)) +
+usContDisMeasles %>% 
+  ggplot(aes(year, state, fill=rate)) +
   geom_tile(color = "grey50") +
   scale_x_continuous(expand = c(0,0)) +
   scale_fill_gradientn(colors = RColorBrewer::brewer.pal(9, "Reds"), trans = "sqrt") +
@@ -141,9 +151,8 @@ dat %>% ggplot(aes(year, state, fill=rate)) +
 avg <- us_contagious_diseases %>%
   filter(disease == the_disease) %>% group_by(year) %>%
   summarize(us_rate = sum(count, na.rm = TRUE)/sum(population, na.rm = TRUE)*10000)
-
 # make line plot of measles rate by year by state
-dat %>%
+usContDisMeasles %>%
   filter(!is.na(rate)) %>%
   ggplot() +
   geom_line(aes(year, rate, group = state), color = "grey50", 
@@ -156,8 +165,8 @@ dat %>%
   geom_text(data = data.frame(x = 1955, y = 50),
             mapping = aes(x, y, label = "US average"), color = "black") +
   geom_vline(xintercept = 1963, col = "blue")
-#When choosing colors to quantify a numeric variable, we choose between two options, sequential and diverging.
-#Sequential palettes are suited for data that goes from high to low
+# When choosing colors to quantify a numeric variable, we choose between two options, sequential and diverging.
+# Sequential palettes are suited for data that goes from high to low
 library(RColorBrewer)
 display.brewer.all(type = "seq")
 #On the other hand, diverging colors are used to represent values that verge from a center
@@ -168,12 +177,11 @@ library(dplyr)
 library(ggplot2)
 library(dslabs)
 the_disease = "Smallpox"
-dat <- us_contagious_diseases %>% 
+usContDiseasesSmallpox <- us_contagious_diseases %>% 
   filter(!state%in%c("Hawaii","Alaska") & disease == the_disease & weeks_reporting >= 10) %>% 
   mutate(rate = count / population * 10000) %>% 
   mutate(state = reorder(state, rate))
-
-dat %>% ggplot(aes(year, state, fill = rate)) + 
+usContDiseases %>% ggplot(aes(year, state, fill = rate)) + 
   geom_tile(color = "grey50") + 
   scale_x_continuous(expand=c(0,0)) + 
   scale_fill_gradientn(colors = brewer.pal(9, "Reds"), trans = "sqrt") + 
@@ -182,18 +190,17 @@ dat %>% ggplot(aes(year, state, fill = rate)) +
   ggtitle(the_disease) + 
   ylab("") + 
   xlab("")
-#series plot
+# series plot
 the_disease = "Smallpox"
-dat <- us_contagious_diseases %>%
+usContDiseasesSmallpox <- us_contagious_diseases %>%
   filter(!state%in%c("Hawaii","Alaska") & disease == the_disease & weeks_reporting >= 10) %>%
   mutate(rate = count / population * 10000) %>%
   mutate(state = reorder(state, rate))
-
 avg <- us_contagious_diseases %>%
   filter(disease==the_disease & weeks_reporting >= 10) %>% group_by(year) %>%
   summarize(us_rate = sum(count, na.rm=TRUE)/sum(population, na.rm=TRUE)*10000)
-
-dat %>% ggplot() +
+usContDiseasesSmallpox %>% 
+  ggplot() +
   geom_line(aes(year, rate, group = state),  color = "grey50", 
             show.legend = FALSE, alpha = 0.2, size = 1) +
   geom_line(mapping = aes(year, us_rate),  data = avg, size = 1, color = "black") +
@@ -203,14 +210,14 @@ dat %>% ggplot() +
   ylab("") +
   geom_text(data = data.frame(x=1955, y=50), mapping = aes(x, y, label="US average"), color="black") + 
   geom_vline(xintercept=1963, col = "blue")
-
 #series plot
 library(dplyr)
 library(ggplot2)
 library(dslabs)
 library(RColorBrewer)
 data(us_contagious_diseases)
-us_contagious_diseases %>% filter(state=="California"  & weeks_reporting >= 10) %>% 
+us_contagious_diseases %>% 
+  filter(state=="California"  & weeks_reporting >= 10) %>% 
   group_by(year, disease) %>%
   summarize(rate = sum(count)/sum(population)*10000) %>%
   ggplot(aes(year, rate,color = disease)) + 
@@ -222,7 +229,12 @@ us_contagious_diseases %>%
   summarize(rate = sum(count)/sum(population)*10000) %>%
   ggplot(aes(year, rate, color = disease)) +
   geom_line()
+
+
+
+
 #Titanic package
+
 options(digits = 3)    # report 3 significant digits
 library(tidyverse)
 library(titanic)
@@ -286,33 +298,33 @@ titanic %>%
 #The median fare was lower for passengers who did not survive.
 #Most individuals who paid a fare around $8 did not survive.
 # barplot
-#basic barplot of passenger class filled by survival
+# basic barplot of passenger class filled by survival
 titanic %>%
   ggplot(aes(Pclass, fill = Survived))+
   geom_bar()
-#same barplot but use the argument position = position_fill() to show relative proportions in each group instead of counts
+# same barplot but use the argument position = position_fill() to show relative proportions in each group instead of counts
 titanic %>%
   ggplot(aes(Pclass, fill = Survived))+
   geom_bar(position = position_fill())
-#barplot of survival filled by passenger class using position = position_fill()
+# barplot of survival filled by passenger class using position = position_fill()
 titanic %>%
   ggplot(aes(Survived, fill = Pclass))+
   geom_bar(position = position_fill())
-#There were more third class passengers than passengers in the first two classes combined.
-#Survival proportion was highest for first class passengers, followed by second class. Third-class had the lowest survival proportion.
-#Most passengers in first class survived. Most passengers in other classes did not survive.
-#The majority of those who did not survive were from third class.
-#grid of density plots for age, filled by survival status, with count on the y-axis, faceted by sex and passenger class
+# There were more third class passengers than passengers in the first two classes combined.
+# Survival proportion was highest for first class passengers, followed by second class. Third-class had the lowest survival proportion.
+# Most passengers in first class survived. Most passengers in other classes did not survive.
+# The majority of those who did not survive were from third class.
+# grid of density plots for age, filled by survival status, with count on the y-axis, faceted by sex and passenger class
 titanic %>%
   ggplot(aes(Age, fill = Survived, y = ..count..)) +
   geom_density(alpha = 0.2) +
   facet_grid(Pclass~ Sex) 
-#The largest group of passengers was third-class males.
-#Most first-class and second-class females survived.
-#Almost all second-class males did not survive, with the exception of children.
-#Properties of starts exercise 
-#analyze some actual astronomical data to inspect properties of stars, their absolute magnitude (which relates to a star's luminosity, or brightness), temperature and type (spectral class)
-library(tidiverse)
+# The largest group of passengers was third-class males.
+# Most first-class and second-class females survived.
+# Almost all second-class males did not survive, with the exception of children.
+# Properties of starts exercise 
+# analyze some actual astronomical data to inspect properties of stars, their absolute magnitude (which relates to a star's luminosity, or brightness), temperature and type (spectral class)
+library(tidyverse)
 library(dslabs)
 data(stars)
 options(digits = 3)# report 3 significant digits
@@ -384,23 +396,23 @@ temp_carbon %>%
   filter(!is.na(carbon_emissions)) %>%
   pull(year) %>%
   min()
-#How many times larger were carbon emissions in the last year relative to the first year?
+# How many times larger were carbon emissions in the last year relative to the first year?
 lastYear <- temp_carbon %>%
   filter(year == 2014)
 firstYear <- temp_carbon %>%
   filter(year == 1751)
 proportion<- lastYear$carbon_emissions/firstYear$carbon_emissions
-#What is the first year for which global temperature anomaly (temp_anomaly) data are available?
+# What is the first year for which global temperature anomaly (temp_anomaly) data are available?
 temp_carbon %>%
   filter(!is.na(temp_anomaly)) %>%
   pull(year) %>%
   min()
-#What is the last year for which global temperature anomaly data are available?
+# What is the last year for which global temperature anomaly data are available?
 temp_carbon %>%
   filter(!is.na(temp_anomaly)) %>%
   pull(year) %>%
   max()
-#How many degrees Celsius has temperature increased over the date range? Compare the temperatures in the most recent year versus the oldest year.
+# How many degrees Celsius has temperature increased over the date range? Compare the temperatures in the most recent year versus the oldest year.
 lastYear <- temp_carbon %>%
   filter(year == 2018)
 firstYear <- temp_carbon %>%
@@ -409,23 +421,19 @@ difference<- lastYear$temp_anomaly - firstYear$temp_anomaly
 # 20th century mean temperature
 twCentury <- temp_carbon %>%
   filter(!is.na(temp_anomaly) & year %in% c(1901:2000))
-#Create a time series line plot of the temperature anomaly. Only include years where temperatures are reported. Save this plot to the object p
-p <- twCentury%>%
-  filter(!is.na(temp_anomaly)) %>%
-  ggplot(aes(year, temp_anomaly)) +
-  geom_line()
-p <- p + geom_hline(aes(yintercept = 0), col = "blue") #command adds a blue horizontal line indicating the 20th century mean temperature?
+# Create a time series line plot of the temperature anomaly
+# Only include years where temperatures are reported. Save this plot to the object p
 twCentury %>%
   ggplot(aes(year,temp_anomaly)) +
   geom_line() +
   geom_hline(yintercept = 0, col="blue") +
-  ylab("Temperature anomaly (degrees C)") +
-  ggtitle("Temperature anomaly relative to 20th century mean, 1880-2018") +
+  ylab("t anomaly in C degrees") +
+  ggtitle("t anomaly relative to 20th century mean, 1880-2018") +
   geom_text(aes(x = 2000, y = 0.05, label = "20th century mean"), col = "blue") +
   geom_vline(aes(xintercept=1939),col="red") +
-  geom_vline(aes(xintercept=1976),col="orange") +
+  geom_vline(aes(xintercept=1976),col="green") +
   geom_text(aes(x=1936,y=0.05,label="1939"),col="red") +
-  geom_text(aes(x=1978,y=0.05,label="1976"),col="orange")
+  geom_text(aes(x=1978,y=0.05,label="1976"),col="green")
 #   line plot
   temp_carbon%>%
     filter(year %in% c(1880:2020)) %>%
@@ -461,7 +469,7 @@ twCentury %>%
     filter(year>1500) %>%
     ggplot(aes(year,co2,color=source)) +
     geom_line()
-  #x-axis limits to -800,000 and -775,000. About how many years did it take for co2 to rise from 200 ppmv to its peak near 275 ppmv?
+  # x-axis limits to -800,000 and -775,000. About how many years did it take for co2 to rise from 200 ppmv to its peak near 275 ppmv?
   historic_co2 %>%
     ggplot(aes(year,co2,color=source)) +
     geom_line() +
@@ -481,7 +489,4 @@ twCentury %>%
     ggplot(aes(year,co2,color=source)) +
     geom_line() +
     xlim(1700,2018)
-  
-  
-  
-  
+ 

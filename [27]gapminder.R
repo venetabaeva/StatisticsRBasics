@@ -17,7 +17,7 @@ filter(gapminder, year == 1962) %>%
 #Faceting makes multiple side-by-side plots stratified by some variable. This is a way to ease comparisons.
 #The facet_grid() function allows faceting by up to two variables, with rows faceted by one variable and columns faceted by the other variable. To facet by only one variable, use the dot operator as the other variable.
 #The facet_wrap() function facets by one variable and automatically wraps the series of plots so they have readable dimensions
-filter(gapminder, year %in% c(1962, 2012)) %>%
+filter(gapminder, year %in% c(1962, 2012)) %>% 
   ggplot(aes(fertility, life_expectancy, col = continent)) +
   geom_point() +
   facet_grid(continent ~ year)
@@ -47,14 +47,17 @@ gapminder %>%
   filter(country == "United States") %>%
   ggplot(aes(year, fertility)) +
   geom_line()
+
 #Multiple time series
-# line plot fertility time series for two countries- only one line (incorrect)
+# line plot fertility time series for two countries - only one line (incorrect)
 countries <- c("South Korea", "Germany")
-gapminder %>% filter(country %in% countries) %>%
+gapminder %>% 
+  filter(country %in% countries) %>%
   ggplot(aes(year, fertility)) +
   geom_line()
 # line plot fertility time series for two countries - one line per country
-gapminder %>% filter(country %in% countries) %>%
+gapminder %>% 
+  filter(country %in% countries) %>%
   ggplot(aes(year, fertility, group = country)) +
   geom_line()
 # fertility time series for two countries - lines colored by country
@@ -68,8 +71,8 @@ gapminder %>% filter(country %in% countries) %>%
   ggplot(aes(year, life_expectancy, col = country)) +
   geom_line() +
   geom_text(data = labels, aes(x, y, label = country), size = 5) +
-  theme(legend.position = "none")
-#transformation
+  theme(legend.position = "none") 
+# transformation
 # add dollars per day variable;The GDP per person is often used as a rough summary of how rich a country is.
 gapminder <- gapminder %>%
   mutate(dollars_per_day = gdp/population/365)
@@ -79,9 +82,9 @@ gapminder %>%
   filter(year == past_year & !is.na(gdp)) %>%
   ggplot(aes(dollars_per_day)) +
   geom_histogram(binwidth = 1, color = "black") 
-#However, the majority of the x-axis is dedicated to the 35 countries with averages above 10.
-#log transformation 
-#So to get the distribution of the log base 2 transformed values, we simply transform the data and use the same code
+# however, the majority of the x-axis is dedicated to the 35 countries with averages above 10.
+# log transformation 
+# so to get the distribution of the log base 2 transformed values, we simply transform the data and use the same code
 # repeat histogram with log2 scaled data
 gapminder %>%
   filter(year == past_year & !is.na(gdp)) %>%
@@ -106,7 +109,8 @@ gapminder <- gapminder %>%
   mutate(dollars_per_day = gdp/population/365)
 # number of regions
 length(levels(gapminder$region))
-# boxplot of GDP by region in 1970
+
+# boxplot of GDP by region in 1970 
 past_year <- 1970
 p <- gapminder %>%
   filter(year == past_year & !is.na(gdp)) %>%
@@ -115,7 +119,7 @@ p + geom_boxplot()
 # rotate names on x-axis
 p + geom_boxplot() +
   theme(axis.text.x = element_text(angle = 90, hjust = 1))
-#reorder : This function lets us change the order of the levels of a factor variable based on a summary computed on a numeric vector
+# reorder : This function lets us change the order of the levels of a factor variable based on a summary computed on a numeric vector
 # by default, factor order is alphabetical
 fac <- factor(c("Asia", "Asia", "West", "West", "West"))
 levels(fac)
@@ -132,7 +136,7 @@ p <- gapminder %>%
   geom_boxplot() +
   theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
   xlab("")
-p
+p 
 # log2 scale y-axis
 p + scale_y_continuous(trans = "log2")
 # add data points
@@ -143,11 +147,9 @@ p + scale_y_continuous(trans = "log2") + geom_point(show.legend = FALSE)
 gapminder <- gapminder %>%
   mutate(dollars_per_day = gdp/population/365)
 past_year <- 1970
-
 # define Western countries
 west <- c("Western Europe", "Northern Europe", "Southern Europe", "Northern America", "Australia and New Zealand")
-
-# facet by West vs devloping
+# facet by West vs developing
 gapminder %>%
   filter(year == past_year & !is.na(gdp)) %>%
   mutate(group = ifelse(region %in% west, "West", "Developing")) %>%
@@ -155,7 +157,6 @@ gapminder %>%
   geom_histogram(binwidth = 1, color = "black") +
   scale_x_continuous(trans = "log2") +
   facet_grid(. ~ group)
-
 # facet by West/developing and year
 present_year <- 2010
 gapminder %>%
@@ -172,7 +173,6 @@ country_list_1 <- gapminder %>%
 country_list_2 <- gapminder %>%
   filter(year == present_year & !is.na(dollars_per_day)) %>% .$country
 country_list <- intersect(country_list_1, country_list_2)
-
 # make histogram including only countries with data available in both years
 gapminder %>%
   filter(year %in% c(past_year, present_year) & country %in% country_list) %>%    # keep only selected countries
@@ -187,12 +187,11 @@ p <- gapminder %>%
   mutate(region = reorder(region, dollars_per_day, FUN = median)) %>%
   ggplot() +
   theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
-  xlab("") 
-+ scale_y_continuous(trans = "log2")
-
-p + geom_boxplot(aes(region, dollars_per_day, fill = continent)) +
+  xlab("") +
+  scale_y_continuous(trans = "log2")
+p + 
+  geom_boxplot(aes(region, dollars_per_day, fill = continent)) +
   facet_grid(year ~ .)
-
 # arrange matching boxplots next to each other, colored by year
 p + geom_boxplot(aes(region, dollars_per_day, fill = factor(year)))
 # Faceted smooth density plots
@@ -200,7 +199,7 @@ p + geom_boxplot(aes(region, dollars_per_day, fill = factor(year)))
 gapminder %>%
   filter(year == past_year & country %in% country_list) %>%
   mutate(group = ifelse(region %in% west, "West", "Developing")) %>% group_by(group) %>%
-  summarize(n = n()) %>% knitr::kable()
+  summarize(n = n()) %>% knitr::kable() 
 # Note: If we overlay the two densities, the default is to have the area represented by each distribution add up to 1 regardless of the size of each group
 # access computed variables
 # To have the areas of the densities be proportional to the size of the groups,multiply the y-axis values by the size of the group
@@ -220,7 +219,6 @@ gapminder <- gapminder %>%
     .$region %in% c("Caribbean", "Central America", "South America") ~ "Latin America",
     .$continent == "Africa" & .$region != "Northern Africa" ~ "Sub-Saharan Africa",
     TRUE ~ "Others"))
-
 # reorder factor levels
 gapminder <- gapminder %>%
   mutate(group = factor(group, levels = c("Others", "Latin America", "East Asia", "Sub-Saharan Africa", "West")))
@@ -230,12 +228,11 @@ p <- gapminder %>%
   filter(year %in% c(past_year, present_year) & country %in% country_list) %>%
   ggplot(aes(dollars_per_day, fill = group)) +
   scale_x_continuous(trans = "log2")
-
 # stacked density plot
 p + geom_density(alpha = 0.2, bw = 0.75, position = "stack") +
   facet_grid(year ~ .)
-#Weighted stacked density plot
-# weighted stacked density plot
+# Weighted stacked density plot
+# weighted stacked density plot 
 gapminder %>%
   filter(year %in% c(past_year, present_year) & country %in% country_list) %>%
   group_by(year) %>%
@@ -244,12 +241,12 @@ gapminder %>%
   ggplot(aes(dollars_per_day, fill = group, weight = weight)) +
   scale_x_continuous(trans = "log2") +
   geom_density(alpha = 0.2, bw = 0.75, position = "stack") + facet_grid(year ~ .)
+
 #ecological fallacy = The almost perfect relationship between survival rates and income is only observed for the averages at the regional level.
 # define gapminder
 library(tidyverse)
 library(dslabs)
 data(gapminder)
-
 # add additional cases
 gapminder <- gapminder %>%
   mutate(group = case_when(
@@ -282,7 +279,6 @@ library(ggplot2)
 library(dslabs)
 data(gapminder)
 head(gapminder)
-
 ## fill out the missing parts in filter and aes
 gapminder %>% 
   filter( year == 2012,continent == 'Africa') %>%
@@ -310,13 +306,13 @@ gapminder %>%
   ggplot(aes(year, life_expectancy))+
   geom_line()
 # frequency 
-daydollars <- gapminder %>% mutate(dollars_per_day = gdp/population/365)%>% filter(continent == "Africa", year == 2010,!is.na(gdp)) 
-# 
-daydollars %>%
+gapminder %>% 
+  mutate(dollars_per_day = gdp/population/365)%>%
+  filter(continent == "Africa", year == 2010,!is.na(gdp)) %>%
   ggplot(aes(dollars_per_day, y = ..count..))+
   geom_density()+
   scale_x_continuous(trans = "log2")
-#density plot 
+# density plot 
 library(dplyr)
 library(ggplot2)
 library(dslabs)
@@ -347,24 +343,21 @@ library(dslabs)
 data(gapminder)
 gapminder_Africa_2010 <- gapminder %>%
   filter(continent == "Africa", year  == 2010,!is.na(gdp)) %>% 
-  mutate(dollars_per_day = gdp/population/365)
-# create the mutated dataset
-# now make the scatter plot
-gapminder_Africa_2010 %>% 
+  mutate(dollars_per_day = gdp/population/365)%>% 
   ggplot(aes(dollars_per_day,infant_mortality,color = region))+
   geom_point()
 # scale
-gapminder_Africa_2010 %>% # your plotting code here
+gapminder_Africa_2010 %>% 
   ggplot(aes(dollars_per_day,infant_mortality,color = region))+
   geom_point()+ 
   scale_x_continuous(trans="log2")
 # label 
-gapminder_Africa_2010 %>% # your plotting code here
+gapminder_Africa_2010 %>% 
   ggplot(aes(dollars_per_day,infant_mortality,color = region, label = country))+
   geom_point()+
   scale_x_continuous(trans="log2")+
   geom_text()
-# scatter plot 
+# scatter plot  
 library(dplyr)
 library(ggplot2)
 library(dslabs)

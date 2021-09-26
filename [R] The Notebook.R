@@ -1319,3 +1319,884 @@ dfAlc %>%
 dfAlc %>%
   ggplot(aes(aconsum, fill = region))+
   geom_density(alpha = 0.2)
+#gapminder data set
+library(dslabs)
+data(gapminder)
+head(gapminder)
+View(gapminder)
+# filter 
+gapminder %>%
+  filter(year == 2015 & country %in% c("Sri Lanka", "Turkey"))%>%
+  select(country, infant_mortality)
+gapminder %>%
+  filter(year == 2015 & country %in% c("Malaysia", "Russia"))%>%
+  select(country,infant_mortality)
+gapminder %>%
+  filter(year == 2015 & country %in% c("Syria", "Turkey"))%>%
+  select(country,infant_mortality)
+# scatterplot
+ds_theme_set()    # set plot theme
+filter(gapminder, year == 1962) %>%
+  ggplot(aes(fertility, life_expectancy, color = continent)) +
+  geom_point()
+# facet_grid 
+filter(gapminder, year %in% c(1962, 2012)) %>% 
+  ggplot(aes(fertility, life_expectancy, col = continent)) +
+  geom_point() +
+  facet_grid(continent ~ year)
+filter(gapminder, year %in% c(1962, 2012)) %>%
+  ggplot(aes(fertility, life_expectancy, col = continent)) +
+  geom_point() +
+  facet_grid(. ~ year)
+# facet_grid motion 
+years <- c(1962, 1980, 1990, 2000, 2012)
+continents <- c("Europe", "Asia")
+gapminder %>%
+  filter(year %in% years & continent %in% continents) %>%
+  ggplot(aes(fertility, life_expectancy, col = continent)) +
+  geom_point() +
+  facet_wrap(~year)
+# scatterplot time series 
+gapminder %>%
+  filter(country == "Turkey") %>%
+  ggplot(aes(year, fertility)) +
+  geom_point(aes(colour = country))+
+  xlim(1962,2012)+
+  ylim(0,10)
+gapminder %>%
+  filter(country == "Sri Lanka") %>%
+  ggplot(aes(year, fertility)) +
+  geom_point(aes(colour = country))+
+  xlim(1962,2012)+
+  ylim(0,10)
+gapminder %>%
+  filter(country == "Syria") %>%
+  ggplot(aes(year, fertility)) +
+  geom_point(aes(colour = country))+
+  xlim(1962,2012)+
+  ylim(0,10)
+# linePlot time series 
+gapminder %>%
+  filter(country == "Turkey") %>%
+  ggplot(aes(year, fertility)) +
+  geom_line(aes(colour = country))+
+  xlim(1962,2012)+
+  ylim(0,10)
+gapminder %>%
+  filter(country == "Sri Lanka") %>%
+  ggplot(aes(year, fertility)) +
+  geom_line(aes(colour = country))+
+  xlim(1962,2012)+
+  ylim(0,10)
+gapminder %>%
+  filter(country == "Syria") %>%
+  ggplot(aes(year, fertility)) +
+  geom_line(aes(colour = country))+
+  xlim(1962,2012)+
+  ylim(0,10)
+# linePlot multiple time series 
+gapminder %>% filter(country %in% c("Turkey","Sri Lanka","Syria")) %>%
+  ggplot(aes(year, fertility, group = country)) +
+  geom_line()+
+  xlim(1962,2012)+
+  ylim(0,10)
+# linePlot multiple time series color
+gapminder %>% filter(country %in% c("Turkey","Sri Lanka","Syria")) %>%
+  ggplot(aes(year, fertility, col = country)) +
+  geom_line()+
+  xlim(1962,2012)+
+  ylim(0,10)
+# linePlot multiple time series color, label
+countries <-  c("Turkey","Sri Lanka","Syria")
+labels <- data.frame(country = countries, x = c(1964, 1965,1964), y = c(6.40,5.50,7.85))
+gapminder %>% filter(country %in% c("Turkey","Sri Lanka","Syria")) %>%
+  ggplot(aes(year, fertility, col = country)) +
+  geom_line() +
+  xlim(1962,2012)+
+  ylim(0,10)+
+  geom_text(data = labels, aes(x, y, label = country), size = 5) +
+  theme(legend.position = "none")
+# mutate dataFrame 
+gapminder <- gapminder %>%
+  mutate(dollars_per_day = gdp/population/365)
+# histogram 
+year1962 <- 1962 
+gapminder %>%
+  filter(year == 1962 & !is.na(gdp)) %>%
+  ggplot(aes(dollars_per_day)) +
+  geom_histogram(binwidth = 1, fill = "lightgoldenrod1", color = "black")+
+  xlim(0,150)+
+  ylim(0,30)
+year2011 <- 2011
+gapminder %>%
+  filter(year == year2011 & !is.na(gdp)) %>%
+  ggplot(aes(dollars_per_day)) +
+  geom_histogram(binwidth = 1, fill = "indianred1", color = "black") +
+  xlim(0,150)+
+  ylim(0,30)
+# log2 transformation  -< needed due to the majority of the x-axis  dedicated to the 35 countries with averages above 10
+# log the values before plotting them
+year1962 <- 1962 
+gapminder %>%
+  filter(year == year1962 & !is.na(gdp)) %>%
+  ggplot(aes(log2(dollars_per_day))) +
+  geom_histogram(binwidth = 1, fill = "lightgoldenrod1", color = "black")+
+  xlim(0,150)+
+  ylim(0,30) 
+year2011 <- 2011
+gapminder %>%
+  filter(year == year2011 & !is.na(gdp)) %>%
+  ggplot(aes(log2(dollars_per_day))) +
+  geom_histogram(binwidth = 1, fill = "indianred1", color = "black") +
+  xlim(0,150)+
+  ylim(0,30)
+# Note: do not recommend usage of log10, the natural log for data exploration and visualization
+# Note: a bin width of 1 will translate to bins with range x to 2 to the x
+# log the values on the x - axis 
+year1962 <- 1962 
+gapminder %>%
+  filter(year == year1962 & !is.na(gdp)) %>%
+  ggplot(aes(dollars_per_day)) +
+  geom_histogram(binwidth = 1, fill = "lightgoldenrod1", color = "black")+
+  xlim(0,32)+
+  ylim(0,30)+
+  scale_x_continuous(trans = "log2")
+year2011 <- 2011
+gapminder %>%
+  filter(year == year2011 & !is.na(gdp)) %>%
+  ggplot(aes(log2(dollars_per_day))) +
+  geom_histogram(binwidth = 1, fill = "indianred1", color = "black") +
+  xlim(0,32)+
+  ylim(0,30)+
+  scale_x_continuous(trans = "log2")
+# boxplot
+year1962 <- 1962 
+gapminder %>%
+  filter(year == year1962 & !is.na(gdp)) %>%
+  ggplot(aes(region, dollars_per_day))+
+  geom_boxplot()+
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+year2011 <- 2011 
+gapminder %>%
+  filter(year == year2011 & !is.na(gdp)) %>%
+  ggplot(aes(region, dollars_per_day))+
+  geom_boxplot()+
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+# stratify factor by level
+length(levels(gapminder$continent))
+# check levels of a factor
+regionFac <- levels(gapminder$continent)
+# reorder factor levels on a summary computed on a numeric vector
+value <- c(10, 11, 12, 6, 4)
+facRegByValue <- reorder(regionFac, value, FUN = mean)
+levels(facRegByValue)
+# boxplot reordered by median income, scaled, and color by continent
+gapminder %>%
+  filter(year == year1962 & !is.na(gdp)) %>%
+  mutate(region = reorder(region, dollars_per_day, FUN = median)) %>%   
+  ggplot(aes(region, dollars_per_day, fill = continent)) +    
+  geom_boxplot() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  xlab("")
+gapminder %>%
+  filter(year == year2011 & !is.na(gdp)) %>%
+  mutate(region = reorder(region, dollars_per_day, FUN = median)) %>%   
+  ggplot(aes(region, dollars_per_day, fill = continent)) +    
+  geom_boxplot() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  xlab("")
+# log2 scale y-axis 
+gapminder %>%
+  filter(year == year1962 & !is.na(gdp)) %>%
+  mutate(region = reorder(region, dollars_per_day, FUN = median)) %>%   
+  ggplot(aes(region, dollars_per_day, fill = continent)) +    
+  geom_boxplot() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  xlab("")+
+  scale_y_continuous(trans = "log2")
+gapminder %>%
+  filter(year == year2011 & !is.na(gdp)) %>%
+  mutate(region = reorder(region, dollars_per_day, FUN = median)) %>%   
+  ggplot(aes(region, dollars_per_day, fill = continent)) +    
+  geom_boxplot() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  xlab("")+
+  scale_y_continuous(trans = "log2")
+
+# add points on boxplot 
+
+gapminder %>%
+  filter(year == year1962 & !is.na(gdp)) %>%
+  mutate(region = reorder(region, dollars_per_day, FUN = median)) %>%   
+  ggplot(aes(region, dollars_per_day, fill = continent)) +    
+  geom_boxplot() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  xlab("")+
+  scale_y_continuous(trans = "log2")+ 
+  geom_point(show.legend = FALSE)
+gapminder %>%
+  filter(year == year2011 & !is.na(gdp)) %>%
+  mutate(region = reorder(region, dollars_per_day, FUN = median)) %>%   
+  ggplot(aes(region, dollars_per_day, fill = continent)) +    
+  geom_boxplot() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  xlab("")+
+  scale_y_continuous(trans = "log2")+ 
+  geom_point(show.legend = FALSE)
+# define group  - vector 
+west <- c("Western Europe", "Northern Europe", "Southern Europe", "Northern America", "Australia and New Zealand")
+# facet groups
+gapminder %>%
+  filter(year == year1962 & !is.na(gdp)) %>%
+  mutate(group = ifelse(region %in% west, "West", "Developing")) %>%
+  ggplot(aes(dollars_per_day)) +
+  geom_histogram(binwidth = 1, color = "black") +
+  scale_x_continuous(trans = "log2") +
+  facet_grid(. ~ group)
+# facet groups
+gapminder %>%
+  filter(year %in% c(year1962, year2011) & !is.na(gdp)) %>%
+  mutate(group = ifelse(region %in% west, "West", "Developing")) %>%
+  ggplot(aes(dollars_per_day)) +
+  geom_histogram(binwidth = 1, color = "black") +
+  scale_x_continuous(trans = "log2") +
+  facet_grid(year ~ group)
+# define groups 
+countryList1962 <- gapminder %>%
+  filter(year == year1962 & !is.na(dollars_per_day)) %>% .$country
+countryList2011 <- gapminder %>%
+  filter(year == year2011 & !is.na(dollars_per_day)) %>% .$country
+country19622011Intersect <- intersect(countryList1962, countryList2011)
+# histogram
+gapminder %>%
+  filter(year %in% c(year1962, year2011) & country %in% country19622011Intersect) %>%    # keep only selected countries
+  mutate(group = ifelse(region %in% west, "West", "Developing")) %>%
+  ggplot(aes(dollars_per_day)) +
+  geom_histogram(binwidth = 1, color = "black") +
+  scale_x_continuous(trans = "log2") +
+  facet_grid(year ~ group)
+# boxplot
+gapminder %>%
+  filter(year %in% c(year1962, year2011) & country %in% country19622011Intersect) %>%
+  mutate(region = reorder(region, dollars_per_day, FUN = median)) %>%
+  ggplot() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  xlab("") +
+  scale_y_continuous(trans = "log2")+ 
+  geom_boxplot(aes(region, dollars_per_day, fill = continent)) +
+  facet_grid(year ~ .)
+# boxplot
+gapminder %>%
+  filter(year %in% c(year1962, year2011) & country %in% country19622011Intersect) %>%
+  mutate(region = reorder(region, dollars_per_day, FUN = median)) %>%
+  ggplot() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  xlab("") +
+  scale_y_continuous(trans = "log2")+  
+  geom_boxplot(aes(region, dollars_per_day, fill = factor(year)))
+# smooth density plots ; areas of the densities be proportional to the size of the groups,multiply the y-axis values by the size of the group
+gapminder %>%
+  filter(year == year1962 & country %in% country19622011Intersect) %>%
+  mutate(group = ifelse(region %in% west, "West", "Developing")) %>%
+  ggplot(aes(dollars_per_day, y = ..count.., fill = group)) +
+  scale_x_continuous(trans = "log2")+ 
+  geom_density(alpha = 0.2, bw = 0.75) + # bw for smoothness 
+  facet_grid(year ~ .)
+# case_when
+# add group as a factor
+gapminder<-gapminder %>%
+  mutate(group = case_when(
+    .$region %in% west ~ "West",
+    .$region %in% c("Eastern Asia", "South-Eastern Asia") ~ "East Asia",
+    .$region %in% c("Caribbean", "Central America", "South America") ~ "Latin America",
+    .$continent == "Africa" & .$region != "Northern Africa" ~ "Sub-Saharan Africa",
+    TRUE ~ "Others"))
+# reorder factor levels
+gapminder %>%
+  mutate(group = factor(group, levels = c("Others", "Latin America", "East Asia", "Sub-Saharan Africa", "West")))
+# stacked density plot
+gapminder %>%
+  filter(year %in% c(year1962, year2011) & country %in% country19622011Intersect) %>%
+  ggplot(aes(dollars_per_day, fill = group)) +
+  scale_x_continuous(trans = "log2")+
+  geom_density(alpha = 0.2, bw = 0.75, position = "stack") +
+  facet_grid(year ~ .)
+# weighted stacked density plot 
+gapminder %>%
+  filter(year %in% c(year1962, year2011) & country %in% country19622011Intersect) %>%
+  group_by(year) %>%
+  mutate(weight = population/sum(population*2)) %>%
+  ungroup() %>%
+  ggplot(aes(dollars_per_day, fill = group, weight = weight)) +
+  scale_x_continuous(trans = "log2") +
+  geom_density(alpha = 0.2, bw = 0.75, position = "stack") + facet_grid(year ~ .)
+# ecological fallacy = the almost perfect relationship between survival rates and income is only observed for the averages at the regional level
+# add additional cases
+gapminder <- gapminder %>%
+  mutate(group = case_when(
+    .$region %in% west ~ "The West",
+    .$region %in% "Northern Africa" ~ "Northern Africa",
+    .$region %in% c("Eastern Asia", "South-Eastern Asia") ~ "East Asia",
+    .$region == "Southern Asia" ~ "Southern Asia",
+    .$region %in% c("Central America", "South America", "Caribbean") ~ "Latin America",
+    .$continent == "Africa" & .$region != "Northern Africa" ~ "Sub-Saharan Africa",
+    .$region %in% c("Melanesia", "Micronesia", "Polynesia") ~ "Pacific Islands"))
+# logit transformation = f of p equals the log of p divided by 1 minus p
+# when one wants to highlight differences that are near 0 or near 1
+surv_income <- gapminder %>%
+  filter(year %in% year2011 & !is.na(gdp) & !is.na(infant_mortality) & !is.na(group)) %>%
+  group_by(group) %>%
+  summarize(income = sum(gdp)/sum(population)/365,
+            infant_survival_rate = 1 - sum(infant_mortality/1000*population)/sum(population))
+surv_income %>% arrange(income)
+surv_income %>% 
+  ggplot(aes(income, infant_survival_rate, label = group, color = group)) +
+  scale_x_continuous(trans = "log2", limit = c(0.25, 150)) +
+  scale_y_continuous(trans = "logit", limit = c(0.875, .9981),
+                     breaks = c(.85, .90, .95, .99, .995, .998)) +
+  geom_label(size = 3, show.legend = FALSE)
+# ggplot aes 
+gapminder %>% 
+  filter( year == 2011,continent == 'Africa') %>%
+  ggplot(aes(fertility, life_expectancy)) +
+  geom_point() 
+# ggplot color category
+gapminder %>% 
+  filter(year ==2011 & continent == "Africa") %>%
+  ggplot(aes(fertility, life_expectancy, color = region))+
+  geom_point()
+# conditions  
+gapminder %>%
+  filter(year == 2011 & continent =="Africa" & fertility <=3 & life_expectancy >= 70)%>%
+  select(country,region)
+# line plot time series plot 
+gapminder %>%
+  filter(country %in% c("Vietnam","United States","Cambodia") & year>=1960 & year <=2010) %>%
+  ggplot(aes(year, life_expectancy,color = country))+
+  geom_line()
+# line plot frequency 
+gapminder %>% 
+  mutate(dollars_per_day = gdp/population/365)%>%
+  filter(continent == "Africa", year == 2010,!is.na(gdp)) %>%
+  ggplot(aes(dollars_per_day, y = ..count..))+
+  geom_density()+
+  scale_x_continuous(trans = "log2")
+# density plot 
+gapminder %>%
+  filter(continent == "Africa", year  %in% c(1970,2010),!is.na(gdp)) %>% mutate(dollars_per_day = gdp/population/365) %>%
+  ggplot(aes(dollars_per_day, y =..count..)) +
+  geom_density()+
+  scale_x_continuous(trans="log2")+
+  facet_grid(.~year)
+# stack density plot
+gapminder %>%
+  filter(continent == "Africa", year  %in% c(1970,2010),!is.na(gdp)) %>% 
+  mutate(dollars_per_day = gdp/population/365) %>%
+  ggplot(aes(dollars_per_day, y =..count.., fill = region)) +
+  geom_density(bw = 0.5, position = "stack")+
+  scale_x_continuous(trans="log2")+
+  facet_grid(year~.)
+# scatter plot
+gapminder %>%
+  filter(continent == "Africa", year  == 2010,!is.na(gdp)) %>% 
+  mutate(dollars_per_day = gdp/population/365)%>% 
+  ggplot(aes(dollars_per_day,infant_mortality,color = region))+
+  geom_point()
+# scale scatter plot
+gapminder %>%
+  filter(continent == "Africa", year  == 2010,!is.na(gdp)) %>% 
+  mutate(dollars_per_day = gdp/population/365)%>% 
+  ggplot(aes(dollars_per_day,infant_mortality,color = region))+
+  geom_point()+ 
+  scale_x_continuous(trans="log2")
+# label scatter plot 
+gapminder %>%
+  filter(continent == "Africa", year  == 2010,!is.na(gdp)) %>% 
+  mutate(dollars_per_day = gdp/population/365)%>% 
+  ggplot(aes(dollars_per_day,infant_mortality,color = region, label = country))+
+  geom_point()+ 
+  scale_x_continuous(trans="log2")+
+  geom_text()
+# scatter plot facet 
+gapminder %>%
+  filter(continent == "Africa", year  %in% c(1970,2010),!is.na(gdp),!is.na(infant_mortality)) %>% 
+  mutate(dollars_per_day = gdp/population/365) %>%
+  ggplot(aes(dollars_per_day,infant_mortality, color = region, label = country)) +
+  geom_point()+
+  scale_x_continuous(trans="log2")+
+  geom_text()+
+  facet_grid(year~.)
+# Visual Principles; descending in importance
+## position
+## aligned lengths
+## angles
+## area
+## brightness
+## color hue
+### Do not use:
+#### pie chart <- reprs quantities with both areas & angles
+#### donut chart <- reprs quantities with only areas 
+###Why?  humans are better at judging linear measures => bar plot = bars of length proportional to the quantity of interest
+#### zero -> when position
+#### quantities distortion -> when  the radius, rather than the area, was made to be proportional to the quantity, which implies that the proportions between the areas is squared. So 2.6 turns into 6.5, and 5.8, turns into 34.1
+#### bubblechart instead of bar plot 
+#### non meaningfull value as alphabetic order 
+###Use:
+#### zero -> when length 
+#### meaningfull value to order 
+# Showing data 
+# dot plot instead of bar plot 
+heights %>%
+  ggplot(aes(sex, height)) + 
+  geom_point()
+# jitter = adding a small random shift to each point and alpha blending 
+heights %>% 
+  ggplot(aes(sex, height)) + 
+  geom_jitter(width = 0.1, alpha = 0.2)+ 
+  geom_boxplot(alpha= 0.5)
+# histogram ->  keep the axes the same when comparing data across plots
+# comparing data across plots -> align plots vertical to see horizontal changes, and horizontally to see vertical changes
+# log transformation -> when the changes are multiplicative
+# logistic transformation -> for  better see fold changes in odds
+# square root transformation ->  for count data
+# reorder
+usContDiseases <- us_contagious_diseases %>%
+  filter(year == 1967 & disease=="Measles" & 
+           !is.na(population)) %>% 
+  mutate(rate = count / population * 10000 * 52 / weeks_reporting)
+state <- dat$state 
+rate <- dat$count/(dat$population/10000)*(52/dat$weeks_reporting)
+state <- reorder(state,rate, FUN = mean)
+# numeric order 
+library(dplyr)
+library(ggplot2)
+library(dslabs)
+data(us_contagious_diseases)
+usContDiseasesMeasles <- us_contagious_diseases %>% 
+  filter(year == 1967 & disease=="Measles" & count>0 & !is.na(population)) %>%
+  mutate(rate = count / population * 10000 * 52 / weeks_reporting)
+usContDiseasesMeasles %>% 
+  mutate(state = reorder(state, rate, FUN = mean)) %>% 
+  ggplot(aes(state, rate)) +
+  geom_bar(stat="identity") +
+  coord_flip()
+# numeric order 
+gapminder %>%  
+  filter(!is.na(fertility)) %>%
+  mutate(region = reorder(region, fertility, FUN = median)) %>% 
+  ggplot(aes(region, fertility)) +
+  geom_bar(stat="identity") +
+  coord_flip()
+# numeric order  
+library(dplyr)
+library(ggplot2)
+library(dslabs)
+View(dfAlc)
+data("murders")
+murders %>% mutate(rate = total/population*100000) %>%
+  mutate(region = reorder(region, rate, FUN = median)) %>% 
+  ggplot(aes(region,rate)) +
+  geom_boxplot() + 
+  geom_point()
+# slope chart 
+# when comparing variables of the same type; at different time points;  for a relatively small number of comparison
+library(tidyverse)
+library(dslabs) 
+data(gapminder)
+west <- c("Western Europe", "Northern Europe", "Southern Europe", "Northern America", "Australia and New Zealand")
+gapminder20002015Slope <- gapminder %>%
+  filter(year %in% c(2010, 2015) & region %in% west & !is.na(life_expectancy) & population > 10^7)
+gapminder20002015Slope %>%
+  mutate(location = ifelse(year == 2010, 1, 2),
+         location = ifelse(year == 2015 & country %in% c("United Kingdom", "Portugal"),
+                           location + 0.22, location),
+         hjust = ifelse(year == 2010, 1, 0)) %>%
+  mutate(year = as.factor(year)) %>%
+  ggplot(aes(year, life_expectancy, group = country)) +
+  geom_line(aes(color = country), show.legend = FALSE) +
+  geom_text(aes(x = location, label = country, hjust = hjust), show.legend = FALSE) +
+  xlab("") +
+  ylab("Life Expectancy") 
+#The Bland-Altman plot = Tukey Mean Different plot
+library(ggrepel)
+gapminder20002015Slope %>%
+  mutate(year = paste0("life_expectancy_", year)) %>%
+  select(country, year, life_expectancy) %>% spread(year, life_expectancy) %>%
+  mutate(average = (life_expectancy_2015 + life_expectancy_2010)/2,
+         difference = life_expectancy_2015 - life_expectancy_2010) %>%
+  ggplot(aes(average, difference, label = country)) +
+  geom_point() +
+  geom_text_repel() +
+  geom_abline(lty = 2) +
+  xlab("Average of 2010 and 2015") +
+  ylab("Difference between 2015 and 2010")
+# plot intercept
+library(tidyverse)
+library(dslabs)
+the_disease <- "Measles"
+usContDisMeasles <- us_contagious_diseases %>%
+  filter(!state %in% c("Hawaii", "Alaska") & disease == the_disease) %>%
+  mutate(rate = count / population * 10000 * 52/weeks_reporting) %>%
+  mutate(state = reorder(state, rate))
+usContDisMeasles %>% 
+  filter(state == "California" & !is.na(rate)) %>%
+  ggplot(aes(year, rate)) +
+  geom_line() +
+  ylab("Cases per 10,000") +
+  geom_vline(xintercept=1963, col = "blue") 
+# tile plot of disease rate by state and year heatmap
+usContDisMeasles %>% 
+  ggplot(aes(year, state, fill=rate)) +
+  geom_tile(color = "grey50") +
+  scale_x_continuous(expand = c(0,0)) +
+  scale_fill_gradientn(colors = RColorBrewer::brewer.pal(9, "Reds"), trans = "sqrt") +
+  geom_vline(xintercept = 1963, col = "blue") +
+  theme_minimal() + theme(panel.grid = element_blank()) +
+  ggtitle(the_disease) +
+  ylab("") +
+  xlab("")
+#line plot
+# compute US average measles rate by year
+avg <- us_contagious_diseases %>%
+  filter(disease == the_disease) %>% group_by(year) %>%
+  summarize(us_rate = sum(count, na.rm = TRUE)/sum(population, na.rm = TRUE)*10000)
+#  line plot of measles rate by year by state
+usContDisMeasles %>%
+  filter(!is.na(rate)) %>%
+  ggplot() +
+  geom_line(aes(year, rate, group = state), color = "grey50", 
+            show.legend = FALSE, alpha = 0.2, size = 1) +
+  geom_line(mapping = aes(year, us_rate), data = avg, size = 1, col = "black") +
+  scale_y_continuous(trans = "sqrt", breaks = c(5, 25, 125, 300)) +
+  ggtitle("Cases per 10,000 by state") +
+  xlab("") +
+  ylab("") +
+  geom_text(data = data.frame(x = 1955, y = 50),
+            mapping = aes(x, y, label = "US average"), color = "black") +
+  geom_vline(xintercept = 1963, col = "blue")
+# When choosing colors to quantify a numeric variable, we choose between two options, sequential and diverging.
+# Sequential palettes are suited for data that goes from high to low
+# color brewer 
+# tile plot
+library(dplyr)
+library(ggplot2)
+library(dslabs)
+the_disease = "Smallpox"
+usContDiseasesSmallpox <- us_contagious_diseases %>% 
+  filter(!state%in%c("Hawaii","Alaska") & disease == the_disease & weeks_reporting >= 10) %>% 
+  mutate(rate = count / population * 10000) %>% 
+  mutate(state = reorder(state, rate))
+usContDiseasesSmallpox %>% ggplot(aes(year, state, fill = rate)) + 
+  geom_tile(color = "grey50") + 
+  scale_x_continuous(expand=c(0,0)) + 
+  scale_fill_gradientn(colors = brewer.pal(9, "Reds"), trans = "sqrt") + 
+  theme_minimal() + 
+  theme(panel.grid = element_blank()) + 
+  ggtitle(the_disease) + 
+  ylab("") + 
+  xlab("")
+#series plot
+the_disease = "Smallpox"
+usContDiseasesSmallpox <- us_contagious_diseases %>%
+  filter(!state%in%c("Hawaii","Alaska") & disease == the_disease & weeks_reporting >= 10) %>%
+  mutate(rate = count / population * 10000) %>%
+  mutate(state = reorder(state, rate))
+avg <- us_contagious_diseases %>%
+  filter(disease==the_disease & weeks_reporting >= 10) %>% group_by(year) %>%
+  summarize(us_rate = sum(count, na.rm=TRUE)/sum(population, na.rm=TRUE)*10000)
+usContDiseasesSmallpox %>% 
+  ggplot() +
+  geom_line(aes(year, rate, group = state),  color = "grey50", 
+            show.legend = FALSE, alpha = 0.2, size = 1) +
+  geom_line(mapping = aes(year, us_rate),  data = avg, size = 1, color = "black") +
+  scale_y_continuous(trans = "sqrt", breaks = c(5,25,125,300)) + 
+  ggtitle("Cases per 10,000 by state") + 
+  xlab("") + 
+  ylab("") +
+  geom_text(data = data.frame(x=1955, y=50), mapping = aes(x, y, label="US average"), color="black") + 
+  geom_vline(xintercept=1963, col = "blue")
+#series plot
+library(dplyr)
+library(ggplot2)
+library(dslabs)
+library(RColorBrewer)
+data(us_contagious_diseases)
+us_contagious_diseases %>% 
+  filter(state=="California"  & weeks_reporting >= 10) %>% 
+  group_by(year, disease) %>%
+  summarize(rate = sum(count)/sum(population)*10000) %>%
+  ggplot(aes(year, rate,color = disease)) + 
+  geom_line()
+#
+us_contagious_diseases %>%
+  filter(!is.na(population)) %>%
+  group_by(year, disease) %>%
+  summarize(rate = sum(count)/sum(population)*10000) %>%
+  ggplot(aes(year, rate, color = disease)) +
+  geom_line()
+
+#Titanic package
+options(digits = 3)  
+library(tidyverse)
+library(titanic)
+# select mutate 
+titanic <- titanic_train %>%
+  select(Survived, Pclass, Sex, Age, SibSp, Parch, Fare) %>%
+  mutate(Survived = factor(Survived),
+         Pclass = factor(Pclass),
+         Sex = factor(Sex))
+# density plots  facet
+titanic %>%
+  ggplot(aes(Age, fill = Sex)) +
+  geom_density(alpha = 0.2) +
+  facet_grid(Sex ~ .)
+# density plots  without facet
+titanic %>%
+  ggplot(aes(Age, fill = Sex)) +
+  geom_density(alpha = 0.2)
+# frequency plot
+titanic %>%
+  ggplot(aes(Age, y = ..count.., fill = Sex)) +
+  geom_density(alpha = 0.2, position = "stack")
+#QQ-plot 
+params <- titanic %>%
+  filter(!is.na(Age)) %>%
+  summarize(mean = mean(Age), sd = sd(Age))
+titanic %>%
+  ggplot(aes(sample = Age)) +
+  geom_qq(dparams = params) +
+  geom_abline()
+# barplot
+# plot 1 - survival filled by sex
+titanic %>%
+  ggplot(aes(Survived, fill = Sex)) +
+  geom_bar()
+# plot 2 - survival filled by sex with position_dodge
+titanic %>%
+  ggplot(aes(Survived, fill = Sex)) +
+  geom_bar(position = position_dodge())
+# plot 3 - sex filled by survival
+titanic %>%
+  ggplot(aes(Sex, fill = Survived)) +
+  geom_bar()
+# density plot
+#Which age group is the only group more likely to survive than die? 0-8
+#Which age group had the most deaths? 18-30
+#Which age group had the highest proportion of deaths? 70-80
+titanic %>%
+  ggplot(aes(Age, y = ..count.., fill = Survived)) +
+  geom_density(alpha = 0.2)
+# boxplot
+# Filter the data to remove individuals who paid a fare of 0
+# Make a boxplot of fare grouped by survival status. 
+# Try a log2 transformation of fares
+# Add the data points with jitter and alpha blending.
+titanic %>%
+  filter(Fare != 0)%>%
+  ggplot(aes(Survived,Fare)) +
+  geom_boxplot(alpha = 0.2) +
+  scale_y_continuous(trans = "log2")+
+  geom_jitter()
+#Passengers who survived generally payed higher fares than those who did not survive.
+#The median fare was lower for passengers who did not survive.
+#Most individuals who paid a fare around $8 did not survive.
+# barplot
+# basic barplot of passenger class filled by survival
+titanic %>%
+  ggplot(aes(Pclass, fill = Survived))+
+  geom_bar()
+# same barplot but use the argument position = position_fill() to show relative proportions in each group instead of counts
+titanic %>%
+  ggplot(aes(Pclass, fill = Survived))+
+  geom_bar(position = position_fill())
+# barplot of survival filled by passenger class using position = position_fill()
+titanic %>%
+  ggplot(aes(Survived, fill = Pclass))+
+  geom_bar(position = position_fill())
+#There were more third class passengers than passengers in the first two classes combined.
+#Survival proportion was highest for first class passengers, followed by second class. Third-class had the lowest survival proportion.
+#Most passengers in first class survived. Most passengers in other classes did not survive.
+#The majority of those who did not survive were from third class.
+# grid of density plots 
+titanic %>%
+  ggplot(aes(Age, fill = Survived, y = ..count..)) +
+  geom_density(alpha = 0.2) +
+  facet_grid(Pclass~ Sex) 
+# The largest group of passengers was third-class males.
+# Most first-class and second-class females survived.
+# Almost all second-class males did not survive, with the exception of children.
+# Properties of starts exercise 
+library(tidyverse)
+library(dslabs)
+data(stars)
+# digits' number 
+options(digits = 3)
+# mean and sd
+mean(stars$magnitude)
+sd(stars$magnitude)
+#  density plot of the magnitude for peaks number check 
+stars %>%
+  ggplot(aes(magnitude)) +
+  geom_density(alpha = 0.2) 
+# distribution of star temperature
+stars %>% 
+  ggplot(aes(temp)) +
+  geom_histogram()# The majority of stars have a low temperature.
+#  a scatter plot: temperature x-axis/ magnitude  y-axis/  examine the relationship  Note:  lower magnitude means a more luminous (brighter) star
+stars %>% 
+  ggplot(aes(temp, magnitude)) +
+  geom_point() #decreasing exponential
+#astronomers usually transform values of star luminosity and temperature before plotting
+# log transform 
+stars %>% 
+  ggplot(aes(temp, magnitude)) +
+  scale_y_reverse()+
+  scale_x_continuous(trans = "log10")+
+  scale_x_reverse()+
+  geom_point()#The brighest, highest temperature stars are in the upper left corner of the plot; For main sequence stars, hotter stars have higher luminosity
+# estimate the average temperature of a giant.
+estimateGigants<- stars%>%
+  filter(temp <10000)
+mean(estimateGigants$temp)
+# label
+stars %>% 
+  ggplot(aes(temp, magnitude,label = star)) +
+  scale_y_reverse()+
+  scale_x_continuous(trans = "log10")+
+  scale_x_reverse()+
+  geom_label(size = 3, show.legend = TRUE) 
+# color point
+head(stars)
+stars %>%  
+  ggplot(aes(temp, magnitude, color = type)) +
+  scale_y_reverse()+
+  scale_x_continuous(trans = "log10")+
+  scale_x_reverse()+
+  geom_point()
+# Climate Change Exercises
+library(tidyverse)
+library(dslabs)
+data(temp_carbon)
+data(greenhouse_gases)
+data(historic_co2)
+head(temp_carbon)
+# code blocks return the latest year for which carbon emissions are reported
+temp_carbon %>%
+  filter(!is.na(carbon_emissions)) %>%
+  pull(year) %>%
+  max()
+#
+temp_carbon %>%
+  filter(!is.na(carbon_emissions)) %>%
+  .$year %>%
+  max()
+#
+temp_carbon %>%
+  filter(!is.na(carbon_emissions)) %>%
+  select(year) %>%
+  max()
+#  the first year for which carbon emissions (carbon_emissions) data are available
+temp_carbon %>%
+  filter(!is.na(carbon_emissions)) %>%
+  pull(year) %>%
+  min()
+# How many times larger were carbon emissions in the last year relative to the first year?
+lastYear <- temp_carbon %>%
+  filter(year == 2014)
+firstYear <- temp_carbon %>%
+  filter(year == 1751)
+proportion<- lastYear$carbon_emissions/firstYear$carbon_emissions
+#  the first year for which global temperature anomaly (temp_anomaly) data are available
+temp_carbon %>%
+  filter(!is.na(temp_anomaly)) %>%
+  pull(year) %>%
+  min()
+#  the last year for which global temperature anomaly data are available
+temp_carbon %>%
+  filter(!is.na(temp_anomaly)) %>%
+  pull(year) %>%
+  max()
+# How many degrees Celsius has temperature increased over the date range? 
+# Compare the temperatures in the most recent year versus the oldest year.
+lastYear <- temp_carbon %>%
+  filter(year == 2018)
+firstYear <- temp_carbon %>%
+  filter(year == 1880)
+difference<- lastYear$temp_anomaly - firstYear$temp_anomaly
+# 20th century mean temperature
+twCentury <- temp_carbon %>%
+  filter(!is.na(temp_anomaly) & year %in% c(1901:2000))
+# Create a time series line plot of the temperature anomaly
+# Only include years where temperatures are reported
+twCentury %>%
+  ggplot(aes(year,temp_anomaly)) +
+  geom_line() +
+  geom_hline(yintercept = 0, col="blue") +
+  ylab("t anomaly in C degrees") +
+  ggtitle("t anomaly relative to 20th century mean, 1880-2018") +
+  geom_text(aes(x = 2000, y = 0.05, label = "20th century mean"), col = "blue") +
+  geom_vline(aes(xintercept=1939),col="red") +
+  geom_vline(aes(xintercept=1976),col="green") +
+  geom_text(aes(x=1936,y=0.05,label="1939"),col="red") +
+  geom_text(aes(x=1978,y=0.05,label="1976"),col="green")
+# line plot 
+temp_carbon%>%
+  filter(year %in% c(1880:2020)) %>%
+  filter(!is.na(temp_anomaly)) %>%
+  filter(!is.na(ocean_anomaly))%>%
+  filter(!is.na(land_anomaly))%>%
+  ggplot() +
+  geom_line(aes(x = year,y=temp_anomaly), col = "black")+
+  geom_line(aes(x = year,y=ocean_anomaly), col = "blue")+
+  geom_line(aes(x = year,y=land_anomaly), col = "green")+ 
+  ylab("anomaly")+
+  geom_hline(yintercept = 0, col="black",alpha=0.5) +
+  geom_vline(xintercept = 2018, col="black",alpha=0.5)
+# line plot intercept 
+greenhouse_gases %>%
+  ggplot(aes(x= year,y = concentration)) +
+  geom_line() +
+  facet_grid(gas ~., scales = "free") +
+  geom_vline(xintercept = 1850)+ #Add a vertical line with an x-intercept at the year 1850, noting the unofficial start of the industrial revolution and widespread fossil fuel consumption
+  ylab("Concentration (ch4/n2o ppb, co2 ppm)") +
+  ggtitle("Atmospheric greenhouse gas concentration by year, 0-2000")
+# line plot : a time series line plot of carbon emissions
+temp_carbon%>%
+  filter(!is.na(carbon_emissions)) %>%
+  ggplot() +
+  geom_line(aes(x = year,y=carbon_emissions), col = "black")+
+  ylab("carbon emissions")
+# line plot of co2 concentration over time (year), coloring by the measurement source (source)
+co2_time <- historic_co2 %>%
+  ggplot(aes(year,co2,color = source))+
+  geom_line()
+co2_time_recent <- historic_co2 %>%
+  filter(year>1500) %>%
+  ggplot(aes(year,co2,color=source)) +
+  geom_line()
+# x-axis limits to -800,000 and -775,000
+# About how many years did it take for co2 to rise from 200 ppmv to its peak near 275 ppmv?
+historic_co2 %>%
+  ggplot(aes(year,co2,color=source)) +
+  geom_line() +
+  xlim(-800000,-775000)
+# Change the x-axis limits to -375,000 and -330,000
+# About how many years did it take for co2 to rise from the minimum of 180 ppm to its peak of 300 ppmv?
+historic_co2 %>%
+  ggplot(aes(year,co2,color=source)) +
+  geom_line() +
+  xlim(-375000 ,-330000)
+# Change the x-axis limits to -140,000 and -120,000
+# About how many years did it take for co2 to rise from 200 ppmv to its peak near 280 ppmv?
+historic_co2 %>%
+  ggplot(aes(year,co2,color=source)) +
+  geom_line() +
+  xlim(-140000 ,-120000)
+# Change the x-axis limits to -3000 and 2018 to investigate modern changes in co2
+# About how many years did it take for co2 to rise from its stable level around 275 ppmv to the current level of over 400 ppmv?
+historic_co2 %>%
+  ggplot(aes(year,co2,color=source)) +
+  geom_line() +
+  xlim(1700,2018)
+
+
