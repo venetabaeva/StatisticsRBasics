@@ -2199,4 +2199,684 @@ historic_co2 %>%
   geom_line() +
   xlim(1700,2018)
 
+# Probability 
+# cumulative distribution function
+## Do not: assign a very small probability to every single value
+## Do:  define a function that operates on intervals rather than single values
+# F(a) = Pr (x<=a)
+## Pr(x>70.5) = 1- Pr(x<=70.5) = 1-F(70.5)
+library(tidyverse)
+library(dslabs)
+data(heights)
+x <- heights %>% 
+  filter(sex=="Male") %>% 
+  pull(height)
+# theoretical distribution 
+# the cumulative distribution for the normal distribution
+F <- function(a) mean(x <= a)
+1 - F(70) # Pr of x <= a
+# Pr
+## pnorm() ->  distribution function which is integral of the density function
+## Note: no need of data ->  just mean and sd 
+library(tidyverse)
+library(dslabs)
+data(heights)
+x <- heights %>% 
+  filter(sex=="Male") %>% 
+  pull(height)
+# the cumulative distribution for the normal distribution
+1 - pnorm(70.5, mean(x), sd(x)) 
+# Note:  the normal distribution is defined for continuous variables; not described for discrete variables
+# theoretical distribution
+# Note: a continuous variable can be taken as categorical -> each specific x as a unique category -> Pr distribution is then defined by the proportion of n - number of subjects reporting each of those unique x
+# plot distribution of exact x's
+plot(prop.table(table(x)), xlab = "a = Height in inches", ylab = "Pr(x = a)")
+# Pr on actual data over length 1 ranges containing an integer
+mean(x <= 68.5) - mean(x <= 67.5)
+mean(x <= 69.5) - mean(x <= 68.5)
+mean(x <= 70.5) - mean(x <= 69.5)
+# Pr in normal approximation -> check whether match 
+pnorm(68.5, mean(x), sd(x)) - pnorm(67.5, mean(x), sd(x)) 
+pnorm(69.5, mean(x), sd(x)) - pnorm(68.5, mean(x), sd(x))
+pnorm(70.5, mean(x), sd(x)) - pnorm(69.5, mean(x), sd(x))
+# Note: Do not : calculate Pr on actual data over ranges differing from 1 
+# discretization = true x distribution is continuous and  reported x's tend to be more common at discrete values, in this case, due to rounding
+# Pr density  -> if Pr(x)= freq of x/ N of X, then  if Pr(4), then 1/6 (die example)
+# CDF -> if F(4) = Pr(x<=4), then Pr(x=4) + Pr(x=3) + Pr(x=2) + Pr(x=1)
+# Note: for continuous distributions, the probability of a single value is not defined
+# PDF  
+## Note: has a similar to CDF interpretation
+## PDF -> the quantity with the most similar interpretation to the Pr of a single value  x is the PDF ->  f(x)
+## integral of f(x) over a range gives the CDF of that range 
+# dnorm() -> density function 
+## Note: PDF for the normal distribution
+## Note:  essential to those wanting to fit models to data for which predefined functions are not available
+# Pr density for the normal distribution
+library(tidyverse)
+x <- seq(-4, 4, length = 100)
+data.frame(x, f = dnorm(x)) %>%
+  ggplot(aes(x, f)) +
+  geom_line()
+# dnorm(z) -> density curve (calculating the density over a range of possible values of z) for the normal distribution -> Pr density f(z) of a certain z-score
+## series of z-scores 
+## calculate f(z), which is dnorm() of the series of z-scores
+## plot z  against f(z) 
+## Pr for alternative normal distributions with mean mu and sd sigma can be evaluated 
+### dnorm(z, mu, sigma) 
+# Monte Carlo Simulations -> answer questions related to what could happen by chance   
+# rnorm(n, avg, s) -> generates n random numbers from the normal distribution with average avg and  sd s
+library(tidyverse)
+library(dslabs)
+data(heights)
+x <- heights %>% 
+  filter(sex=="Male") %>% 
+  pull(height)
+n <- length(x)
+avg <- mean(x)
+s <- sd(x)
+simulated_heights <- rnorm(n, avg, s) # generates simulated x data using normal distribution
+data.frame(simulated_heights = simulated_heights) %>%
+  ggplot(aes(simulated_heights)) +
+  geom_histogram(color="black", binwidth = 2) 
+# Monte Carlo simulation -> for  tallest person over 7 feet 
+B <- 10000  
+tallest <- replicate(B, {
+  simulated_data <- rnorm(800, avg, s)    # generate 800 normally distributed random x
+  max(simulated_data)    # determine max x from 800 normally distributed random x with avg x and s x
+}) 
+mean(tallest >= 7*12)    # proportion of times that max x exceeded 7 feet (84 inches)
+#  continuous distributions, other
+library(tidyverse)
+library(dslabs)
+data(heights)
+y <- heights %>% 
+  filter(sex=="Female") %>% 
+  pull(height)
+fAvg <- mean(y)
+fSd <- sd(y)
+pnorm(5*12,fAvg,fSd) # If we pick a female at random, what is the probability that she is 5 feet or shorter?
+1 - pnorm(6*12,fAvg,fSd) # If we pick a female at random, what is the probability that she is 6 feet or taller?
+pnorm(67,fAvg,fSd) - pnorm(61,fAvg,fSd)# If we pick a female at random, what is the probability that she is between 61 and 67 inches?
+oneSdUp <- fAvg + fSd # x  within 1 SD up from the average height
+oneSdDown <- fAvg - fSd #   x  within 1 SD down from the average height
+pnorm(oneSdUp,fAvg,fSd) - pnorm(oneSdDown,fAvg,fSd)#  Pr that x of a randomly chosen female is within 1 SD from the average height
+qnorm(0.99,fAvg,fSd) # determine x of a female in the 99th percentile
+# IQ example
+## distribution of IQ scores is approximately normally distributed
+## avg =  100
+## sd = 15
+## 10,000 people are born each year
+## want to know the distribution of the person with the highest IQ
+nTSim <- 1000
+set.seed(1) 
+hIQ <- replicate(nTSim, {
+  simData <- rnorm(10000, 100, 15)    
+  max(simData)    
+})
+hist(hIQ)
+# ACT example 
+set.seed(16,sample.kind = "Rounding")
+actScr <- rnorm(10000, 20.9 , 5.7)
+mean(actScr) 
+sd(actScr)
+# perfect ACT score is 36 or >
+sum(actScr>=36) # how many perfect scores are there out of 10,000 simulated tests?
+mean(actScr>=30) # what is the Pr of an ACT score <  or = to 30?
+mean(actScr <=10)   # what is the Pr of an ACT score <  or = to 10?
+# determine the value of the Pr density function over x 
+x <- seq(1, 36)
+fx <- dnorm(x, mean = 20.9, sd = 5.7)
+plot(x, fx)
+# Pr of a Z-score > than 2 sd above the mean
+zScr <- (actScr - mean(actScr)) / sd(actScr)
+mean(zScr > 2)
+# score value corresponds to 2 sd above the mean (Z = 2 which corresponds to 97.5th percentile)?
+2*sd(actScr) + mean(actScr)
+qnorm(.975, mean(actScr), sd(actScr)) # determine the 97.5th percentile of normally distributed data
+cdf <- sapply(1:36, function (a){ # takes value ->  produces the Pr of a score < or = to that value
+  mean(actScr <= a)
+})
+min(which(cdf >= .95)) # min integer score such that the Pr of that score or lower is at least .95
+qnorm(.95, 20.9, 5.7) # determine the expected 95th percentile, the value for which the probability of receiving that score or lower is 0.95
+p <- seq(0.01, 0.99, 0.01) # quantiles for p
+sampleQuantiles <- quantile(actScr, p)
+names(sampleQuantiles[max(which(sampleQuantiles< 26))]) # In what percentile is a score of 26?
+library(tidyverse)
+library(ggplot2)
+p <- seq(0.01, 0.99, 0.01)
+sampleQuantiles <- quantile(actScr, p)
+theoretQuantiles <- qnorm(p, 20.9, 5.7) # a corresponding set of theoretical quantiles
+qplot(theoretQuantiles, sampleQuantiles) + geom_abline()
+# random variables are resulting from a random process
+beads <- rep(c("red", "blue"), times = c(2, 3)) #define random variable x to be 1 if blue, 0 otherwise
+#the random variable is different every time
+ifelse(sample(beads, 1) == "blue", 1, 0)
+ifelse(sample(beads, 1) == "blue", 1, 0)
+# quantify the uncertainty introduced by randomness -> statistical inference
+# sampling models = models the random behavior of a process
+# Pr distribution of a random variable = Pr of the observed value falling in any given interval
+# expected value = average of many draws of a random variable
+# standard error = sd of many draws of a random variable
+# Distribution vs. Pr Distribution
+# random variable has a distribution function <- theoretical concept
+# CLT -> when the number of independent draws-- also called sample size-- is large,the Pr distribution of the sum of these draws is approximately normal
+## If  known that the distribution of a list of numbers is approximated by the normal distribution, all needed to be described  are the average and the sd 
+## same applies to probability distribution -> If a random variable has a Pr distribution that is approximated with the normal distribution, then describe the Pr distribution through average(expected value) and the sd(standard error)
+### E of X = mu ; E = number of draws times the average of the numbers in the urn
+### a random variable will vary around an E in a way that, if one takes the average of many, many draws, the average of the draws will approximate the E
+### SE gives an idea of the size of the variation around the E
+### if independent draws, then SE = square root of the number of draws times the sd of the numbers in the urn
+### SE = the typical difference between a random variable and its expectation 
+# An American roulette
+## Note:Each red and black pocket is associated with a number from 1 to 36. The two remaining green slots feature “0” and “00”.
+green <- 2
+black <- 18
+red <- 18
+pInGreen = green/(green+black+red)
+# payout of $17, if one bets $1 ones
+set.seed(1)
+pNotInGreen <- 1- pInGreen
+X <- sample(c(17,-1), 1, replace = TRUE, prob=c(pInGreen, pNotInGreen)) #the random variable `X`, one's winnings from betting on green
+X
+# compute the E of X
+pInGreen * 17 + pNotInGreen * (-1)
+# compute the SE of X
+abs((17 - -1))*sqrt(pInGreen*pNotInGreen) #a single outcome after one spin of the roulette wheel
+set.seed(1)
+n <- 1000
+S <- sum(X) # a random variable S that sums one's winnings after betting on green 1,000 times
+S
+# E outcome of a bet
+n * (pInGreen * 17 + pNotInGreen * (-1))
+# SE of the sum of 1,000 outcomes
+sqrt(n) * abs((17 + 1))*sqrt(pInGreen*pNotInGreen)
+# averages and proportions
+# Note:  the law of averages is sometimes misinterpreted
+## if one tosses a coin five times and one sees heads each time, one might hear someone argue that the next toss is probably a tail because of the law of averages
+## These events - tail vs. head are independent -> the chance of a coin landing heads is 50%, regardless of the previous five
+# Note: The law of averages applies only when the number of draws is very, very large, not in small samples
+# how large is large CLT?
+# if the probability of success is very small, one needs larger sample sizes -> Poisson distribution is needed
+# American Roulette probability of winning money
+pInGreen <- 2 / 38
+pNotInGreen <- 1-pInGreen
+n <- 100
+avg <- n * (17*pInGreen + -1*pNotInGreen)
+se <- sqrt(n) * (17 - -1)*sqrt(pInGreen*pNotInGreen)
+1-pnorm(0,avg,se)
+# American Roulette Monte Carlo simulation
+pInGreen <- 2 / 38
+pNotInGreen <- 1-pInGreen
+n <- 100
+B <- 10000 
+set.seed(1)
+S <- replicate(B,{
+  X <- sample(c(17,-1), size = n, replace = TRUE, prob = c(pInGreen, pNotInGreen))
+  sum(X)
+})
+mean(S)
+sd(S)
+# American Roulette Monte Carlo vs CLT
+# average winnings per bet
+set.seed(1)
+n <- 10000
+pInGreen <- 2 / 38
+pNotInGreen <- 1-pInGreen
+X <- sample(c(17,-1), size = n, replace = TRUE, prob = c(pInGreen, pNotInGreen))
+Y <- mean(X)
+Y
+# American Roulette per bet expected value
+# What is the expected value of Y, the average outcome per bet after betting on green 10,000 times?
+pInGreen <- 2 / 38
+pNotInGreen <- 1-pInGreen
+Y <- pInGreen * 17 + pNotInGreen * (-1)
+Y
+# American Roulette per bet standard error
+n <- 10000
+pInGreen <- 2 / 38
+pNotInGreen <- 1-pInGreen
+abs((17 - (-1))*sqrt(pInGreen*pNotInGreen) / sqrt(n))# Compute the standard error of 'Y', the mean outcome per bet from 10,000 bets
+# American Roulette winnings per game are positive
+avg <- 17*pInGreen + -1*pNotInGreen
+se <- 1/sqrt(n) * (17 - -1)*sqrt(pInGreen*pNotInGreen)
+1 - pnorm(0, avg, se)
+# American Roulette Monte Carlo again
+n <- 10000
+B <- 10000
+set.seed(1)
+S <- replicate(B,{  
+  X <- sample(c(17,-1), size = n, replace = TRUE, prob = c(pInGreen, pNotInGreen))
+  mean(X)
+})
+mean(S)
+sd(S)
+# American Roulette comparison
+mean(S>0)# What is the probability of winning more than $0 as estimated by your Monte Carlo simulation?
+# SAT 
+# entrance exam had a -0.25 point penalty for every incorrect answer and awarded 1 point for a correct answer
+# 44 multiple-choice questions each with 5 answer choices
+# Suppose one chooses answers by guessing for all questions on the test
+# What is the probability of guessing correctly for one question?
+p<-1/5
+p
+cr <- 1
+# What is the expected value of points for guessing on one question?
+mtk <- -0.25
+mu <- cr*p+mtk*(1-p)
+mu
+# What is the expected score of guessing on all 44 questions?
+totNQues <- 44
+totNQues*mu
+# What is the standard error of guessing on all 44 questions?
+sigma <- sqrt(totNQues) * abs(mtk-cr) * sqrt(p*(1-p))
+sigma
+# use CLT to determine the Pr that a guessing student scores 8 points or higher on the test
+1-pnorm(8,mu,sigma) 
+# What is the Pr that a guessing student scores 8 points or higher?
+set.seed(21,sample.kind = "Rounding")
+B <- 10000
+n <- 44
+examScores <- replicate(B,{ # Monte Carlo simulation
+  X <- sample(c(1, -0.25), n, replace = TRUE, prob=c(p, 1-p))
+  sum(X)
+})
+mean(examScores>=8)# Pr of 8 or higher
+# the number of multiple choice options is 4 
+# there is no penalty for guessing - that is, an incorrect question gives a score of 0
+cr <- 1
+mtk <- 0    # no penalty for incorrect answer
+p <- 0.25
+n <- 44
+mu <- (cr*p)+(mtk*(1-p))# expected value of 1 question
+mu*n # expected value of test
+# consider a range of correct answer Prs  <- seq(0.25, 0.95, 0.05) representing a range of student skills
+# What is the lowest p such that the Pr of scoring over 35 exceeds 80%?
+# mu = n * (a*p + b*(1-p))
+# sigma = sqrt(n) * abs(b-a) * sqrt(p*(1-p))
+p <- seq(0.25, 0.95, 0.05)
+expectedValue <- sapply(p, function(x) {
+  mu <- n* (cr*x + mtk*(1-x))
+  sigma <- sqrt(n) * abs(mtk-cr) * sqrt(x*(1-x))
+  1 - pnorm(35, mu, sigma)
+})
+# each p have a different probability
+plot(p, expectedValue)
+p[which(expectedValue > 0.8)]
+min(p[which(expectedValue > 0.8)])
+# Betting on Roulette
+# a bet on five pockets (00, 0, 1, 2, 3) out of 38 total pockets
+# The bet pays out 6 to 1, a losing bet yields -$1 and a successful bet yields $6
+# A gambler wants to know the chance of losing money if he places 500 bets on the roulette House Special
+#What is the expected value of the payout for one bet?
+p <- 5/38
+a <- 6
+b <- -1
+mu <- a*p + b*(1-p)
+mu
+#What is the standard error of the payout for one bet?
+sigma <- abs(b-a) * sqrt(p*(1-p))
+sigma
+#What is the expected value of the average payout over 500 bets?
+n <- 500
+mu
+#What is the standard error of the average payout over 500 bets?
+sigma/sqrt(n)
+#What is the expected value of the sum of 500 bets?
+mu500<- n*mu
+mu500
+#What is the standard error of the sum of 500 bets?
+sd500 <- sqrt(n) * abs(b-a) * sqrt(p*(1-p))
+sd500
+#Use pnorm() with the expected value of the sum and standard error of the sum to calculate the probability of losing money over 500 bets, Pr(x<=0)
+pnorm(0, mu500, sd500)
+# The big short 
+## Interest rates for loans are set using the Pr of loan defaults to calculate a rate that minimizes the probability of losing money
+# random variable -> outcome of loans ; also, random variable -> sum of outcomes of many loans
+# CLT ->  use properties of the normal distribution to calculate the interest rate needed to ensure a certain probability of losing money for a given probability of default
+# to decide what interest rates we should charge
+# loans = 1,000 for 180,000 this year
+# lost, after adding up all the costs = $200,000 per foreclosure
+# not paying = 2% 
+# sampling model
+# Pr of defaulting
+n <- 1000
+lossPerForeclosure <- -200000
+p <- 0.02
+defaults <- sample( c(0,1), n, prob=c(1-p, p), replace = TRUE)
+sum(defaults * lossPerForeclosure) #random variable 
+n <- 1000
+lossPerForeclosure <- -200000
+p <- 0.02
+defaults <- sample( c(0,1), n, prob=c(1-p, p), replace = TRUE)
+sum(defaults * lossPerForeclosure) #random variable 
+# Interest rate Monte Carlo simulation
+B <- 10000
+losses <- replicate(B, {
+  defaults <- sample( c(0,1), n, prob=c(1-p, p), replace = TRUE) 
+  sum(defaults * lossPerForeclosure)
+})
+#plot expected loses(values)
+library(tidyverse)
+data.frame(lossesInMillions = losses/10^6) %>%
+  ggplot(aes(lossesInMillions)) +
+  geom_histogram(binwidth = 0.6, col = "black")
+# CLT no need of Monte Carlo 
+## tells that because losses are a sum of independent draws, its distribution is approximately normal with expected value and standard deviation 
+# E and SE of the sum of 1,000 loans
+n*(p*lossPerForeclosure + (1-p)*0)    # expected value 
+sqrt(n)*abs(lossPerForeclosure)*sqrt(p*(1-p))    # standard error
+#  set an interest rate to guarantee that on average, one breaks even -> add quantity x to each loan, represented by draws so that the expected values equals zero 
+x = - lossPerForeclosure*p/(1-p) # x= -(lp/1-p)
+x # about 2% interest rate
+x/180000 #On a $180,000 loan, this equals an interest rate of
+# still there's a 50% chance that one will lose money
+# pick an interest rate that makes it unlikely for this to happen and that is not too high so to make the clients to choose another bank 
+# choose chances of losing money to be one in 100
+# what does x have to be now? -> the sum, S, to have the Pr of S < than zero to be 0.01
+# {lp+x(1-p)}n <- expected value of S; n = number of draws= number of lawns
+#  interest rate for 1% Pr of losing money
+l <- lossPerForeclosure
+z <- qnorm(0.01)
+x <- -l*( n*p - z*sqrt(n*p*(1-p)))/ ( n*(1-p) + z*sqrt(n*p*(1-p)))\x
+x/180000    # interest rate
+lossPerForeclosure*p + x*(1-p)    # expected value of the profit per loan
+n*(lossPerForeclosure*p + x*(1-p)) # expected value of the profit over n loans
+#Monte Carlo simulation for 1% probability of losing money
+B <- 100000
+profit <- replicate(B, {
+  draws <- sample( c(x, lossPerForeclosure), n, 
+                   prob=c(1-p, p), replace = TRUE) 
+  sum(draws)
+})
+mean(profit)    # expected value of the profit over n loans
+mean(profit<0)    # probability of losing money
+# Big short
+# One points out that since the bank is making about $2,000 per loan, then one should give out more loans, not just n?
+# Another explains that finding those n clients is hard, needed is a group that is predictable, and that keeps the chances of defaults low
+# Then is pointed out that even if the Pr of default is high, as long as one's expected value is positive, one can minimize the chances of losing money by increasing n, the number of loans, and relying on the law of large numbers.
+# It is claimed that even if the default rate is twice as high, say 4%, if the rate is set just a bit higher so that this happens, one will get a positive expected valuee
+# by making n large, one claims to minimize the standard error of our per-loan profit
+# Not the case -> for this rule to hold, the X's must be independent draws -> The fact that one person defaults must be independent of other people defaulting
+# E value with higher default and interest rate
+p <- .04
+lossPerForeclosure <- -200000
+r <- 0.05
+x <- r*180000
+lossPerForeclosure*p + x*(1-p)
+# Calculate number of loans for desired Pr of losing money
+z <- qnorm(0.01)
+l <- lossPerForeclosure
+n <- ceiling((z^2*(x-l)^2*p*(1-p))/(l*p + x*(1-p))^2)
+n    # number of loans required
+n*(lossPerForeclosure*p + x * (1-p))    # expected profit over n loans
+# Monte Carlo simulation with known default probability
+B <- 10000
+p <- 0.04
+x <- 0.05 * 180000
+profit <- replicate(B, {
+  draws <- sample( c(x, lossPerForeclosure), n, 
+                   prob=c(1-p, p), replace = TRUE) 
+  sum(draws)
+})
+mean(profit)
+# The case -> more realistic simulation
+# a global event that affects everybody
+# One will assume that with a 50-50 chance, all the probabilities go up or down slightly to somewhere between 0.03 and 0.05
+# But it happens to everybody at once, not just one person -> these draws are not independent
+# Monte Carlo simulation with unknown default probability
+p <- 0.04 
+x <- 0.05*180000
+profit <- replicate(B, {
+  newP <- 0.04 + sample(seq(-0.01, 0.01, length = 100), 1)
+  draws <- sample( c(x, lossPerForeclosure), n, 
+                   prob=c(1-newP, newP), replace = TRUE)
+  sum(draws)
+})
+mean(profit)    # expected profit
+mean(profit < 0)    # probability of losing money
+mean(profit < -10000000)    # probability of losing over $10 million
+# Bank earnings
+# a bank that gives out 10,000 loans
+# default rate is 0.03 
+# loose $200,000 in each foreclosure
+# Create a random variable S that contains the earnings of your bank
+n <- 10000
+lossPerForeclosure <- -200000
+pDefault <- 0.03
+set.seed(1) # sure your answer matches the expected result after random sampling
+defaults <- sample( c(0,1), n, replace = TRUE, prob=c(1-pDefault, pDefault))#the default outcomes of `n` loans
+S <- sum(defaults * lossPerForeclosure) # the total amount of money lost across all foreclosures
+S
+# Bank earnings Monte Carlo
+n <- 10000
+lossPerForeclosure <- -200000
+p <- 0.03 # the probability of default
+set.seed(1)
+B <- 10000 # the number of times we want the simulation to run
+S <- replicate(B, { # generate a list of summed losses for 'n' loans
+  defaults <- sample( c(0,1), n, prob=c(1-p, p), replace = TRUE) 
+  sum(defaults * lossPerForeclosure)
+})
+hist(S) # a histogram of 'S'
+#Bank earnings E value of  S
+## the sum of losses over 10,000 loans
+## assume a bank makes no money if the loan is paid
+n <- 10000
+lossPerForeclosure <- -200000
+p <- 0.03
+n*(p*lossPerForeclosure + (1-p)*0) # expected loss due to default out of 10,000 loans
+#Bank earnings SE
+n <- 10000
+lossPerForeclosure <- -200000
+p <- 0.03
+sqrt(n) * abs(lossPerForeclosure) * sqrt(p*(1 - p))#the SE of the sum of 10,000 loans
+# Bank earnings interest rate - 1
+# Assume one gives out loans for $180,000
+# How much money one  will need to make when people pay their loans so that one's net loss is $0?
+# In other words, what interest rate do we need to charge in order to not lose money?
+lossPerForeclosure <- -200000
+p <- 0.03
+x <- -(lossPerForeclosure*p) / (1 - p) # total amount necessary to have an expected outcome of $0
+x/180000 # Convert `x` to a rate, given that the loan amount is $180,000
+# Note: one still loses money 50% of the time
+#Bank earnings interest rate - 2
+n <- 10000
+lossPerForeclosure <- -200000
+pDefault <- 0.03
+z <- qnorm(0.05) # a variable `z`
+x <- -loss_per_foreclosure*( n*p_default - z*sqrt(n*p_default*(1 - p_default)))/ ( n*(1 - p_default) + z*sqrt(n*p_default*(1 - p_default)))
+x / 180000 # Convert `x` to an interest rate, given that the loan amount is $180,000
+# Big Short
+# insurance company offers a one-year term life insurance policy that pays $150,000 in the event of death within one year
+# premium (annual cost) for this policy for a 50 year old female is $1,150
+# in the event of a claim, the company forfeits the premium and loses a total of $150,000
+# if there is no claim the company gains the premium amount of $1,150
+# the company plans to sell 1,000 policies to this demographic
+library(tidyverse)
+library(dslabs)
+data(death_prob)
+head(death_prob)
+# Insurance rates, part 1
+# death_prob = estimated probability of death within 1 year 
+#  determine the death probability of a 50 year old female, p
+pF <- death_prob %>% 
+  filter(age==50, sex=="Female")%>%
+  pull(prob)
+pF
+plotPF <- ggplot(death_prob, aes(x=age, y=prob)) +
+  geom_line(aes(col=sex)) +
+  theme(panel.background = element_blank()) +
+  xlab("age") +
+  ylab("probability") +
+  ggtitle("Death probability male vs. female by age") 
+plotPF
+# filter by age
+age25 <- death_prob %>%
+  filter(age <= 25)
+age50 <- death_prob %>%
+  filter(age > 25 & age <=50)
+age75 <- death_prob %>%
+  filter(age > 50 & age <=75)
+age100 <- death_prob %>%
+  filter(age > 75 & age <=100)
+# plot filtered
+library(gridExtra)
+manual_color <- c("Male" = "#e50914", "Female" = "#34a853")
+plotProb1 <- ggplot(age25, aes(x=age, y=prob)) +
+  geom_line(aes(col=sex)) + 
+  theme(axis.text = element_text(face = "bold"), panel.background = element_blank()) +
+  scale_color_manual(values = manual_color) +
+  xlab("age") +
+  ylab("probability") +
+  ggtitle("Death probability - age<=25") 
+plotProb2 <- ggplot(age50, aes(x=age, y=prob)) +
+  geom_line(aes(col=sex)) +
+  theme(axis.text = element_text(face = "bold"), panel.background = element_blank()) +
+  scale_color_manual(values = manual_color) +
+  xlab("age") +
+  ylab("probability") +
+  ggtitle("Death probability - age: 26 to 50") 
+# subplot
+grid.arrange(plotProb1, plotProb2, ncol=1)
+plotProb3 <- ggplot(age75, aes(x=age, y=prob)) +
+  geom_line(aes(col=sex)) +
+  scale_color_manual(values = manual_color) +
+  theme(axis.text = element_text(face = "bold"), panel.background = element_blank()) +
+  xlab("age") +
+  ylab("probability") +
+  ggtitle("Death probability - age: 51 to 75") 
+plotProb4 <- ggplot(age100, aes(x=age, y=prob)) +
+  geom_line(aes(col=sex)) +
+  scale_color_manual(values = manual_color) +
+  theme(axis.text = element_text(face = "bold"), panel.background = element_blank()) +
+  # theme_minimal(base_size = 12) +
+  xlab("age") +
+  ylab("probability") +
+  ggtitle("Death probability - age: 76 to 100") 
+grid.arrange(plotProb3, plotProb4, ncol=1)
+# Note: the loss = -$150,000 ;  gain if the policy holder remains alive = $1,150
+# E value of the company's net profit on one policy for a 50 year old female
+-150000*p+1150*(1-p)
+abs(-150000-1150)*sqrt(p*(1-p))# SE of the profit on one policy for a 50 year old female
+1000*(-150000*p+1150*(1-p))# E of the company's profit over all 1,000 policies for 50 year old females
+sqrt(1000)*(abs(-150000-1150)*sqrt(p*(1-p)))# SE of the sum of the expected value over all 1,000 policies for 50 year old females
+pnorm(0,1000*(-150000*p+1150*(1-p)), sqrt(1000)*(abs(-150000-1150)*sqrt(p*(1-p))))# CLT to calculate the Pr that the insurance company loses money on this set of 1,000 policies.
+p <- death_prob%>% #  determine the Pr of death within one year for a 50 year old male
+  filter(age==50,sex=="Male")%>%pull(prob)
+p
+# wants  E profits from 1,000 50 year old males with $150,000 life insurance policies to be $700,000
+# E[S] = mu_S = 700000
+# n = 1000
+# p = death prob of 50y Males
+# a = 150000 loss
+# b = premium to solve
+# E[S] = n*(ap +b(1-p))
+# b = ((E[S]/n)-ap/(1-p
+# What premium should be charged?
+b<- ((700000/1000)- - 150000*p)/(1-p)
+b
+serr <- sqrt(1000)*abs(b--150000)*sqrt(p*(1-p))# SE  of the sum of 1,000 premiums
+serr
+pnorm(0,1000*(-150000*p+b*(1-p)),serr) # Pr of losing money on a series of 1,000 policies to 50 year old males
+   
+# Life insurance rates are calculated using mortality statistics from the recent past
+# a scenario in which a lethal pandemic disease increases the Pr of death within 1 year for a 50 year old to .015
+# E value of the company's profits over 1,000 policies
+mu <- 1000 * (-150000*0.015+ 1150*(1-0.015))
+mu
+serr <- sqrt(1000)*abs(-150000 - 1150)*sqrt(0.015*(1-0.015))# SE of the E value of the company's profits over 1,000 policies
+serr
+pnorm(0,mu,serr)# Pr of the company losing money
+# can afford to sustain only one-time losses of $1 million
+pnorm(-1000000,mu, serr)# Pr of losing more than $1 million
+# death Pr 
+# lowest death Pr for which the chance of losing money exceeds 90%
+p <- seq(.01, .03, .001)
+a <- -150000    # loss per claim
+b <- 1150    # premium - profit when no claim
+n <- 1000
+pLoseMoney <- sapply(p, function(p){
+  exp_val <- n*(a*p + b*(1-p))
+  se <- sqrt(n) * abs(b-a) * sqrt(p*(1-p))
+  pnorm(0, exp_val, se)
+})
+
+data.frame(p, pLoseMoney) %>%
+  filter(pLoseMoney > 0.9) %>%
+  pull(p) %>%
+  min()
+# death Pr p <- seq(.01, .03, .0025)
+# lowest death Pr for which the chance of losing over $1 million exceeds 90%
+pLoseMillion <- sapply(p, function(p){
+  exp_val <- n*(a*p + b*(1-p))
+  se <- sqrt(n) * abs(b-a) * sqrt(p*(1-p))
+  pnorm(-1*10^6, exp_val, se)
+})
+data.frame(p, pLoseMillion) %>%
+  filter(pLoseMillion > 0.9) %>%
+  pull(p) %>%
+  min()
+# a sampling model for simulating the total profit over 1,000 loans with Pr of claim p_loss = .015, loss of -$150,000 on a claim, and profit of $1,150 when there is no claim
+# reported profit (or loss) in millions (that is, divided by 10^6)
+set.seed(25)
+n <- 1000
+pLoss <- 0.015
+X <- sample(c(0,1),n, replace = TRUE, prob=c((1-pLoss),pLoss)) 
+loss<- -150000*sum(X==1)/10^6
+profit<- 1150*sum(X==0)/10^6
+loss+profit
+# Monte Carlo simulation of the sampling model with 10,000 replicates to simulate the range of profits/losses over 1,000 loans
+# observed Pr of losing $1 million or more
+set.seed(27)
+S <- replicate(10000,
+               {
+                 X <- sample(c(0,1),1000, replace = TRUE, prob=c((1-0.015),0.015)) 
+                 loss<- -150000*sum(X==1)/10^6
+                 profit<- 1150*sum(X==0)/10^6
+                 loss+profit
+                 
+               })
+sum(S<=-1)/10000
+# massive demand for life insurance due to the pandemic
+# need to find a premium cost for which the probability of losing money is under 5%
+# assume the death rate stays stable at  p = 0.015
+# calculate the premium required for a 5% chance of losing money given n = 1000 loans probability of death p = 0.015, and loss per claim l=-150000
+p <- 0.015
+n <- 1000
+l <- -150000
+z <- qnorm(.05)
+x <- -l*(n*p-z*sqrt(n*p*(1-p)))/(n*(1-p)+z*sqrt(n*p*(1-p)))
+x
+l*p + x*(1-p) # E profit per policy at this rate
+n*(l*p + x*(1-p)) # E profit over 1,000 policies
+# Monte Carlo simulation 
+# determine the Pr of losing money on 
+# Set the seed to 28 before running your simulation
+set.seed(28)
+S <- replicate(10000, {
+  X <- sample(c(0,1), n, replace = TRUE, prob=c((1-p), p))
+  loss <- l*sum(X==1)/10^6 
+  profit <- x*sum(X==0)/10^6
+  loss+profit
+})
+sum(S<0)/10000
+# Note: cannot predict whether the pandemic death rate will stay stable
+# randomly changes p by adding a value between -0.01 and 0.01 with sample(seq(-0.01,0.01,length = 100),1)
+# uses the new random p to generate a sample of n = 1000 policies with premium x and loss per claim  l = -150000
+# returns profit over n policies(sum of random variable )
+# the outcome should be a vector of B total profits 
+set.seed(29,sample.kind="Rounding")
+p <- 0.015
+n <- 1000
+l <- -150000
+B <- 10000
+x <- 3268
+X <- replicate(B,{
+  next_p <- p+sample(seq(-0.01, 0.01, length=100),1)
+  Y <- sample(c(x,l),n,replace=TRUE,prob=c(1-next_p,next_p))
+  sum(Y)
+})
+mean(X) # E value over 1,000 policies
+sum(X<0)/B # Pr of losing money
+mean(X < -1000000)# Pr of losing more than $1 million
 

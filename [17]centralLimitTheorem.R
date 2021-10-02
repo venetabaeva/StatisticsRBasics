@@ -1,8 +1,8 @@
 #Normal Distribution = Gaussian Distribution = Normal Distribution 
 ## proportion of numbers between a and b 
-## mu (average)
+## mu (average) 
 ## sigma (standard deviation)
-# if the distribution of ones data is approximated by a normal distribution, then one knows, for ones data, what proprotion of the data is in the interval 
+# if the distribution of ones data is approximated by a normal distribution, then one knows, for ones data, what proportion of the data is in the interval 
 # [zscore] standartized units = how many standard deviations from the mean? = substract the mean and divide by standard deviation for each point in the distribution 
 library(downloader) 
 url <- "https://raw.githubusercontent.com/genomicsclass/dagdata/master/inst/extdata/femaleControlsPopulation.csv"

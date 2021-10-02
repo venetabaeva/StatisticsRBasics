@@ -8,7 +8,7 @@ murders$state[ind]
 #[T/F] count how many
 sum(ind)
 #[&] filter
-west<- murders&region == "West"
+west<- murders&region == "West" 
 safe <- murder_rate <= 1 #Store the `murder_rate <= 1` in `safe` 
 ind <- safe&west
 murders$state[ind]
@@ -29,7 +29,7 @@ murders$state[ind]
 murder_rate[ind]
 #[%in%] check whether  each element of a 1st vtr is in a 2nd vtr 
 x<- c("a","b","c")
-y <- c("a","b","f")
+y <- c("a","b","f") 
 y %in% x
 #[%in%] check whether  each element of a 1st vtr is in a 2nd vtr 
 c("Boston","Dakota","Washington") %in% murders$state

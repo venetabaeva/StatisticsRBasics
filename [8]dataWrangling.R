@@ -5,7 +5,7 @@
 #[fltr] filter
 #[slct] select
 #[dplyrP] works with tables 
-library(dplyr)
+library(dplyr) 
 #[mtuF] change DT ; add e new clmn, or change an existing clmn; takes  the DF as 1st arg  and the name  and value of vrb in the 2nd arg
 murders <- mutate(murders,rate=total/population*100000)
 head(murders)
@@ -34,7 +34,7 @@ newTable <- select(murders,state,region,rate)
 filter(newTable,rate <= 0.71)
 #[%>%] pipe operator  
 murders %>% select(state,region,rate) %>% filter(rate <= 0.71)
-#[%>%] pipe operator  
+#[%>%] pipe operator   
 library(dplyr)# Load library
 murders <- mutate(murders, rate =  total / population * 100000, rank = rank(-rate))## Define the rate column
 filter(murders, region %in% c("Northeast", "West") & rate < 1 )%>% # show the result and only include the state, rate, and rank columns, all in one line, in that order

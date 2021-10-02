@@ -5,10 +5,12 @@ download(url, destfile=filename)
 library(dplyr)
 filename <- "femaleMiceWeights.csv"
 dat<- read.csv(filename, header = TRUE,sep = ",")
-chowVals <- filter(dat, Diet=="chow") %>% select(Bodyweight) %>% unlist
-class( chowVals )
-hfVals <- filter(dat, Diet=="hf") %>% select(Bodyweight) %>% unlist
-class( hfVals )
+colnames(dat)
+chowVals <- filter(dat, Diet=="chow") %>% dplyr::select(Bodyweight) %>% unlist
+class( chowVals )  
+View(chowVals)
+hfVals <- filter(dat, Diet=="hf") %>%dplyr:: select(Bodyweight) %>% unlist
+class( hfVals ) 
 mean(chowVals)
 mean(hfVals)
 plot(chowVals,hfVals,xlab = "chowVals", ylab="hfVals") 
@@ -16,14 +18,13 @@ popDat<- read.csv("femaleControlsPopulation.csv") #population
 popDat<- unlist(popDat)#turn into numeric vector
 #compare over and over again with different sample
 mean(sample(popDat,12))#random sample; get different random sample of 12 ;random variable of random sample
-mean(chowVals) 
+mean(chowVals)  
 mean(hfVals)
 #random varibales
 library(downloader) 
 url <- "https://raw.githubusercontent.com/genomicsclass/dagdata/master/inst/extdata/femaleControlsPopulation.csv"
 filename <- basename(url)
 download(url, destfile=filename)
-x <- unlist( read.csv(filename) )
 RNGkind("Mersenne-Twister", "Inversion", "Rejection") # random number generator
 mean(x)
 set.seed(1)#produces the same sample again and again = generate same set  at each time

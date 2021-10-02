@@ -9,12 +9,12 @@ city <- c("Beijing", "Lagos", "Paris", "Rio de Janeiro", "San Juan", "Toronto")#
 temp <- c(35, 88, 42, 84, 81, 30)# Store temperature values in `temp`
 temp <- 5/9 * (temp-32)# Convert temperature into Celsius and overwrite the original values of 'temp' with these Celsius values
 city_temps <- data.frame(name = city, temperature = temp)# Create a data frame `city_temps` 
-str(city_temps)
+str(city_temps) 
 #[vtrArthmc] operations on vectors occur element-wise 
 x <- c(1:100)# Define an object `x` with the numbers 1 through 100
 sum(1/x^2)# Compute the sum 
 #[vtrArthmc] operations on vectors occur element-wise 
-x <- c(2, 43, 27, 96, 18)
+x <- c(2, 43, 27, 96, 18) 
 sort(x)
 order(x)
 rank(x)#gives the ranks from lowest to highest

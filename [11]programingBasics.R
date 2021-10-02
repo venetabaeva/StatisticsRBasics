@@ -3,7 +3,7 @@
 #if(boolean condition){expressions}else{alternative expressions}
 a <- 2
 if (a!=0){
-  print(1/a)
+  print(1/a) 
 }else{
   print("No resiprocal for 0.")
 }
@@ -23,7 +23,7 @@ ifelse(a>0, 1/a,NA)
 ##[ifelse] works on vectors; examine each element of the logical vector ; return a corresponding answer
 a <- c(0,1,2,-4,5)
 result <- ifelse(a>0, 1/a, NA)
-##[ifelse] substitue NAs with zeros
+##[ifelse] substitue NAs with zeros 
 data(na_example)
 sum(is.na(na_example))
 no_nas <- ifelse(is.na(na_example),0,na_example)
@@ -71,7 +71,7 @@ avg <- function(x){
   s <- sum(x)
   n <- length(x)# Note: the variables defined inside the F are not saved in the workspace; the values of the variables are changed ony during the F's call
   s/n
-}
+} 
 x <- 1:100 
 avg(x)
 identical (mean(x),avg(x))# check whether mean is identical to the function average 

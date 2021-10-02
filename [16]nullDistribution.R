@@ -1,7 +1,7 @@
 library(downloader) 
 url <- "https://raw.githubusercontent.com/genomicsclass/dagdata/master/inst/extdata/femaleMiceWeights.csv"
 filename <- "femaleMiceWeights.csv" 
-download(url, destfile=filename)
+download(url, destfile=filename) 
 library(dplyr)
 filename <- "femaleMiceWeights.csv"
 dat<- read.csv(filename, header = TRUE,sep = ",")
@@ -14,7 +14,7 @@ obs<- mean(hfVals) - mean(chowVals)
 #[p value]
 pop <- read.csv("femaleControlsPopulation.csv")
 pop<- unlist(pop)
-## Null Distribution = all possible realizations under the null
+## Null Distribution = all possible realizations under the null 
 chowVals <- sample(pop,12)#do it multiple times = see several realizations of the difference in mean  for the null hypothesis
 hfVals<- sample(pop,12)
 mean(hfVals) - mean(chowVals)

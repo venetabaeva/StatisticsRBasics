@@ -7,6 +7,7 @@ filename <- "femaleMiceWeights.csv"
 download(url, destfile=filename)
 #[DFF] access
 filename <- "femaleMiceWeights.csv"
+View(filename)
 dat<- read.csv(filename, header = TRUE,sep = ",")
 #[clmn] exact name 
 colnames(dat)
@@ -36,16 +37,16 @@ set.seed(1)
 sampleHFDietBodyWeight<- sample(13:24,1)
 dat$Bodyweight[sampleHFDietBodyWeight]
 #[dplyr]
-help(package = dplyr)
+help(package = dplyr) 
 #[fltr] filter
 filename <- "femaleMiceWeights.csv"
 dat<- read.csv(filename)
 View(dat)
 library(dplyr) 
 controls <- filter(dat, Diet=="chow") #keep only the ones with chow diet
-View(controls)
+View(controls) 
 #[slct] select
-controls<- select(controls, Bodyweight)
+controls<- select(controls, Bodyweight) 
 #[vctr] make DF into numeric vector
 unlist(controls)
 #[ppng] piping

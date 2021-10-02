@@ -15,7 +15,7 @@ log10_population <- log10(murders$population)# Transform population (not populat
 log10_total_gun_murders <- log10(murders$total)# Transform total gun murders using log10 transformation and save to object log10_total_gun_murders
 plot(log10_population,log10_total_gun_murders)# Create a scatterplot with the log scale transformed population and murders 
 #[histograms]
-hist(murders$rate)
+hist(murders$rate) 
 murders$state[which.max(murders$rate)]
 #[histograms]
 population_in_millions <- murders$population/10^6# Store the population in millions and save to population_in_millions 
@@ -34,7 +34,7 @@ sum(ind)
 ind <- heights$height > mean(heights$height) & (heights$sex =="Female")#How many individuals in the dataset are above average height and are female?
 sum(ind)
 mean(heights$sex == "Female")# proportion of individuals in the dataset are female
-minH<- min(heights$height)
+minH<- min(heights$height) 
 ind <- match(minH, heights$height)#Use the match() function to determine the index of the first individual with the minimum height.
 heights$sex[ind]#Subset the sex column of the dataset by the index in 4b to determine the individual’s sex.
 maxH <- max(heights$height)#Write code to create a vector x that includes the integers between the minimum and maximum heights (as numbers).

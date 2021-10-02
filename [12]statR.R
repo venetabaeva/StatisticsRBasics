@@ -10,7 +10,7 @@ avg <- function(x){
 avg(x)
 #Use a for loop to determine the value of ∑25i=1i2
 sum <- 0
-for(i in 1:25)
+for(i in 1:2) 
   sum <- sum + i^2
 sum
 #The cars dataset is available in base R. You can type cars to see it. Use the class() function to determine what type of object is cars
@@ -24,7 +24,7 @@ head(cars)
 #What is the average distance traveled in this dataset?
 mean(cars[,2])
 #Which row of cars has a a distance of 85?
-ind<-which(cars$dist == 85)
+ind<-which(cars$dist == 85) 
 ind
 #load .csv
 filename <- "femaleMiceWeights.csv"

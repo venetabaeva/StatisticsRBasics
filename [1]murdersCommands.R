@@ -27,6 +27,7 @@ library(tidyverse)
 library(dslabs)
 #[DS] load
 data(murders)
+View(murders)
 #[available DF] call; DF =? [different DSs] combined; DF = [DSs = col(var) + rw(obsrv)] stored 
   data()
 #[DF] plot

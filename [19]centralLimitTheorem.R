@@ -1,6 +1,6 @@
 #central limit theorem 
 ##sample average follows (~) follows normal distribution with mean population average, so it's centered at the population average and standard deviation of sigmaX divide by the square root of the sample size
-#sigmaX = the population standard deviation = teh average distance to the population mean = what is the distance of a typical individual from the mean 
+#sigmaX = the population standard deviation = the average distance to the population mean = what is the distance of a typical individual from the mean 
 #standard deviation = idea of how much the population varies from around the mean 
 ##CLT 
 ##sample average is a random variable -> take a sample, receive different variable 
@@ -15,9 +15,10 @@ url <- "https://raw.githubusercontent.com/genomicsclass/dagdata/master/inst/extd
 filename <- basename(url)
 download(url, destfile=filename)
 dat <- na.omit( read.csv(filename) )
+View(dat)
 pnorm(1)-pnorm(-1)#If a list of numbers has a distribution that is well approximated by the normal distribution, what proportion of these numbers are within one standard deviation away from the list's average?
 pnorm(2)-pnorm(-2)#What proportion of these numbers are within two standard deviations away from the list's average?
-pnorm(3)-pnorm(-3)
+pnorm(3)-pnorm(-3) 
 #
 library(dplyr)
 head(dat)
