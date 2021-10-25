@@ -2879,4 +2879,9 @@ X <- replicate(B,{
 mean(X) # E value over 1,000 policies
 sum(X<0)/B # Pr of losing money
 mean(X < -1000000)# Pr of losing more than $1 million
+# Inference
+# sampling model parameters and estimates
+library(tidyverse)
+library(dslabs)
+take_poll(25)    # draw 25 beads - observation # shows a random draw
 

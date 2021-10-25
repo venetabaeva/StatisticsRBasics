@@ -3482,7 +3482,8 @@ historic_co2 %>%
     geom_line() +
     xlim(1700,2018)
 ```
-IV. Probability 
+
+# IV. Probability 
 
 > load
 
@@ -4229,6 +4230,11 @@ mean(X) # E value over 1,000 policies
 sum(X<0)/B # p of losing money
 mean(X < -1000000)# p of losing more than $1 million
 ```
+
+# VI. Inference
+
+
+
 
 ## References
 
