@@ -1,5 +1,6 @@
------------------------------------------
-#DFs components
+# I. 
+# 1.
+## DFs components
   
 library(dplyr)
 library(dslabs)
@@ -2883,5 +2884,816 @@ mean(X < -1000000)# Pr of losing more than $1 million
 # sampling model parameters and estimates
 library(tidyverse)
 library(dslabs)
-take_poll(25)    # draw 25 beads - observation # shows a random draw
+take_poll(25)    # draw 25 beads - observation # shows a random draw 
+# compute the estimate of SE for the sample 
+X_hat <- 0.48
+se_estimate <- sqrt(X_hat*(1-X_hat)/25)
+se_estimate
+# compute the probability of being as close to p as we want 
+pnorm(0.01/se_estimate) - pnorm(-0.01/se_estimate) 
+# enlarge the sample
+library(tidyverse)
+library(dslabs)
+take_poll(2000) 
+X_hat <- 0.48
+se_estimate <- sqrt(X_hat*(1-X_hat)/2000)
+se_estimate
+pnorm(0.01/se_estimate) - pnorm(-0.01/se_estimate) 
+# Se versus p ; 
+N <- 25
+p <- seq(0,1, length =100)
+se <- sqrt(p*(1-p)/N)
+plot(p,se)
+# SE versus p multiple plots 
+p <- seq(0, 1, length = 100)
+sample_sizes <- c(25, 100, 1000)
+for(N in sample_sizes){
+  se <- sqrt(p*(1-p)/N)
+  plot(p,se,ylim = c(0,0.5/sqrt(25)))
+}
+# SE of spread 
+N <- 25
+p <- 0.45
+2*sqrt(p*(1-p)/N)
+# run Monte Carlo simulations to compare with theoretical results assuming a value of p
+p <- 0.45    
+N <- 1000
+x <- sample(c(0,1), size = N, replace = TRUE, prob = c(1-p, p))
+x_hat <- mean(x)
+B <- 10000    
+N <- 1000 
+x_hat <- replicate(B, {
+  x <- sample(c(0,1), size = N, replace = TRUE, prob = c(1-p, p))
+  mean(x) # Monte Carlo 
+})
+mean(x_hat)
+sd(x_hat)
+library(tidyverse)
+library(gridExtra)
+p1 <- data.frame(x_hat = x_hat) %>%
+  ggplot(aes(x_hat)) +
+  geom_histogram(binwidth = 0.005, color = "black")
+p2 <- data.frame(x_hat = x_hat) %>%
+  ggplot(aes(sample = x_hat)) +
+  stat_qq(dparams = list(mean = mean(x_hat), sd = sd(x_hat))) +
+  geom_abline() +
+  ylab("X_hat") +
+  xlab("Theoretical normal")
+grid.arrange(p1, p2, nrow=1)
+# CLT 
+# sample average 
+take_sample <- function(p,N){
+  X <- sample(c(0,1), size = N,replace = TRUE, prob =c(1-p,p))
+  mean(X)
+}
+set.seed(1)
+p <- 0.45
+N <- 100
+take_sample(p,N)
+# distribution of errors 
+p <- 0.45
+N <- 100
+B <- 10000
+set.seed(1)
+errors <- replicate(B, p- take_sample(p,N))
+mean(errors)
+# average size of error 
+p <- 0.45
+N <- 100
+B <- 10000
+set.seed(1)
+errors <- replicate(B, p - take_sample(p, N))
+mean(abs(errors))
+# standard deviation of the spread 
+p <- 0.45
+N <- 100
+B <- 10000
+set.seed(1)
+errors <- replicate(B, p - take_sample(p, N))
+sqrt(mean(errors^2))
+# estimating the standard error 
+p <- 0.45
+N <- 100
+sqrt(p*(1-p)/N)
+# standars error of the estimate 
+p <- 0.45
+N <- 100
+set.seed(1)
+X <- sample(0:1,N, replace =T,p=c(1-p,p))
+X_bar <- mean(X)
+sqrt(X_bar*(1-X_bar)/N)
+# plot errors
+p <- 0.45
+N <- 100
+B <- 10000
+set.seed(1)
+errors <- replicate(B, p - take_sample(p, N))
+qqnorm(errors)
+qqline(errors)
+# estimating the probability of a specific value of X bar
+p <- 0.45
+N <- 100
+1-pnorm(0.5,mean=p,sd  = sqrt(p*(1-p)/N))
+# estimating the probability of a specific error size 
+N <-100
+X_hat <- 0.51
+se_hat <- sqrt(X_hat*(1-X_hat)/N)
+1 - pnorm (0.01,0, se_hat) + pnorm(-0.01,0,se_hat)
+# confidence intervals 
+# Monte Carlo 
+p <- 0.45
+N <- 1000
+X <- sample(c(0,1), size = N, replace = TRUE, prob = c(1-p, p))    # generate N observations
+X_hat <- mean(X)    # calculate X_hat
+SE_hat <- sqrt(X_hat*(1-X_hat)/N)    # calculate SE_hat, SE of the mean of N observations
+c(X_hat - 2*SE_hat, X_hat + 2*SE_hat)    # build interval of 2*SE above and below mean
+# Solving for z  with qnorm
+z <- qnorm(0.995)    # calculate z to solve for 99% confidence interval
+pnorm(qnorm(0.995))    # demonstrating that qnorm gives the z value for a given probability
+pnorm(qnorm(1-0.995))    # demonstrating symmetry of 1-qnorm
+pnorm(z) - pnorm(-z)    # demonstrating that this z value gives correct probability for interval
+# Monte Carlo simulation to confirm that a 95% confidence intervals includes p 95%
+B <- 10000
+inside <- replicate(B, {
+  X <- sample(c(0,1), size = N, replace = TRUE, prob = c(1-p, p))
+  X_hat <- mean(X)
+  SE_hat <- sqrt(X_hat*(1-X_hat)/N)
+  between(p, X_hat - 2*SE_hat, X_hat + 2*SE_hat)    # TRUE if p in confidence interval
+})
+mean(inside)
+# confidence interval of spread with sample size 25 
+N <- 25
+X_hat <- 0.48
+(2*X_hat - 1) + c(-2, 2)*2*sqrt(X_hat*(1-X_hat)/N)
+#  Computing a p-value for observed spread of 0.02
+N <- 100    # sample size
+z <- sqrt(N) * 0.02/0.5    # spread of 0.02
+1 - (pnorm(z) - pnorm(-z))
+# confidence interval for p 
+data(polls_us_election_2016)
+polls <- filter(polls_us_election_2016, enddate >= "2016-10-31" & state == "U.S.")
+nrow(polls)
+view(polls)
+N <- head(polls$samplesize,1)
+N
+X_hat <- (head(polls$rawpoll_clinton,1)/100)
+X_hat
+se_hat <- sqrt(X_hat*(1-X_hat)/N)
+se_hat
+qnorm(0.975)
+ci <- c(X_hat - qnorm(0.975)*se_hat, X_hat + qnorm(0.975)*se_hat)
+# pollster results for p 
+head(polls)
+polls <- mutate(polls, X_hat = polls$rawpoll_clinton/100, se_hat = sqrt(X_hat*(1-X_hat)/polls$samplesize), lower = X_hat - qnorm(0.975)*se_hat, upper = X_hat + qnorm(0.975)*se_hat)
+pollster_results <- select(polls, pollster, enddate, X_hat, se_hat, lower, upper)
+# comparing to actual results
+head(pollster_results)
+avg_hit <- pollster_results %>% 
+  mutate(hit=(lower<0.482 & upper>0.482)) %>% 
+  summarize(mean(hit))
+avg_hit 
+# confidence interval for d
+polls <- polls_us_election_2016 %>% filter(enddate >= "2016-10-31" & state == "U.S.")  %>%
+  mutate(d_hat = rawpoll_clinton/100 - rawpoll_trump/100)
+N <- polls$samplesize[1]
+N
+d_hat <- polls$d_hat[1]
+d_hat
+X_hat <- (d_hat + 1) /2
+se_hat <- 2*sqrt(X_hat*(1-X_hat)/N)
+se_hat
+ci <- c(d_hat - qnorm(0.975)*se_hat, d_hat + qnorm(0.975)*se_hat)
+# polsters results of d
+head(polls)
+pollster_results <- polls %>% mutate(X_hat = (d_hat + 1) / 2) %>% mutate(se_hat = 2 * sqrt(X_hat * (1 - X_hat) / samplesize)) %>% mutate(lower = d_hat - qnorm(0.975) * se_hat) %>% mutate(upper = d_hat + qnorm(0.975) * se_hat) %>% select(pollster, enddate, d_hat, lower, upper)
+pollster_results
+# compare to actual d
+head(pollster_results)
+avg_hit <- pollster_results %>% mutate(hit=lower <= 0.021 & upper >= 0.021) %>% summarize(mean(hit))
+# comparing to actual results by pollsters 
+head(polls)
+polls %>% mutate(error = d_hat - 0.021) %>% ggplot(aes(x = pollster, y = error)) + geom_point() + theme(axis.text.x = element_text(angle = 90, hjust = 1))
+# comparing to actual results by myltiple pollsters 
+head(polls)
+polls %>% mutate(error = d_hat - 0.021) %>%
+  group_by(pollster) %>%
+  filter(n() >= 5) %>%
+  ggplot(aes(pollster, error)) +
+  geom_point() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+# simulate polls 
+d <- 0.039
+Ns <- c(1298, 533, 1342, 897, 774, 254, 812, 324, 1291, 1056, 2172, 516)
+p <- (d+1)/2
+# calculate confidence intervals of the spread
+confidence_intervals <- sapply(Ns, function(N){
+  X <- sample(c(0,1), size=N, replace=TRUE, prob = c(1-p, p))
+  X_hat <- mean(X)
+  SE_hat <- sqrt(X_hat*(1-X_hat)/N)
+  2*c(X_hat, X_hat - 2*SE_hat, X_hat + 2*SE_hat) - 1
+})
+# generate a data frame storing results
+polls <- data.frame(poll = 1:ncol(confidence_intervals),
+                    t(confidence_intervals), sample_size = Ns)
+names(polls) <- c("poll", "estimate", "low", "high", "sample_size")
+polls
+# Calculating the spread of combined polls
+d_hat <- polls %>%
+  summarize(avg = sum(estimate*sample_size) / sum(sample_size)) %>%
+  .$avg
 
+p_hat <- (1+d_hat)/2
+moe <- 2*1.96*sqrt(p_hat*(1-p_hat)/sum(polls$sample_size))   
+round(d_hat*100,1)
+round(moe*100, 1)
+# Generating simulated poll data
+library(dslabs)
+data(polls_us_election_2016)
+names(polls_us_election_2016)
+polls <- polls_us_election_2016 %>%
+  filter(state == "U.S." & enddate >= "2016-10-31" &
+           (grade %in% c("A+", "A", "A-", "B+") | is.na(grade)))
+polls <- polls %>%
+  mutate(spread = rawpoll_clinton/100 - rawpoll_trump/100)
+d_hat <- polls %>%
+  summarize(d_hat = sum(spread * samplesize) / sum(samplesize)) %>%
+  .$d_hat
+p_hat <- (d_hat+1)/2
+moe <- 1.96 * 2 * sqrt(p_hat*(1-p_hat)/sum(polls$samplesize))
+polls %>%
+  ggplot(aes(spread)) +
+  geom_histogram(color="black", binwidth = .01)
+# Investigating poll data and pollster bias
+polls %>% group_by(pollster) %>% summarize(n())
+polls %>% group_by(pollster) %>%
+  filter(n() >= 6) %>%
+  ggplot(aes(pollster, spread)) +
+  geom_point() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+polls %>% group_by(pollster) %>%
+  filter(n() >= 6) %>%
+  summarize(se = 2 * sqrt(p_hat * (1-p_hat) / median(samplesize)))
+# form confidence interval 
+one_poll_per_pollster <- polls %>% group_by(pollster) %>%
+  filter(enddate == max(enddate)) %>%      # keep latest poll
+  ungroup()
+one_poll_per_pollster %>%
+  ggplot(aes(spread)) + geom_histogram(binwidth = 0.01)
+results <- one_poll_per_pollster %>%
+  summarize(avg = mean(spread), se = sd(spread)/sqrt(length(spread))) %>%
+  mutate(start = avg - 1.96*se, end = avg + 1.96*se)
+round(results*100, 1)
+# heights revisited 
+library(dslabs)
+data(heights)
+x <- heights %>% filter(sex == "Male") %>%
+  .$height
+mean(x)
+sd(x)
+# sample the population 
+head(x)
+set.seed(1)
+N <- 50
+X <- sample(x,N,replace =TRUE)
+mean(X)
+sd(X)
+# confidence interval calculation 
+head(x)
+set.seed(1)
+N <- 50
+X <- sample(x, N, replace = TRUE)
+X_hat <- mean(X)
+se_hat<- sd(X)
+se <- se_hat/sqrt(N)
+se
+ci <- c(qnorm(0.025,mean(X),se),qnorm(0.975,mean(X),se))
+# Monte Carlo simulation 
+mu <- mean(x)
+set.seed(1)
+N <- 50
+B <- 10000
+res <- replicate(B, {
+  X <- sample(x, N, replace = TRUE)
+  X_hat <- mean(X)
+  se_hat <- sd(X)
+  se <- se_hat / sqrt(N)
+  interval <- c(qnorm(0.025, mean(X), se) , qnorm(0.975, mean(X), se))
+  between(mu, interval[1], interval[2])
+})
+mean(res)
+# visualizing polling bias 
+library(dslabs)
+library(dplyr)
+library(ggplot2)
+data("polls_us_election_2016")
+polls <- polls_us_election_2016 %>% 
+  filter(pollster %in% c("Rasmussen Reports/Pulse Opinion Research","The Times-Picayune/Lucid") &
+           enddate >= "2016-10-15" &
+           state == "U.S.") %>% 
+  mutate(spread = rawpoll_clinton/100 - rawpoll_trump/100) 
+polls%>% ggplot(aes(pollster,spread))+geom_boxplot()+geom_point()
+# compute etimates
+head(polls)
+polls %>% group_by(pollster)
+sigma <- polls %>% group_by(pollster) %>% summarize(s = sd(spread))
+sigma
+# calculate 95% confidence interval of the spreads
+head(polls)
+res <- polls %>% group_by(pollster) %>% summarize(avg=mean(spread), s = sd(spread), N=n())
+res
+estimate <- max(res$avg) - min(res$avg)
+estimate
+se_hat <- sqrt(res$s[2]^2/res$N[2] + res$s[1]^2/res$N[1])
+se_hat
+ci <- c(estimate - qnorm(0.975)*se_hat, estimate + qnorm(0.975)*se_hat)
+# calculate p - value
+res <- polls %>% group_by(pollster) %>% 
+  summarize(avg = mean(spread), s = sd(spread), N = n()) 
+estimate <- res$avg[2] - res$avg[1]
+se_hat <- sqrt(res$s[2]^2/res$N[2] + res$s[1]^2/res$N[1])
+2* (1-pnorm(estimate/se_hat,0,1))
+# comparing within poll and between poll variability 
+polls <- polls_us_election_2016 %>% 
+  filter(enddate >= "2016-10-15" &
+           state == "U.S.") %>%
+  group_by(pollster) %>%
+  filter(n() >= 5) %>% 
+  mutate(spread = rawpoll_clinton/100 - rawpoll_trump/100) %>%
+  ungroup()
+var <- polls %>% group_by(pollster) %>% summarize(avg = mean(spread), s = sd(spread))
+var
+# spread, average of spread, estimate of standard deviation 
+library(dplyr)
+library(dslabs)
+data(polls_us_election_2016)
+polls <- polls_us_election_2016 %>% 
+  filter(state == "Florida" & enddate >= "2016-11-04" ) %>% 
+  mutate(spread = rawpoll_clinton/100 - rawpoll_trump/100)
+head(polls)
+results <- polls %>% summarize(avg = mean(spread),  se = sd(spread)/sqrt(n()))
+results
+# posterior  distribution
+results
+mu <- 0
+tau <- 0.01
+sigma <- results$se
+Y <- results$avg
+tau <- 0.01
+miu <- 0
+B <- sigma^2 / (sigma^2 + tau^2)
+B
+miu + (1 - B) * (Y - miu)
+# SE posterior distribution 
+mu <- 0
+tau <- 0.01
+sigma <- results$se
+Y <- results$avg
+B <- sigma^2 / (sigma^2 + tau^2)
+sqrt(1 / (1 / sigma ^2 + 1 / tau ^2))
+# constructing a credible interval 
+mu <- 0
+tau <- 0.01
+sigma <- results$se
+Y <- results$avg
+B <- sigma^2 / (sigma^2 + tau^2)
+se <- sqrt( 1/ (1/sigma^2 + 1/tau^2))
+est <- B * mu + (1 - B) * Y
+est
+ci <- c(est - qnorm(0.975) * se, est + qnorm(0.975) * se)
+ci
+# probability that the spread was less than 0 
+exp_value <- B*mu + (1-B)*Y 
+se <- sqrt( 1/ (1/sigma^2 + 1/tau^2))
+pnorm(0, exp_value, se)
+# change variance
+mu <- 0
+sigma <- results$se
+Y <- results$avg
+taus <- seq(0.005, 0.05, len = 100)
+p_calc <- function(tau) {
+  B <- sigma ^ 2 / (sigma^2 + tau^2)
+  se <- sqrt(1 / (1/sigma^2 + 1/tau^2))
+  exp_value <- B * mu + (1 - B) * Y
+  pnorm(0, exp_value, se)
+}
+ps <- p_calc(taus)
+plot(taus, ps)
+# Computing the posterior mean, standard error, credible interval and probability; scope: to report the probability of d > 0 given the observed poll data 
+# biased 
+mu <- 0
+tau <- 0.035
+sigma <- results$se
+Y <- results$avg
+B <- sigma^2 / (sigma^2 + tau^2)
+posterior_mean <- B*mu + (1-B)*Y
+posterior_se <- sqrt(1 / (1/sigma^2 + 1/tau^2))
+posterior_mean
+posterior_se
+posterior_mean + c(-1.96, 1.96)*posterior_se
+1 - pnorm(0, posterior_mean, posterior_se)
+# calculating probability of d>0 with general bias 
+mu <- 0
+tau <- 0.035
+sigma <- sqrt(results$se^2 + .025^2)
+Y <- results$avg
+B <- sigma^2 / (sigma^2 + tau^2)
+posterior_mean <- B*mu + (1-B)*Y
+posterior_se <- sqrt(1 / (1/sigma^2 + 1/tau^2))
+1 - pnorm(0, posterior_mean, posterior_se)
+# prediction electroal college 
+library(tidyverse)
+library(dslabs)
+data("polls_us_election_2016")
+head(results_us_election_2016)
+results_us_election_2016 %>% arrange(desc(electoral_votes)) %>% top_n(5, electoral_votes)
+# Computing the average and standard deviation for each state
+results <- polls_us_election_2016 %>%
+  filter(state != "U.S." &
+           !grepl("CD", state) &
+           enddate >= "2016-10-31" &
+           (grade %in% c("A+", "A", "A-", "B+") | is.na(grade))) %>%
+  mutate(spread = rawpoll_clinton/100 - rawpoll_trump/100) %>%
+  group_by(state) %>%
+  summarize(avg = mean(spread), sd = sd(spread), n = n()) %>%
+  mutate(state = as.character(state))
+# 10 closest races = battleground states
+results %>% arrange(abs(avg))
+# joining electoral college votes and results
+results <- left_join(results, results_us_election_2016, by="state")
+# states with no polls: note Rhode Island and District of Columbia = Democrat
+results_us_election_2016 %>% filter(!state %in% results$state)
+# assigns sd to states with just one poll as median of other sd values
+results <- results %>%
+  mutate(sd = ifelse(is.na(sd), median(results$sd, na.rm = TRUE), sd))
+# Calculating the posterior mean and posterior standard error
+mu <- 0
+tau <- 0.02
+results %>% mutate(sigma = sd/sqrt(n),
+                   B = sigma^2/ (sigma^2 + tau^2),
+                   posterior_mean = B*mu + (1-B)*avg,
+                   posterior_se = sqrt( 1 / (1/sigma^2 + 1/tau^2))) %>%
+  arrange(abs(posterior_mean))
+# Monte Carlo simulation of Election Night results (no general bias)
+mu <- 0
+tau <- 0.02
+clinton_EV <- replicate(1000, {
+  results %>% mutate(sigma = sd/sqrt(n),
+                     B = sigma^2/ (sigma^2 + tau^2),
+                     posterior_mean = B*mu + (1-B)*avg,
+                     posterior_se = sqrt( 1 / (1/sigma^2 + 1/tau^2)),
+                     simulated_result = rnorm(length(posterior_mean), posterior_mean, posterior_se),
+                     clinton = ifelse(simulated_result > 0, electoral_votes, 0)) %>%    # award votes if Clinton wins state
+    summarize(clinton = sum(clinton)) %>%    # total votes for Clinton
+    .$clinton + 7    # 7 votes for Rhode Island and DC
+})
+mean(clinton_EV > 269)    # over 269 votes wins election
+# histogram of outcomes
+data.frame(clintonEV) %>%
+  ggplot(aes(clintonEV)) +
+  geom_histogram(binwidth = 1) +
+  geom_vline(xintercept = 269)
+# Monte Carlo simulation including general bias
+mu <- 0
+tau <- 0.02
+bias_sd <- 0.03
+clinton_EV_2 <- replicate(1000, {
+  results %>% mutate(sigma = sqrt(sd^2/(n) + bias_sd^2),    # added bias_sd term
+                     B = sigma^2/ (sigma^2 + tau^2),
+                     posterior_mean = B*mu + (1-B)*avg,
+                     posterior_se = sqrt( 1 / (1/sigma^2 + 1/tau^2)),
+                     simulated_result = rnorm(length(posterior_mean), posterior_mean, posterior_se),
+                     clinton = ifelse(simulated_result > 0, electoral_votes, 0)) %>%    # award votes if Clinton wins state
+    summarize(clinton = sum(clinton)) %>%    # total votes for Clinton
+    .$clinton + 7    # 7 votes for Rhode Island and DC
+})
+mean(clinton_EV_2 > 269)    # over 269 votes wins election
+# forecaster issue: how informative polls taken several weeks before the election 
+# Variability across one pollster ; In poll results,  is not fixed over time. Variability within a single pollster comes from time variation
+# select all national polls by one pollster
+one_pollster <- polls_us_election_2016 %>%
+  filter(pollster == "Ipsos" & state == "U.S.") %>%
+  mutate(spread = rawpoll_clinton/100 - rawpoll_trump/100)
+se <- one_pollster %>%
+  summarize(empirical = sd(spread),
+            theoretical = 2*sqrt(mean(spread)*(1-mean(spread))/min(samplesize)))
+se
+one_pollster %>% ggplot(aes(spread)) +
+  geom_histogram(binwidth = 0.01, color = "black")
+# trend across time for several pollsters
+polls_us_election_2016 %>%
+  filter(state == "U.S." & enddate >= "2016-07-01") %>%
+  group_by(pollster) %>%
+  filter(n() >= 10) %>%
+  ungroup() %>%
+  mutate(spread = rawpoll_clinton/100 - rawpoll_trump/100) %>%
+  ggplot(aes(enddate, spread)) +
+  geom_smooth(method = "loess", span = 0.1) +
+  geom_point(aes(color = pollster), show.legend = FALSE, alpha = 0.6)
+# Plotting raw percentages across time
+polls_us_election_2016 %>%
+  filter(state == "U.S." & enddate >= "2016-07-01") %>%
+  select(enddate, pollster, rawpoll_clinton, rawpoll_trump) %>%
+  rename(Clinton = rawpoll_clinton, Trump = rawpoll_trump) %>%
+  gather(candidate, percentage, -enddate, -pollster) %>%
+  mutate(candidate = factor(candidate, levels = c("Trump", "Clinton"))) %>%
+  group_by(pollster) %>%
+  filter(n() >= 10) %>%
+  ungroup() %>%
+  ggplot(aes(enddate, percentage, color = candidate)) +
+  geom_point(show.legend = FALSE, alpha = 0.4) +
+  geom_smooth(method = "loess", span = 0.15) +
+  scale_y_continuous(limits = c(30, 50))
+# confidence intervals for polling data 
+library(dplyr)
+library(dslabs)
+data("polls_us_election_2016")
+polls <- polls_us_election_2016 %>% 
+  filter(state != "U.S." & enddate >= "2016-10-31") %>% 
+  mutate(spread = rawpoll_clinton/100 - rawpoll_trump/100)
+cis <- polls %>% mutate(X_hat = (spread+1)/2, se = 2*sqrt(X_hat*(1-X_hat)/samplesize), 
+                        lower = spread - qnorm(0.975)*se, upper = spread + qnorm(0.975)*se) %>%
+  select(state, startdate, enddate, pollster, grade, spread, lower, upper)
+# compare to actual results 
+add <- results_us_election_2016 %>% mutate(actual_spread = clinton/100 - trump/100) %>% select(state, actual_spread)
+ci_data <- cis %>% mutate(state = as.character(state)) %>% left_join(add, by = "state")
+p_hits <- ci_data %>% mutate(hit = lower <= actual_spread & upper >= actual_spread) %>% summarize(proportion_hits = mean(hit))
+p_hits
+# stratify by pollster and grade 
+add <- results_us_election_2016 %>% mutate(actual_spread = clinton/100 - trump/100) %>% select(state, actual_spread)
+ci_data <- cis %>% mutate(state = as.character(state)) %>% left_join(add, by = "state")
+p_hits <- ci_data %>% mutate(hit = lower <= actual_spread & upper >= actual_spread) %>% 
+  group_by(pollster) %>%
+  filter(n() >=  5) %>%
+  summarize(proportion_hits = mean(hit), n = n(), grade = grade[1]) %>%
+  arrange(desc(proportion_hits))
+p_hits
+# Stratify by State
+add <- results_us_election_2016 %>% mutate(actual_spread = clinton/100 - trump/100) %>% select(state, actual_spread)
+ci_data <- cis %>% mutate(state = as.character(state)) %>% left_join(add, by = "state")
+p_hits <- ci_data %>% mutate(hit = lower <= actual_spread & upper >= actual_spread) %>% 
+  group_by(state) %>%
+  filter(n() >=  5) %>%
+  summarize(proportion_hits = mean(hit), n = n()) %>%
+  arrange(desc(proportion_hits)) 
+p_hits
+# plot prediction 
+head(p_hits)
+p_hits %>% mutate(state = reorder(state, proportion_hits)) %>%
+  ggplot(aes(state, proportion_hits)) + 
+  geom_bar(stat = "identity") +
+  coord_flip()
+# predict 
+head(cis)
+errors <- cis %>% dplyr::mutate(error = spread - actual_spread, hit = sign(spread) == sign(actual_spread))
+tail(errors)
+# plot prediciton 
+errors <- cis %>% mutate(error = spread - actual_spread, hit = sign(spread) == sign(actual_spread))
+p_hits <- errors %>%  group_by(state) %>%
+  filter(n() >=  5) %>%
+  summarize(proportion_hits = mean(hit), n = n())
+p_hits %>% mutate(state = reorder(state, proportion_hits)) %>%
+  ggplot(aes(state, proportion_hits)) + 
+  geom_bar(stat = "identity") +
+  coord_flip()
+# plot errors
+head(errors)
+hist(errors$error)
+median(errors$error)
+# plot bias by state 
+head(errors)
+errors %>% filter(grade %in% c("A+","A","A-","B+") | is.na(grade)) %>%
+  mutate(state = reorder(state, error)) %>%
+  ggplot(aes(state, error)) + 
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  geom_boxplot() + 
+  geom_point()
+# filter error plot 
+errors %>% filter(grade %in% c("A+","A","A-","B+") | is.na(grade)) %>%
+  group_by(state) %>%
+  filter(n() >= 5) %>%
+  ungroup() %>%
+  mutate(state = reorder(state, error)) %>%
+  ggplot(aes(state, error)) + 
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  geom_boxplot() + 
+  geom_point()
+# Calculating 95% confidence intervals with the t-distribution
+z <- qt(0.975, nrow(one_poll_per_pollster) - 1)
+one_poll_per_pollster %>%
+  summarize(avg = mean(spread), moe = z*sd(spread)/sqrt(length(spread))) %>%
+  mutate(start = avg - moe, end = avg + moe)
+qt(0.975, 14)    
+qnorm(0.975)
+# t - distribution 
+1 - pt(2, 3) + pt(-2, 3)
+# plot t -distribution 
+df <- seq(3,50)
+pt_func <- function(n) {
+  1 - pt(2, n) + pt(-2, n)
+}
+probs <- sapply(df, pt_func)
+plot(df, probs)
+# sample from normal distribution 
+library(dslabs)
+library(dplyr)
+data(heights)
+x <- heights %>% filter(sex == "Male") %>%
+  .$height
+mu <- mean(x)
+N <- 15
+B <- 10000
+set.seed(1)
+res <- replicate(B, {
+  X <- sample(x, N, replace=TRUE)
+  interval <- mean(X) + c(-1,1)*qnorm(0.975)*sd(X)/sqrt(N)
+  between(mu, interval[1], interval[2])
+})
+mean(res)
+# sampling from the t -distribution
+mu <- mean(x)
+set.seed(1)
+N <- 15
+B <- 10000
+res <- replicate(B, {
+  s <- sample(x, N, replace = TRUE)
+  interval <- c(mean(s) - qt(0.975, N - 1) * sd(s) / sqrt(N), mean(s) + qt(0.975, N - 1) * sd(s) / sqrt(N))
+  between(mu, interval[1], interval[2])
+})
+mean(res)
+# regression 
+
+library(Lahman)
+library(tidyverse)
+library(dslabs)
+ds_theme_set()
+Teams %>% filter(yearID %in% 1961:2001) %>%
+  mutate(HR_per_game = HR / G, R_per_game = R / G) %>%
+  ggplot(aes(HR_per_game, R_per_game)) + 
+  geom_point(alpha = 0.5)
+# Scatterplot of the relationship between stolen bases and runs per game (win) 
+Teams %>% filter(yearID %in% 1961:2001) %>%
+  mutate(SB_per_game = SB / G, R_per_game = R / G) %>%
+  ggplot(aes(SB_per_game, R_per_game)) + 
+  geom_point(alpha = 0.5)
+# Scatterplot of the relationship between bases on balls and runs per game (win) 
+Teams %>% filter(yearID %in% 1961:2001) %>%
+  mutate(BB_per_game = BB / G, R_per_game = R / G) %>%
+  ggplot(aes(BB_per_game, R_per_game)) + 
+  geom_point(alpha = 0.5)
+# Scatterplot of the relationship between at- bat  and runs per game (win) 
+Teams %>% filter(yearID %in% 1961:2001 ) %>%
+  mutate(AB_per_game = AB/G, R_per_game = R/G) %>%
+  ggplot(aes(AB_per_game, R_per_game)) + 
+  geom_point(alpha = 0.5)
+# a scatterplot of win rate (number of wins per game) versus number of fielding errors (E) per game
+Teams %>% filter(yearID %in% 1961:2001 ) %>%
+  mutate(E_per_game = E/G, W_per_game = W/G) %>%
+  ggplot(aes(E_per_game, W_per_game)) + 
+  geom_point(alpha = 0.5)
+# a scatterplot of triples (X3B) per game versus doubles (X2B) per game
+Teams %>% filter(yearID %in% 1961:2001 ) %>%
+  mutate(X2B_per_game = E/G, X3B_per_game = X3B/G) %>%
+  ggplot(aes(X2B_per_game, X3B_per_game)) + 
+  geom_point(alpha = 0.5)
+# a scatterplot of father - son height 
+# create the dataset
+library(tidyverse)
+library(HistData)
+data("GaltonFamilies")
+set.seed(1983)
+galton_heights <- GaltonFamilies %>%
+  filter(gender == "male") %>%
+  group_by(family) %>%
+  sample_n(1) %>%
+  ungroup() %>%
+  select(father, childHeight) %>%
+  rename(son = childHeight)
+galton_heights %>%
+  summarize(mean(father), sd(father), mean(son), sd(son))
+galton_heights %>%
+  ggplot(aes(father, son)) +
+  geom_point(alpha = 0.5)
+# correlation coefficient 
+library(HistData)
+data("GaltonFamilies")
+galton_heights <- GaltonFamilies %>%
+  filter(gender == "male" & childNum == 1) %>%
+  select(father, childHeight) %>%
+  rename(son = childHeight)
+galton_heights %>% summarize(r = cor(father, son)) %>% 
+  pull(r)
+# compute sample correlation
+R <- sample_n(galton_heights, 25, replace = TRUE) %>% # R = random variable 
+  summarize(r = cor(father, son))
+R
+B <- 1000
+N <- 25
+R <- replicate(B, {
+  sample_n(galton_heights, N, replace = TRUE) %>%
+    summarize(r = cor(father, son)) %>%
+    pull(r)
+})
+qplot(R, geom = "histogram", binwidth = 0.05, color = I("black"))
+mean(R)
+sd(R) 
+data.frame(R) %>%
+  ggplot(aes(sample = R)) +
+  stat_qq() +
+  geom_abline(intercept = mean(R), slope = sqrt((1-mean(R)^2)/(N-2))) 
+# correlation coefficient 
+library(Lahman)
+library(tidyverse)
+library(dslabs)
+ds_theme_set()
+teams_cc <- Teams %>% 
+  filter(yearID %in% 1961:2001 )
+cor(teams_cc$R/teams_cc$G, teams_cc$AB/teams_cc$G)
+# predicted height of a son with a 72 inch tall father
+conditional_avg <- galton_heights %>%
+  filter(round(father) == 72) %>%
+  summarize(avg = mean(son)) %>%
+  pull(avg)
+conditional_avg
+# stratify fathers' heights to make a boxplot of son heights ; us see the distribution of each group.; We can see that the centers of these groups are increasing with height; follow linear relationship 
+galton_heights %>% mutate(father_strata = factor(round(father))) %>%
+  ggplot(aes(father_strata, son)) +
+  geom_boxplot() +
+  geom_point()
+# center of each boxplot ; See the plot and notice that this appears to follow a line; The slope of this line appears to be about 0.5
+galton_heights %>%
+  mutate(father = round(father)) %>%
+  group_by(father) %>%
+  summarize(son_conditional_avg = mean(son)) %>%
+  ggplot(aes(father, son_conditional_avg)) +
+  geom_point()
+# calculate values to plot regression line on original data
+mu_x <- mean(galton_heights$father)
+mu_y <- mean(galton_heights$son)
+s_x <- sd(galton_heights$father)
+s_y <- sd(galton_heights$son)
+r <- cor(galton_heights$father, galton_heights$son)
+m <- r * s_y/s_x
+b <- mu_y - m*mu_x
+# add regression line to plot; 
+galton_heights %>%
+  ggplot(aes(father, son)) +
+  geom_point(alpha = 0.5) +
+  geom_abline(intercept = b, slope = m)
+# in standard units 
+galton_heights %>%
+  ggplot(aes(scale(father), scale(son))) +
+  geom_point(alpha = 0.5) +
+  geom_abline(intercept = 0, slope = r)
+# justify correlation 
+# stratify  by the standardized 
+galton_heights %>%
+  mutate(z_father = round((father - mean(father)) / sd(father))) %>%
+  filter(z_father %in% -2:2) %>%
+  ggplot() +  
+  stat_qq(aes(sample = son)) +
+  facet_wrap( ~ z_father)
+# compute the inverse regression line
+mu_x <- mean(galton_heights$father)
+mu_y <- mean(galton_heights$son)
+s_x <- sd(galton_heights$father)
+s_y <- sd(galton_heights$son)
+r <- cor(galton_heights$father, galton_heights$son)
+m_1 <-  r * s_y / s_x
+b_1 <- mu_y - m_1*mu_x
+m_2 <-  r * s_x / s_y
+b_2 <- mu_x - m_2*mu_y
+# mean, sd, correlation coefficient 
+set.seed(1989) #if you are using R 3.5 or earlier
+set.seed(1989, sample.kind="Rounding") #if you are using R 3.6 or later
+library(HistData)
+data("GaltonFamilies")
+female_heights <- GaltonFamilies%>%     
+  filter(gender == "female") %>%     
+  group_by(family) %>%     
+  sample_n(1) %>%     
+  ungroup() %>%     
+  select(mother, childHeight) %>%     
+  rename(daughter = childHeight)
+#  mean and standard deviation of mothers' heights, the mean and standard deviation of daughters' heights, and the correlaton coefficient between mother and daughter heights
+female_heights %>%
+  summarize(mean(mother), sd(mother), mean(daughter), sd(daughter))
+female_heights <- GaltonFamilies %>%
+  filter(gender == "female" & childNum == 1) %>%
+  select(mother, childHeight) %>%
+  rename(daughter = childHeight)
+female_heights %>% summarize(r = cor(mother, daughter)) %>% 
+  pull(r)
+# slope intercept
+mu_x <- mean(female_heights$mother)
+mu_y <- mean(female_heights$daughter)
+s_x <- sd(female_heights$mother)
+s_y <- sd(female_heights$daughter)
+r <- cor(female_heights$mother, female_heights$daughter)
+m <- r * s_y/s_x # Slope = (correlation coefficient of son and father heights) * (standard deviation of sons’ heights / standard deviation of fathers’ heights)
+b <- mu_y - m*mu_x # intercept 
+r * s_y/s_x 
+# percent of the variability in daughter heights is explained by the mother's height?
+var_percent<- (r * r)*100
+# conditional expected value 
+x= 60 
+m*x+b 
