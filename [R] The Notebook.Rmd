@@ -12,7 +12,7 @@ output: github_document
 
 >load
 
-```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+```{r}
 library(tidyverse)
 library(dslabs)
 ```
@@ -117,6 +117,187 @@ class(data_frame_city_temperature$temp)
 class(3L)
 ```
 
+3.1.[vector] change class
+
+```{r}
+test <- c(data_frame_city_temperature$temp)
+y<- as.numeric(test) 
+x<- as.character(y)
+class(x)
+```
+
+3.2.[vector] sort in increasing order 
+
+```{r}
+sort(murders$total) 
+```
+
+3.3 [vector] return/keep index of data values in increasing order
+
+```{r}
+index <- order(murders$total)
+index
+```
+
+3.4.{vector} associate abbreviation to data value
+
+```{r}
+abbreviate_country <- c("AF"="Afghanistan", "AL" = "Albania", "DZ" ="Algeria", "AD" = "Andorra", "AO" = "Angola", "AG"= "Antigua and Barbuda")
+abbreviate_country
+number_country<-c("1"="Afghanistan","2"="Albania","3"="Algeria","4" = "Andorra","5" = "Angola", "6" = "Antigua and Barbuda")
+number_country
+value_country<-c("Afghanistan"= 1,"Albania" =2,"Algeria" = 3 ,"Andorra"=4, "Angola" = 5 ,  "Antigua and Barbuda"=6)
+value_country
+```
+
+3.5.[vector] extract associated data values
+
+```{r}
+abbreviation_country<- names(abbreviate_country)
+abbreviation_country
+```
+
+3.6. [vector] access data value through index
+
+```{r}
+abbreviate_country[2]
+abbreviate_country[c(1,3)]
+```
+
+3.7.[vector] access interval of data values through index 
+
+```{r}
+abbreviate_country[1:2]
+```
+
+3.8.[vector] access interval of data values through associated to these data values
+
+```{r}
+abbreviate_country["AF"]
+abbreviate_country[c("AL","DZ")]
+```
+
+3.8.[vector] access interval of data values through associated to these data values
+
+```{r}
+min(value_country)
+max(value_country)
+```
+
+>load
+
+```{r}
+library(dplyr) 
+```
+
+3.9.[vector] add mutate  
+
+```{r}
+murders <- mutate(murders,rate=total/population*100000)
+```
+
+4.3.9.[vector] histogram 
+
+```{r}
+murders_rate <-murders$rate
+hist(murders_rate) 
+```
+
+3.10.[vector] rank rate mutate  
+
+```{r}
+murders <- mutate(murders,rank=rank(-rate)) # in descending order
+```
+
+3.11.[vector]  mutate rate rank filter
+
+```{r}
+murders <- mutate(murders, rate = total/population * 100000, rank = rank(-rate))  
+murders%>%
+  filter(rank <=5)
+```
+
+3.12. [vector] filter count number of rows
+
+```{r}
+nrow( filter(murders,region!="South"))
+```
+
+3.13. [vector] filter count number of rows
+
+```{r}
+nrow(filter(murders,region %in% c("Northeast","West")))
+```
+
+3.14. [vector] select filter rate rank
+
+```{r}
+select(filter(murders,region %in% c("Northeast","West") & rate < 1),state,rate,rank)
+```
+
+3.15. [vector] filter select rate rank
+
+```{r}
+filter(select(murders,state,region,rate),rate <= 0.71)
+```
+
+3.16. [vector] pipe select filter
+
+```{r}
+murders %>% 
+  select(state,region,rate) %>% 
+  filter(rate <= 0.71)
+```
+
+3.17. [vector] pipe mutate filter select
+
+```{r}
+murders %>%
+  mutate(rate=total/murders$population*100000, rank=rank(-rate)) %>% 
+  filter(region %in% c('Northeast','West') & rate <1) %>% 
+  select(state,rate,rank)
+```
+
+4.3.17. [vector] box - plot 
+
+```{r}
+boxplot(rate~region, data = murders)
+boxplot(population~region, data = murders)
+```
+
+3.18. [vector]  filter select
+
+```{r}
+murders %>%
+  select(population, total)
+
+```
+
+4.3.18.[vector] scatter plot : factor1 * factor2
+
+```{r}
+data(murders)
+population_in_millions <- murders$population/10^6
+total_gun_murders <- murders$total
+plot(population_in_millions, total_gun_murders)
+```
+
+4.3.18.[vector] histogram : factor1 * factor2
+
+```{r}
+hist(population_in_millions)
+```
+
+
+4.3.18.[vector] scatter plot : factor1 * factor2 log10
+
+```{r}
+data(murders)
+log10_population <- log10(murders$population)
+log10_total_gun_murders <- log10(murders$total)
+plot(log10_population,log10_total_gun_murders)
+```
+
 2.7.[data_frame_column] access data values
 
 ```{r}
@@ -165,6 +346,7 @@ table(heights$sex)
 table(file_alchohol_consumption$region)
 table(data_frame_city_temperature$region)
 ```
+
 2.12.[data_frame_column] simple frequency * level of 2 factors 
 
 ```{r}
@@ -173,7 +355,64 @@ table(file_alchohol_consumption$country,file_alchohol_consumption$region)
 table(data_frame_city_temperature$city,data_frame_city_temperature$region)
 ```
 
-2.13.[data_frame] scatter plot
+2.13.[vector] proportion
+
+```{r}
+proportion_murders <- murders$total/murders$population*100000 
+print(proportion_murders)
+```
+
+2.13.[vector] validate data value meets expected value
+
+```{r}
+index_values <- proportion_murders<0.71
+index_values
+murders$state[index_values]
+sum(index_values)
+```
+
+2.14.[vector] validate data value meets expected value
+
+```{r}
+murders_region_west<- murders$region == "West" 
+murders_rate_safe <- proportion_murders <= 1 
+index__rate_per_region <- murders_rate_safe&murders_region_west
+murders$state[index__rate_per_region]
+```
+
+2.15.[vector] validate true/false data value
+
+```{r}
+which(index_values)
+which(murders$state == "Massachusetts")
+```
+
+2.16.[vector] search match true/false data value
+
+```{r}
+match(c("New York","Florida","Texas"),murders$state)
+murders$state[match(c("New York","Florida","Texas"),murders$state)]
+proportion_murders[match(c("New York","Florida","Texas"),murders$state)]
+```
+
+2.17.[vector] check if each data value in vector 1 is in vector 2
+
+```{r}
+x<- c("a","b","c")
+y <- c("a","b","f") 
+y %in% x
+```
+
+2.18.[vector] check if  data value in vector 1 is/ is not  in vector 2
+
+```{r}
+c("Boston","Dakota","Washington") %in% murders$state
+states<- c("Boston","Dakota","Washington")
+index_not_present<- which(!states%in%murders$state)
+states[index_not_present]
+```
+
+4.2.18.[data_frame] scatter plot
 
 ```{r}
 murders %>%
@@ -185,173 +424,31 @@ file_alchohol_consumption %>%
 data_frame_city_temperature %>%
   ggplot(aes(population, temp, label=city, color=region)) +
   geom_label()
-
 ```
 
-
-
-
-
-
-
-1.[file] read
+2.19.[vector] average vs. mean
 
 ```{r}
-dfPonzo <- read.csv(
-  file = ("/Users/venetabaeva/git/repository4/PonzoEyeTrack.csv"),
-  header = TRUE,
-  sep = ";",
-  dec = ".")
+murders_total<- murders$total
+average <- function(murders_total){
+  sum_murders_total <- sum(murders_total)
+  count_murders_total <- length(murders_total)
+  sum_murders_total/count_murders_total
+}
+average(murders_total)
+mean(murders_total)
 ```
 
 
 
 
 
-1.[dataFrame] load
 
-```{r}
-data(gapminder)
-```
 
-1.[file] view 
 
-```{r}
-View(dfAlc)
-View(gapminder)
-```
 
-1.[file] head 
 
-```{r}
-head(dfAlc)
-head(gapminder) #library(dslabs)
-```
 
-1.[file] check structure
-
-```{r}
-str(dfAlc)
-```
-
-1.[table] create frequency table for factor
-
-```{r}
-tableAlcCountry <- c(dfAlc$abbrv)
-table(tableAlcCountry)
-```
-
-1.[vector] create 
-
-```{r}
-country<- c("Afghanistan","Albania","Algeria","Andorra","Angola", "Antigua and Barbuda")
-country
-abbrv <- c("AF", "AL", "DZ", "AD", "AO", "AG")
-abbrv
-aconsum <- c(0, 7, 1, 10, 6, 8)
-aconsum
-x <- c(60,50 ,40, 30, 20)
-x
-```
-
-1.[vector] change elements' type 
-
-```{r}
-y<- as.character(x) 
-y
-as.numeric(y)
-x<-y
-```
-
-1.[vector]check default type 
-
-```{r}
-x<-c(1,"test",3)
-x
-class(x)
-```
-
-1.[vector]check default type 
-
-```{r}
-x<-c("1","test","3")
-x
-class(x)
-as.numeric(x)
-```
-
-###### ^1^ Note: coercion problem -> NAs introduced by coercion 
-
-1.[vector] sort elements' values in increasing order 
-
-```{r}
-sort(x) 
-```
-
-1. [vector] return/keep index of the elements' values in increasing order
-
-```{r}
-index <- order(x)
-index
-```
-
-1.[vector] sort vector's elements in order, through indexing
-
-```{r}
-x[index]
-```
-
-1.[vector] check order 
-
-```{r}
-order(x)
-```
-
-1.[vector] rank; returns the order of each element in an ascending list
-
-```{r}
-rank(x)
-```
-
-1.{vector} associate 
-
-```{r}
-abbrvCountry <- c("AF"="Afghanistan", "AL" = "Albania", "DZ" ="Algeria", "AD" = "Andorra", "AO" = "Angola", "AG"= "Antigua and Barbuda")
-abbrvCountry
-```
-
-1.[vector] assign name
-
-```{r}
-names(abbrvCountry)<-abbrv 
-abbrv
-abbrvCountry
-```
-
-1.[vector] access vector's element's value descreately, through indexing 
-
-```{r}
-abbrvCountry[2]
-```
-
-1.[vector] access vector's elements' values descreately, through indexing
-
-```{r}
-abbrvCountry[c(1,3)]
-```
-
-1.[vector] access vector's elements' values interval-ly, through indexing 
-
-```{r}
-abbrvCountry[1:2]
-```
-
-1.[vector] access vector's elements' values interval-ly, through naming the element  
-
-```{r}
-abbrvCountry["AF"]
-abbrvCountry[c("AL","DZ")]
-```
 
 1.[dataFrame] create data frame
 
@@ -411,6 +508,7 @@ nlevels(dfAlc$aconsum)
 ```{r}
 head(dfAlc)
 ```
+
 1.[file] check headers' names
 
 ```{r}
@@ -704,7 +802,9 @@ dfAlc %>% dplyr::select(country,region,aconsum)  %>% filter(aconsum <= 10)
 ```{r}
 dplyr::filter(dfAlc, region %in% c("EMEA", "APAC") & aconsum < 10 )%>% dplyr::select(country, aconsum, rank)
 ```
+
 1.[dataFrame] pipe filter select
+
 ```{r}
 dfAlc %>% mutate(aconsum, rank) %>% dplyr::filter(region %in% c('EMEA','APAC') & aconsum <10) %>% dplyr::select(country,aconsum,rank)
 ```

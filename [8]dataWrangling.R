@@ -18,7 +18,7 @@ murders <- mutate(murders,rank=rank(-rate))# Redefine murders to include a colum
 filter(murders,rate <= 0.71)
 #[fltr] filter data by subsetting rw;
 murders <- mutate(murders, rate = total/population * 100000, rank = rank(-rate))# Add the necessary columns
-filter(murders,rate,rank <=5)# Filter to show the top 5 states with the highest murder rates
+murders%>%filter(murders,rate,rank <=5)# Filter to show the top 5 states with the highest murder rates
 #[fltr] filter data by subsetting rw;
 no_south <- data.frame(filter(murders,region!="South"))# Use filter to create a new data frame no_south
 nrow( no_south) # Use nrow() to calculate the number of rows
@@ -41,5 +41,6 @@ filter(murders, region %in% c("Northeast", "West") & rate < 1 )%>% # show the re
   select(state, rate, rank)
 #[%>%] pipe operator  
 library(dplyr)# Loading the libraries # Create new data frame called my_states (with specifications in the instructions)
+
 data(murders)
 my_states <- murders %>% mutate(rate=total/murders$population*100000, rank=rank(-rate)) %>% filter(region %in% c('Northeast','West') & rate <1) %>% select(state,rate,rank)
