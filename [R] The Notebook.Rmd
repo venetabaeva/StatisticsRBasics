@@ -484,9 +484,86 @@ average(murders_total)
 mean(murders_total)
 ```
 
+2.20.[vector] floor ceiling threshold
+
+```{r}
+heights_sex_female <- heights %>% filter(sex == "Female")
+heights_sex_male <- heights %>% filter(sex == "Male")
+seq(floor(min(heights_sex_female$height)),ceiling(max(heights_sex_female$height)),0.1)
+```
+
+2.20.1.[vector] length round sample 
+
+```{r}
+length(heights_sex_female$height)
+round(sample(heights_sex_female$height,20),1)
+```
+
+4.2.20.[vector] histogram skewness check
+
+```{r}
+hist(heights_sex_female$height, breaks = seq(floor(min(heights_sex_female$height)),ceiling(max(heights_sex_female$height))),main="Height histogram", xlab="Height in inches")# breaks = where to draw intervals; report the number of individuals for each interval 
+
+hist(heights_sex_male$height, breaks = seq(floor(min(heights_sex_male$height)),ceiling(max(heights_sex_male$height))),main="Height histogram", xlab="Height in inches")# breaks = where to draw intervals; report the number of individuals for each interval 
+```
+
+4.2.20.[vector] scatter plot empirical cumulative distribution = probability distribution of an outcome to happen
+
+```{r}
+heights_sex_female_height_seq<- seq(floor(min(heights_sex_female$height)),ceiling(max(heights_sex_female$height)),0.1)
+plot(heights_sex_female_height_seq,ecdf(heights_sex_female$height)(heights_sex_female_height_seq),type="l",
+xlab="Height in inches",ylab="F(x)")
+```
+
+4.2.20.[vector] box plot 
+
+```{r}
+boxplot(heights_sex_male$height,heights_sex_female$height)
+```
+
+4.2.20.[vector] QQ plot  = normality of probability distribution test
+
+```{r}
+qqnorm(heights_sex_female$height)
+qqline(heights_sex_female$height)
+```
+
+2.21.[vector] random distribution of factor 
+
+```{r}
+female_mice_weight_diet_chow <- filter(female_mice_weight, Diet=="chow") %>% 
+  dplyr::select(Bodyweight) %>% 
+  unlist
+female_mice_weight_diet_hf <- filter(female_mice_weight, Diet=="hf") %>% 
+  dplyr::select(Bodyweight) %>% 
+  unlist
+mean(female_mice_weight_diet_chow)
+mean(female_mice_weight_diet_hf)
+```
+
+2.21.1.[vector] random distribution of factor sample repeatedly 
+
+```{r}
+female_mice_weight_population<- read.csv("femaleControlsPopulation.csv") 
+female_mice_weight_population<- unlist(female_mice_weight_population)
+mean(female_mice_weight_population)  
+mean(sample(female_mice_weight_population,5))# get different random sample of 5 ;random variable of random sample
+mean(female_mice_weight_diet_chow)  
+mean(sample(female_mice_weight_diet_chow,5))# get different random sample of 5 ;random variable of random sample
+mean(female_mice_weight_diet_hf)
+mean(sample(female_mice_weight_diet_hf,5))# get different random sample of 5 ;random variable of random sample
 
 
-
+set.seed(1)#produces the same sample again and again = generate same set  at each time
+sample <- sample(female_mice_weight_diet_chow,5)# use the sample() function immediately after setting a seed,  to get the same sample again and again 
+abs(mean(sample)-mean(female_mice_weight_population)) #absolute value  of the difference between the average of the sample and the average of all the values
+set.seed(2) 
+sample<- sample(female_mice_weight_diet_chow,5)
+abs(mean(sample)-mean(female_mice_weight_population))
+set.seed(10) 
+sample<- sample(female_mice_weight_diet_chow,5)
+abs(mean(sample)-mean(female_mice_weight_population))
+```
 
 
 
