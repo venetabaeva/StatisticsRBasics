@@ -36,7 +36,8 @@ file_alchohol_consumption<- read.csv(
                       header = TRUE,
                       sep = ";",
                       dec = ".")
-
+female_mice_weight_population<- read.csv("femaleControlsPopulation.csv") 
+female_mice_weight_population<- unlist(female_mice_weight_population)
 ```
 
 ###### ^1^ click: [Alcohol Consumption](https://www.kaggle.com/sansuthi/alcohol-consumption)
@@ -213,6 +214,8 @@ min(value_country)
 max(value_country)
 ```
 
+
+
 >load
 
 ```{r}
@@ -230,6 +233,12 @@ murders <- mutate(murders,rate=total/population*100000)
 ```{r}
 murders_rate <-murders$rate
 hist(murders_rate) 
+```
+
+3.9.1.[vector] remove lines with missing values
+
+```{r}
+murders <- na.omit( murders )
 ```
 
 3.10.[vector] rank rate mutate  
@@ -333,7 +342,6 @@ plot(population_in_millions, total_gun_murders)
 hist(population_in_millions)
 ```
 
-
 4.3.18.[vector] scatter plot : factor1 * factor2 log10
 
 ```{r}
@@ -343,7 +351,7 @@ log10_total_gun_murders <- log10(murders$total)
 plot(log10_population,log10_total_gun_murders)
 ```
 
-2.7.[data_frame_column] access data values
+5.1.[column] access data values
 
 ```{r}
 murders$state #preserved column order in row
@@ -352,7 +360,7 @@ murders["state"] #preserved column original
 murders["population"] #preserved column original
 ```
 
-2.8.[data_frame_column] count rows 
+5.2.[column] count rows 
 
 ```{r}
 length(murders$population)
@@ -361,7 +369,7 @@ lenght(file_alchohol_consumption$country)
 lenght(data_frame_city_temperature$city)
 ```
 
-2.9.[data_frame_column] show levels of factor
+5.3.[column] show levels of factor
 
 ```{r}
 levels(murders$region)
@@ -370,7 +378,7 @@ levels(file_alchohol_consumption$region)
 levels(data_frame_city_temperature$region)
 ```
 
-2.10.[data_frame_column] count levels of factor 
+5.4.[column] count levels of factor 
 
 ```{r}
 length(levels(murders$region))
@@ -383,7 +391,7 @@ nlevels(file_alchohol_consumption$region)
 nlevels(data_frame_city_temperature$region)
 ```
 
-2.11.[data_frame_column] simple frequency * level of factor 
+5.5.[column] simple frequency * level of factor 
 
 ```{r}
 table(murders$region)
@@ -392,7 +400,7 @@ table(file_alchohol_consumption$region)
 table(data_frame_city_temperature$region)
 ```
 
-2.12.[data_frame_column] simple frequency * level of 2 factors 
+5.6.[column] simple frequency * level of 2 factors 
 
 ```{r}
 table(murders$state,murders$region)
@@ -407,7 +415,7 @@ proportion_murders <- murders$total/murders$population*100000
 print(proportion_murders)
 ```
 
-2.13.[vector] validate data value meets expected value
+2.14.[vector] validate data value meets expected value
 
 ```{r}
 index_values <- proportion_murders<0.71
@@ -416,7 +424,7 @@ murders$state[index_values]
 sum(index_values)
 ```
 
-2.14.[vector] validate data value meets expected value
+2.15.[vector] validate data value meets expected value
 
 ```{r}
 murders_region_west<- murders$region == "West" 
@@ -425,14 +433,14 @@ index__rate_per_region <- murders_rate_safe&murders_region_west
 murders$state[index__rate_per_region]
 ```
 
-2.15.[vector] validate true/false data value
+2.16.[vector] validate true/false data value
 
 ```{r}
 which(index_values)
 which(murders$state == "Massachusetts")
 ```
 
-2.16.[vector] search match true/false data value
+2.17.[vector] search match true/false data value
 
 ```{r}
 match(c("New York","Florida","Texas"),murders$state)
@@ -440,7 +448,7 @@ murders$state[match(c("New York","Florida","Texas"),murders$state)]
 proportion_murders[match(c("New York","Florida","Texas"),murders$state)]
 ```
 
-2.17.[vector] check if each data value in vector 1 is in vector 2
+2.18.[vector] check if each data value in vector 1 is in vector 2
 
 ```{r}
 x<- c("a","b","c")
@@ -448,7 +456,7 @@ y <- c("a","b","f")
 y %in% x
 ```
 
-2.18.[vector] check if  data value in vector 1 is/ is not  in vector 2
+2.19.[vector] check if  data value in vector 1 is/ is not  in vector 2
 
 ```{r}
 c("Boston","Dakota","Washington") %in% murders$state
@@ -457,7 +465,7 @@ index_not_present<- which(!states%in%murders$state)
 states[index_not_present]
 ```
 
-4.2.18.[data_frame] scatter plot
+4.2.19.[data_frame] scatter plot
 
 ```{r}
 murders %>%
@@ -471,7 +479,7 @@ data_frame_city_temperature %>%
   geom_label()
 ```
 
-2.19.[vector] average vs. mean
+2.20.[vector] average vs. mean
 
 ```{r}
 murders_total<- murders$total
@@ -484,7 +492,7 @@ average(murders_total)
 mean(murders_total)
 ```
 
-2.20.[vector] floor ceiling threshold
+2.21.[vector] floor ceiling threshold
 
 ```{r}
 heights_sex_female <- heights %>% filter(sex == "Female")
@@ -492,14 +500,14 @@ heights_sex_male <- heights %>% filter(sex == "Male")
 seq(floor(min(heights_sex_female$height)),ceiling(max(heights_sex_female$height)),0.1)
 ```
 
-2.20.1.[vector] length round sample 
+2.21.1.[vector] length round sample 
 
 ```{r}
 length(heights_sex_female$height)
 round(sample(heights_sex_female$height,20),1)
 ```
 
-4.2.20.[vector] histogram skewness check
+4.2.21.[vector] histogram skewness check
 
 ```{r}
 hist(heights_sex_female$height, breaks = seq(floor(min(heights_sex_female$height)),ceiling(max(heights_sex_female$height))),main="Height histogram", xlab="Height in inches")# breaks = where to draw intervals; report the number of individuals for each interval 
@@ -507,7 +515,7 @@ hist(heights_sex_female$height, breaks = seq(floor(min(heights_sex_female$height
 hist(heights_sex_male$height, breaks = seq(floor(min(heights_sex_male$height)),ceiling(max(heights_sex_male$height))),main="Height histogram", xlab="Height in inches")# breaks = where to draw intervals; report the number of individuals for each interval 
 ```
 
-4.2.20.[vector] scatter plot empirical cumulative distribution = probability distribution of an outcome to happen
+4.2.21.[vector] scatter plot empirical cumulative distribution = probability distribution of an outcome to happen
 
 ```{r}
 heights_sex_female_height_seq<- seq(floor(min(heights_sex_female$height)),ceiling(max(heights_sex_female$height)),0.1)
@@ -515,54 +523,105 @@ plot(heights_sex_female_height_seq,ecdf(heights_sex_female$height)(heights_sex_f
 xlab="Height in inches",ylab="F(x)")
 ```
 
-4.2.20.[vector] box plot 
+4.2.21.[vector] box plot 
 
 ```{r}
 boxplot(heights_sex_male$height,heights_sex_female$height)
 ```
 
-4.2.20.[vector] QQ plot  = normality of probability distribution test
+4.2.21.[vector] QQ plot  = normality of probability distribution test
 
 ```{r}
 qqnorm(heights_sex_female$height)
 qqline(heights_sex_female$height)
 ```
 
-2.21.[vector] random distribution of factor 
+```{r}
+library(dplyr)
+```
+
+
+2.22.1[vector] random distribution of factor 
 
 ```{r}
 female_mice_weight_diet_chow <- filter(female_mice_weight, Diet=="chow") %>% 
-  dplyr::select(Bodyweight) %>% 
-  unlist
+  select(Bodyweight) %>% 
+  unlist #turn into numeric vector
+mean(female_mice_weight_diet_chow)
 female_mice_weight_diet_hf <- filter(female_mice_weight, Diet=="hf") %>% 
   dplyr::select(Bodyweight) %>% 
   unlist
-mean(female_mice_weight_diet_chow)
 mean(female_mice_weight_diet_hf)
 ```
 
-2.21.1.[vector] random distribution of factor sample repeatedly 
+4.2.22.1. [vector] plot
 
 ```{r}
-female_mice_weight_population<- read.csv("femaleControlsPopulation.csv") 
-female_mice_weight_population<- unlist(female_mice_weight_population)
+plot(female_mice_weight_diet_chow,female_mice_weight_diet_hf,xlab = " diet chow", ylab="diet hf") 
+```
+2.22.2.[vector] random distribution of factor  sample  repeatedly 
+
+```{r}
 mean(female_mice_weight_population)  
 mean(sample(female_mice_weight_population,5))# get different random sample of 5 ;random variable of random sample
+mean(sample(female_mice_weight_population,10))
 mean(female_mice_weight_diet_chow)  
 mean(sample(female_mice_weight_diet_chow,5))# get different random sample of 5 ;random variable of random sample
+mean(sample(female_mice_weight_diet_chow,10))
 mean(female_mice_weight_diet_hf)
 mean(sample(female_mice_weight_diet_hf,5))# get different random sample of 5 ;random variable of random sample
+mean(sample(female_mice_weight_diet_hf,10))
+```
 
+2.22.3.[vector] distribution of factor seed sample repeatedly 
 
-set.seed(1)#produces the same sample again and again = generate same set  at each time
-sample <- sample(female_mice_weight_diet_chow,5)# use the sample() function immediately after setting a seed,  to get the same sample again and again 
-abs(mean(sample)-mean(female_mice_weight_population)) #absolute value  of the difference between the average of the sample and the average of all the values
-set.seed(2) 
-sample<- sample(female_mice_weight_diet_chow,5)
-abs(mean(sample)-mean(female_mice_weight_population))
-set.seed(10) 
-sample<- sample(female_mice_weight_diet_chow,5)
-abs(mean(sample)-mean(female_mice_weight_population))
+```{r}
+set.seed(1)#repeated averaging on the same sample 
+sample_seed_1_chow <- sample(female_mice_weight_diet_chow,5)# get the same random sample of 5 
+abs(mean(sample_seed_1_chow)- mean(female_mice_weight_diet_chow))# difference between average of sample and  average of population
+sample_seed_1_hf <- sample(female_mice_weight_diet_hf,5)# get the same random sample of 5 
+abs(mean(sample_seed_1_hf)-mean(female_mice_weight_diet_hf))# difference between average of sample and  average of population
+set.seed(10)# repeated averaging on 10 samples 
+sample_seed_10_chow <- sample(female_mice_weight_diet_chow,5)# get 10 random samples of 5 
+abs(mean(sample_seed_10_chow)-mean(female_mice_weight_diet_chow))# difference between average of sample and  average of population
+sample_seed_10_hf <- sample(female_mice_weight_diet_hf,5)# get 10 same random sample of 5 
+abs(mean(sample_seed_10_hf)-mean(female_mice_weight_diet_hf))# difference between average of sample and  average of population
+```
+
+2.23.[vector] central limit theorem 
+
+```{r}
+set.seed(1)
+n <- 1000
+averages_sample_5 <- vector("numeric",n)
+for(i in 1:n){
+  X <- sample(female_mice_weight_population,5)
+  averages_sample_5 [i] <- mean(X)
+}
+mean(averages5<25 & averages5>23)#averages, the ones obtained from a sample size of 5, what proportion are between 23 and 25
+set.seed(1)
+n <- 1000
+averages_sample_50 <- vector("numeric",n)
+for(i in 1:n){
+  X <- sample(female_mice_weight_population,50)
+  averages_sample_50[i] <- mean(X)
+}
+mean(averages50<25 & averages50>23)#averages, the ones obtained from a sample size of 50, what proportion are between 23 and 25
+```
+
+4.2.23.[vector] histogram central limit theorem 
+
+```{r}
+par(mfrow = c(2,1))
+hist(averages_sample_5)
+hist(averages_sample_50)
+```
+2.23.1.[vector] central limit theorem proportion of observations between average plus standard deviaiton
+
+```{r}
+mu <- mean(averages_sample_50)
+sigma <- sd(averages_sample_50)
+pnorm(25, mu, sigma) - pnorm(23,mu,sigma)  
 ```
 
 
