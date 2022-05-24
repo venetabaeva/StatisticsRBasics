@@ -35,3 +35,4 @@ mean(averages50<25 & averages50>23)
 mu <- 23.9
 sigma <- 0.43
 pnorm(25, mu, sigma) - pnorm(23,mu,sigma)  
+

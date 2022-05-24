@@ -5,11 +5,12 @@ filename <- basename(url)
 download(url, destfile=filename)
 dat <- read.csv(filename) 
 dat <- na.omit( dat ) # will remove the lines that contain missing values
-library(dplyr)
+library(dplyr) 
 head(dat)
+View(dat)
 x<- filter(dat,Sex =="M" & Diet == "chow") #Use dplyr to create a vector x with the body weight of all males on the control (chow) diet
 x <-as.vector(x$Bodyweight,mode = "any")
-mean(x)# What is this population's average?
+mean(x)# What is this population's average? 
 library(rafalib)
 popsd(x)#the rafalib package and use the popsd() function to compute the population standard deviation
 set.seed(1) # Set the seed at 1
@@ -38,7 +39,6 @@ popsd(x)
 set.seed(2)
 X<- sample(x,25) 
 mean(X)  
-
 library(dplyr)
 y<- filter(dat,Sex =="F" & Diet == "hf") 
 y <-as.vector(y$Bodyweight,mode = "any")

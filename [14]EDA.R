@@ -4,7 +4,7 @@ x=father.son$fheight
 length(x)
 round(sample(x,20),1)
 #[histogram]
-hist(x, breaks =  seq(floor(min(x)),ceiling(max(x))),main="Height histogram", xlab="Height in inches")# breaks = where to draw intervals; report the number of individuals for each interval
+hist(x, breaks = seq(floor(min(x)),ceiling(max(x))),main="Height histogram", xlab="Height in inches")# breaks = where to draw intervals; report the number of individuals for each interval
 seq(floor(min(x)),ceiling(max(x)))
 xs <- seq 
 #[scatterplot]empirical cumulative distribution ; shows % of individuals below a threshold

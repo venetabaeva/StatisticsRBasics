@@ -24,7 +24,7 @@ fatherheights=as.numeric((names(means))) #extract the father heights, which are 
 plot(fatherheights, means,ylab="average of strata of son heights", ylim =range(fatherheights))  
 abline(0,cor(x,y)) #linear ;  need now to make predictions is the slope of that line, which turns out to be the correlation
 # interpretation of the correlation -> if you have two data sets that are normally distributed and they have some correlation.
-##If you turn it into standard units, then the correlationis the slope of the line that you would use to predict variable y,given variable x.
+##If you turn it into standard units, then the correlation is the slope of the line that you would use to predict variable y,given variable x.
 ##two means, the two standard deviations, and  the correlation are a very good summary
 data(nym.2002, package="UsingR")
 library(dplyr)
@@ -112,7 +112,7 @@ head(chick)
 chick = na.omit(chick)
 #
 x = chick$weight.4[chick$Diet == 1]#Save the weights of the chicks on day 4 from diet 1 as a vector x
-y = chick$weight.4[chick$Diet == 4] #Save the weights of the chicks on day 4 from diet 4 as a vector y.
+y = chick$weight.4[chick$Diet == 4]#Save the weights of the chicks on day 4 from diet 4 as a vector y.
 t.test(c(x, 200), y)$p.value #a t-test comparing x and y
 wilcox.test(c(x,200),y,exact=FALSE)$p.value#a wilcoxon test 
 #investigate a possible downside to the Wilcoxon-Mann-Whitney test statistic.

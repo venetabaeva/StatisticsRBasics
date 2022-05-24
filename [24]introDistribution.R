@@ -72,7 +72,7 @@ plot(rangeForCdfFunctionQ,cdfValuesBellowQ)
  #Compute standard units with the scale() function.
  #Important: to calculate the proportion of values that meet a certain condition, use the mean() function on a logical vector. Because TRUE is converted to 1 and FALSE is converted to 0, taking the mean of this vector yields the proportion of TRUE.
  #The built-in R function sd() calculates the standard deviation, but it divides by length(x)-1 instead of length(x). When the length of the list is large, this difference is negligible and you can use the built-in sd() function. Otherwise, you should compute σ by hand. For this course series, assume that you should use the sd() function unless you are told not to do so.
- zMHeight = scale(xMHeight)
+ zMHeight = scale(xMHeight) 
  mean(abs(zMHeight)<2) # count the number of z scores less than 2 and bigger than negative 2 and divide by total ; take the mean 
  # 68-95-99.7 rule = probability of observing events within a certain number of standard deviations of the mean 
  # above 68% observations will be within 1sd of the mean = |z|</= 1 (μ +/- 1σ )

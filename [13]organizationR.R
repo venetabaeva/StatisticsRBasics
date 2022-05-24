@@ -8,7 +8,8 @@ download(url, destfile=filename)
 #[DFF] access
 filename <- "femaleMiceWeights.csv"
 View(filename)
-dat<- read.csv(filename, header = TRUE,sep = ",")
+dat<- read.csv(filename, header = TRUE,sep = ",") 
+View(dat)
 #[clmn] exact name 
 colnames(dat)
 #[[]]extract specific rows and columns of the table

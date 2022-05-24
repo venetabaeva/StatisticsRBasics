@@ -38,6 +38,7 @@ file_alchohol_consumption<- read.csv(
                       dec = ".")
 female_mice_weight_population<- read.csv("femaleControlsPopulation.csv") 
 female_mice_weight_population<- unlist(female_mice_weight_population)
+mice_pheno <- read.csv("mice_pheno.csv")
 ```
 
 ###### ^1^ click: [Alcohol Consumption](https://www.kaggle.com/sansuthi/alcohol-consumption)
@@ -408,14 +409,14 @@ table(file_alchohol_consumption$country,file_alchohol_consumption$region)
 table(data_frame_city_temperature$city,data_frame_city_temperature$region)
 ```
 
-2.13.[vector] proportion
+3.19[vector] proportion
 
 ```{r}
 proportion_murders <- murders$total/murders$population*100000 
 print(proportion_murders)
 ```
 
-2.14.[vector] validate data value meets expected value
+3.20.[vector] validate data value meets expected value
 
 ```{r}
 index_values <- proportion_murders<0.71
@@ -424,7 +425,7 @@ murders$state[index_values]
 sum(index_values)
 ```
 
-2.15.[vector] validate data value meets expected value
+3.21.[vector] validate data value meets expected value
 
 ```{r}
 murders_region_west<- murders$region == "West" 
@@ -433,14 +434,14 @@ index__rate_per_region <- murders_rate_safe&murders_region_west
 murders$state[index__rate_per_region]
 ```
 
-2.16.[vector] validate true/false data value
+3.22.[vector] validate true/false data value
 
 ```{r}
 which(index_values)
 which(murders$state == "Massachusetts")
 ```
 
-2.17.[vector] search match true/false data value
+3.23.[vector] search match true/false data value
 
 ```{r}
 match(c("New York","Florida","Texas"),murders$state)
@@ -448,7 +449,7 @@ murders$state[match(c("New York","Florida","Texas"),murders$state)]
 proportion_murders[match(c("New York","Florida","Texas"),murders$state)]
 ```
 
-2.18.[vector] check if each data value in vector 1 is in vector 2
+3.24.[vector] check if each data value in vector 1 is in vector 2
 
 ```{r}
 x<- c("a","b","c")
@@ -456,7 +457,7 @@ y <- c("a","b","f")
 y %in% x
 ```
 
-2.19.[vector] check if  data value in vector 1 is/ is not  in vector 2
+3.25.[vector] check if  data value in vector 1 is/ is not  in vector 2
 
 ```{r}
 c("Boston","Dakota","Washington") %in% murders$state
@@ -465,7 +466,7 @@ index_not_present<- which(!states%in%murders$state)
 states[index_not_present]
 ```
 
-4.2.19.[data_frame] scatter plot
+4.3.25.[data_frame] scatter plot
 
 ```{r}
 murders %>%
@@ -479,7 +480,7 @@ data_frame_city_temperature %>%
   geom_label()
 ```
 
-2.20.[vector] average vs. mean
+3.26.[vector] average vs. mean
 
 ```{r}
 murders_total<- murders$total
@@ -492,7 +493,7 @@ average(murders_total)
 mean(murders_total)
 ```
 
-2.21.[vector] floor ceiling threshold
+3.27.[vector] floor ceiling threshold
 
 ```{r}
 heights_sex_female <- heights %>% filter(sex == "Female")
@@ -500,14 +501,14 @@ heights_sex_male <- heights %>% filter(sex == "Male")
 seq(floor(min(heights_sex_female$height)),ceiling(max(heights_sex_female$height)),0.1)
 ```
 
-2.21.1.[vector] length round sample 
+3.27.1.[vector] length round sample 
 
 ```{r}
 length(heights_sex_female$height)
 round(sample(heights_sex_female$height,20),1)
 ```
 
-4.2.21.[vector] histogram skewness check
+4.3.27.[vector] histogram skewness check
 
 ```{r}
 hist(heights_sex_female$height, breaks = seq(floor(min(heights_sex_female$height)),ceiling(max(heights_sex_female$height))),main="Height histogram", xlab="Height in inches")# breaks = where to draw intervals; report the number of individuals for each interval 
@@ -515,7 +516,7 @@ hist(heights_sex_female$height, breaks = seq(floor(min(heights_sex_female$height
 hist(heights_sex_male$height, breaks = seq(floor(min(heights_sex_male$height)),ceiling(max(heights_sex_male$height))),main="Height histogram", xlab="Height in inches")# breaks = where to draw intervals; report the number of individuals for each interval 
 ```
 
-4.2.21.[vector] scatter plot empirical cumulative distribution = probability distribution of an outcome to happen
+4.3.27.[vector] scatter plot empirical cumulative distribution = probability distribution of an outcome to happen
 
 ```{r}
 heights_sex_female_height_seq<- seq(floor(min(heights_sex_female$height)),ceiling(max(heights_sex_female$height)),0.1)
@@ -523,13 +524,13 @@ plot(heights_sex_female_height_seq,ecdf(heights_sex_female$height)(heights_sex_f
 xlab="Height in inches",ylab="F(x)")
 ```
 
-4.2.21.[vector] box plot 
+4.3.27.[vector] box plot 
 
 ```{r}
 boxplot(heights_sex_male$height,heights_sex_female$height)
 ```
 
-4.2.21.[vector] QQ plot  = normality of probability distribution test
+4.3.27.[vector] QQ plot  = normality of probability distribution test
 
 ```{r}
 qqnorm(heights_sex_female$height)
@@ -540,8 +541,7 @@ qqline(heights_sex_female$height)
 library(dplyr)
 ```
 
-
-2.22.1[vector] random distribution of factor 
+3.28.1[vector] random distribution of factor 
 
 ```{r}
 female_mice_weight_diet_chow <- filter(female_mice_weight, Diet=="chow") %>% 
@@ -554,12 +554,12 @@ female_mice_weight_diet_hf <- filter(female_mice_weight, Diet=="hf") %>%
 mean(female_mice_weight_diet_hf)
 ```
 
-4.2.22.1. [vector] plot
+4.3.28.1. [vector] plot
 
 ```{r}
 plot(female_mice_weight_diet_chow,female_mice_weight_diet_hf,xlab = " diet chow", ylab="diet hf") 
 ```
-2.22.2.[vector] random distribution of factor  sample  repeatedly 
+3.28.2.[vector] random distribution of factor  sample  repeatedly 
 
 ```{r}
 mean(female_mice_weight_population)  
@@ -573,7 +573,7 @@ mean(sample(female_mice_weight_diet_hf,5))# get different random sample of 5 ;ra
 mean(sample(female_mice_weight_diet_hf,10))
 ```
 
-2.22.3.[vector] distribution of factor seed sample repeatedly 
+3.28.3.[vector] distribution of factor seed sample repeatedly 
 
 ```{r}
 set.seed(1)#repeated averaging on the same sample 
@@ -588,7 +588,7 @@ sample_seed_10_hf <- sample(female_mice_weight_diet_hf,5)# get 10 same random sa
 abs(mean(sample_seed_10_hf)-mean(female_mice_weight_diet_hf))# difference between average of sample and  average of population
 ```
 
-2.23.[vector] central limit theorem 
+3.29.[vector] central limit theorem 
 
 ```{r}
 set.seed(1)
@@ -609,14 +609,14 @@ for(i in 1:n){
 mean(averages50<25 & averages50>23)#averages, the ones obtained from a sample size of 50, what proportion are between 23 and 25
 ```
 
-4.2.23.[vector] histogram central limit theorem 
+4.3.29.[vector] histogram central limit theorem 
 
 ```{r}
 par(mfrow = c(2,1))
 hist(averages_sample_5)
 hist(averages_sample_50)
 ```
-2.23.1.[vector] central limit theorem proportion of observations between average plus standard deviaiton
+3.29.1.[vector] central limit theorem proportion of observations between average plus standard deviaiton
 
 ```{r}
 mu <- mean(averages_sample_50)
@@ -624,10 +624,291 @@ sigma <- sd(averages_sample_50)
 pnorm(25, mu, sigma) - pnorm(23,mu,sigma)  
 ```
 
+> library load 
+
+```{r}
+ library(dplyr)
+```
+
+2.7.[data_frame] t - test
+
+```{r}
+t_test<-  t.test(female_mice_weight_diet_chow,female_mice_weight_diet_hf)
+t_test 
+```
+
+2.8.[data_frame] t - test
+
+```{r}
+qqnorm(female_mice_weight_diet_chow) # now we can test that somewhat by making q-q plots of the sample
+qqline(female_mice_weight_diet_chow)
+qqnorm(female_mice_weight_diet_hf) # now we can test that somewhat by making q-q plots of the sample
+qqline(female_mice_weight_diet_hf)
+```
+
+2.9.[data_frame]t - test 
+
+```{r}
+control <-female_mice_weight_diet_chow
+treatment <-female_mice_weight_diet_hf
+mean(control)#estimate average of the control population with the sample average 
+sd(control)#sample standard deviation = estimation of population standard deviation
+2 * ( 1-pnorm(2/sd(control) * sqrt(12) ) ) #Use the CLT to approximate the probability that our estimate X¯is off by more than 2 grams from μX
+se <-sqrt( sd(control)^2/12 + sd(treatment)^2/12 ) 
+t_test <- ( mean(treatment) - mean(control) ) / sqrt( var(control)/12 + var(treatment)/12)
+2*( 1-pnorm(t_test))
+t.test(treatment,control)
+t.test(treatment,control)$p.value
+```
+
+2.10.[data_frame]Monte Carlo test t-test  distribution approximation how well it works 
+
+>load library 
+
+```{r}
+library(rafalib)
+```
 
 
+```{r}
+set.seed(1)
+t_test_generator <- function(n){ #  for any given sample size n, it takes a random sample from the control population for treatments and controls
+  treatments <- sample(female_mice_weight_population,n)
+  controls <- sample(female_mice_weight_population,n)
+  mean(controls)
+  t_stat <- (mean(treatments)- mean(controls))/ 
+    sqrt(var(treatments)/n + var(controls)/n)
+  return(t_stat)
+}
+t_tests <- replicate(1000,t_test_generator(10)) #generate 1,000 t-statistics with a sample size of 10 = Monte Carlo Simulation 
+hist(t_tests)
+qqnorm(t_tests)# how well the normal approximation works => CLT works  well for this dataset when the sample size is 10
+abline(0,1)
+t_tests <- replicate(1000,t_test_generator(3)) 
+hist(t_tests)
+qqnorm(t_tests)# Not well approximating 
+abline(0,1)
+```
+
+2.11.[data_frame] Monte Carlo test t-test distribution approximation how well it works not known mean and sd of population 
+
+```{r}
+mean(control)
+sd(control)
+controls <-(rnorm(5000,mean = 24 ,sd = 3.5))# rnorm= creating a population of 5000
+t_test_generator <- function(n,mean= 24 ,sd = 3.5){ #  for any given sample size n, it takes a random sample from the control population for cases and controls
+  treatments <- rnorm(n,mean,sd)
+  controls <- rnorm(n,mean,sd)
+  t_stat <- (mean(treatments)- mean(controls))/ 
+    sqrt(var(treatments)/n + var(controls)/n)
+  return(t_stat)
+}
+t_tests <- replicate(1000,t_test_generator(10)) 
+hist(t_tests)
+qqnorm(t_tests)# Not well approximating 
+abline(0,1)
+```
+
+4.2.11.[data_frame] correlation plot
+
+>load library
+
+```{r}
+library(UsingR)
+```
+
+```{r}
+str(father.son)
+father_weight <- father.son$fheight
+son_weight<- father.son$sheight
+plot(father_weight,son_weight,xlab ="Father Height Inches",ylab="Son Height Inches", main=paste("correlation =",signif(cor(father_weight,son_weight),2)))
+boxplot(split(son_weight,round(father_weight))) #round the father's height to the closest inch; group the son's heights by that value
+print(mean(son_weight[round(father_weight)==72]))
+```
+
+4.2.11.1.[data_frame] correlation stratify data to notice a pattern
+
+```{r}
+boxplot(split(son_weight,round(c))) #round the father's height to the closest inch; group the son's heights by that value
+print(mean(son_weight[round(father_weight)==72]))
+```
+
+2.11.2.[data_frame] linear relationship 
+
+```{r}
+x=(x-mean(father_weight))/sd(father_weight)
+y=(y-mean(son_weight))/sd(son_weight)
+means=tapply(son_weight,round(father_weight*4)/4,mean) # compute the mean of each group determined by rounding the heights in standard units
+means #for all the fathers who are -1.75 standard units away from the mean, the average height of those sons was this much, -0.75
+father_heights=as.numeric((names(means))) #extract the father heights, which are actually in the names of this vector; turn those into numbers 
+plot(father_heights, means,ylab="average of strata of son heights", ylim =range(father_heights))  
+abline(0,cor(father_weight,son_weight)) #linear ;  need now to make predictions is the slope of that line, which turns out to be the correlation
+```
+
+2.12. [data_frame] correlation -> if you have two data sets that are normally distributed and they have some correlation
+
+>load lybrary 
+
+```{r}
+library(dplyr)
+```
 
 
+```{r}
+gender_m<- filter(nym.2002, gender=="Male") #males, what is the Pearson correlation between age and time to finish
+gender_f<- filter(nym.2002, gender=="Female")#female, what is the Pearson correlation between age and time to finish
+mAgeTime<- cor(gender_m$age,gender_m$time)
+fAgeTime<-cor(gender_f$age,gender_f$time)
+```
+
+>load lybrary 
+
+```{r}
+library(rafalib)
+```
+
+4.2.12. [data_frame] correlation plot
+
+```{r}
+mypar(2,2)
+plot(gender_m$age,gender_m$time)
+group <- floor(gender_m$age/5)*5
+boxplot(gender_m$time~group)
+plot(gender_f$age,gender_f$time)
+group <- floor(gender_f$age/5)*5
+boxplot(gender_f$time~group)
+```
+
+4.2.13. [data_frame] Spearman correlation  - correlation computed on ranks time plot
+
+```{r}
+plot( ChickWeight$Time, ChickWeight$weight, col=ChickWeight$Diet)
+```
+
+2.13.1. [data_frame] reshape
+
+```{r}
+chick = reshape(ChickWeight, idvar=c("Chick","Diet"), timevar="Time",
+                direction="wide")#facilitate the comparison of weights at different time points and across the different chicks
+```
+
+2.13.2. [data_frame] reshape
+
+```{r}
+chick = na.omit(chick) #reshape the data from long to wide, where the columns Chick and Diet are the ID's and the column Time indicates different observations for each ID
+head(chick)
+```
+
+2.13.3. [data_frame] reshape
+
+```{r}
+chickout<-c(chick$weight.4,3000) #How much does the average of chick weights at day 4 increase if we add an outlier measurement of 3000 grams?
+mean(chickout)/mean(chick$weight.4)
+median(chickout)/median(chick$weight.4)#MAD is unaffected by the addition of a single outlier
+mad(c(chick$weight.4, 3000))/mad(chick$weight.4)#MAD with the outlier chick divided by the MAD without the outlier chick?
+sd(c(chick$weight.4, 3000))/sd(chick$weight.4)
+```
+
+2.13.4. [data_frame] how the Pearson correlation is affected by an outlier as compared to the Spearman correlation plot
+
+```{r}
+plot(chick$weight.4,chick$weight.21)
+cor(chick$weight.4,chick$weight.21) #Calculate the Pearson correlation of the weights of chicks from day 4 and day 21
+plot(c(chick$weight.4,3000),c(chick$weight.21,3000))#Plot the weights of chicks from day 4 and day 21
+cor(c(chick$weight.4,3000),c(chick$weight.21,3000))# calculate how much the Pearson correlation changes if we add a chick that weighs 3000 on day 4 and 3000 on day 21
+cor(c(chick$weight.4,3000),c(chick$weight.21,3000))/cor(chick$weight.4,chick$weight.21) # divide the Pearson correlation with the outlier chick over the Pearson correlation computed without the outliers.
+```
+
+2.14. [data_frame] Mann - Whitney - Wilcoxon Test outliers can make p-value to be incorrect z-score for this sum of rank statistic
+
+```{r}
+diet_1_day_4 = chick$weight.4[chick$Diet == 1]#Save the weights of the chicks on day 4 from diet 1 as a vector x
+diet_4_day_4 = chick$weight.4[chick$Diet == 4]#Save the weights of the chicks on day 4 from diet 4 as a vector y.
+t.test(c(diet_1_day_4, 200), diet_4_day_4)$p.value #a t-test comparing x and y
+wilcox.test(c(diet_1_day_4,200),diet_4_day_4,exact=FALSE)$p.value#a wilcoxon test 
+```
+
+>load library 
+
+```{r}
+library(rafalib)
+```
+
+
+2.14.1. [data_frame] 
+
+```{r}
+mypar(1,3)
+boxplot(diet_1_day_4,diet_4_day_4)
+boxplot(diet_1_day_4,diet_4_day_4+10)
+boxplot(diet_1_day_4,diet_4_day_4+100)
+t.test(diet_1_day_4,diet_4_day_4+10)$statistic - t.test(diet_1_day_4,diet_4_day_4+100)$statistic #What is the difference in t-test statistic (obtained by t.test(x,y)$statistic) between adding 10 and adding 100 to all the values in the group y? #Wilcoxon problem-> for small sample sizes, the p-value can't be very small, even when the difference is very large
+```
+
+5.7.1 [column] unique values
+
+```{r}
+unique(heights$height)
+```
+
+5.7.2 [column] length values
+
+```{r}
+length(heights$height)
+```
+
+5.7.3. [column] unique length values
+
+```{r}
+length(unique(heights$height)) # how many unique (numeric ordinal) variables are there 
+```
+
+5.7.3. [column] frequency for each unique  value
+
+```{r}
+tab <- table(heights$height)
+sum(tab==1) #count the number of times a unique value appears
+```
+
+5.8. [column] proportions of each unique category 
+
+```{r}
+prop.table(table(heights$sex)) # proportion of each unique value = frequency table = distribution 
+```
+
+5.9. [column] cumulative distribution function (CDF)  F (a) = Pr (x</=a)  <- proportion of data below a given value a
+
+```{r}
+range_for_CDF_function <- seq(min(heights$height), max(heights$height),length = 100) #define range of values spaning the dataset
+cdf_Function <- function(f){ # computes probability for a single values 
+  mean(heights$height<=f) # cdfFunction (rangeForCdfFunction) = Pr (f</=rangeForCdfFunction) 
+}
+cdf_values <- sapply(range_for_CDF_function,cdf_Function )#  CDF defines proportion of data below the  cutoff rangeForCdfFunction
+cdf_values_above <- 1-(sapply(range_for_CDF_function,cdf_Function))# defines proportion of data above the  cutoff rangeForCdfFunction => 1 - cdfFunction (rangeForCdfFunction)
+
+```
+
+
+4.5.9. [column] cumulative distribution function (CDF)  plot
+
+```{r}
+plot(range_for_CDF_function,cdf_values) 
+plot(range_for_CDF_function,cdf_values_above)
+```
+
+2.15.[data_frame] smooth density 
+
+```{r}
+mean_heights <- sum(heights$height)/ length(heights$height)
+sd_heights <- sqrt(sum((as.numeric(heights$height)-mean_heights)^2)/ length(heights$height))
+category_male <- heights$sex == "Male"
+heigths_category_male <- heights$height[category_male]
+mean_heigths_category_male <- mean(heigths_category_male)
+sd_heigths_category_male<- sd(heigths_category_male)
+c(mean_heights=mean_heights,sd_heights=sd_heights)
+z_heigths_category_male = scale(heigths_category_male) 
+mean(abs(heigths_category_male)<2) # count the number of z scores less than 2 and bigger than negative 2 and divide by total ; take the mean 
+```
 
 
 
